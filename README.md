@@ -5,14 +5,11 @@ Haskell Programming을 딱 하루만 배워보자.
 6시간 동안 Haskell을 배워서 Haskell로 실용적인 도구를 만들어보자.
 
 ## 사전 학습
-Haskell platform을 설치한다.
-가장 기본 자료형인 List에 대해 알아보자. List는 대괄호로 표시한다.
-> [1,2,3]
-[1,2,3]
+Haskell platform을 설치한다. 설치후 ghci를 실행하자. 이제 가장 기본 자료형인 List에 대해 알아보자. List는 대괄호로 표시한다.
+> [1,2,3] -- [1,2,3]
 
 이제 List에 사용할 수 있는 기본 함수들을 살펴보자.
 > sum [1,2,3] -- 6
-
 > product [1,2,3] -- 6
 
 > length [1,2,3] -- 3
