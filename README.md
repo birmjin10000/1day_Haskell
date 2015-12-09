@@ -129,11 +129,60 @@ ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합�
     my_foldr f base (x:xs) = ?
 
 ## 첫 1시간
-(숙제 함께 복기).
+먼저 숙제를 함께 복기하겠습니다.
+
 연습 1) foldl 함수를 재귀적으로 구현해보세요.
 
-
 List에 대해 더 알아봅시다.
+zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 대로 묶어줍니다.
+
+    > :t zip
+    zip :: [a] -> [b] -> [(a, b)]
+    > zip [1,2,3] ['a','b','c']
+    [(1,'a'),(2,'b'),(3,'c')]
+
+zip 함수의 실행 결과에서 새로운 자료형이 등장합니다. 바로 Tuple 입니다. Haskell에서 List는 homogeneous 자료형입니다. [1,'a',"xyz"] 같은 것은 불가능합니다. 반면에 Tuple은 heterogenous 자료형입니다.
+
+Tuple은 위의 예처럼 원소 두 개짜리 뿐만 아니라 (1,'a',True) 같은 세 개, 네 개 짜리도 가능합니다. 원소가 두 개짜리인 Tuple을 Pair라고 부르는데 다음과 같은 함수를 사용할 수 있습니다.
+
+    > fst (1,'a')
+    1
+    > snd (1,'a')
+    'a'
+
+zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주어진 함수를 가지고 두 개 List의 각 원소에 대한 연산을 수행합니다.
+
+   > zipWith (+) [1,2,3] [10,20,30]
+   [11,22,33]
+
+List를 반복적으로 편리하게 만들어 주는 함수들이 있습니다.
+
+    > replicate 3 1
+    [1,1,1]
+    > take 3 (repeat [1,2])
+    [[1,2],[1,2],[1,2]]
+    > take 3 (cycle [1,2])
+    [1,2,1]
+
+그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 이렇게 무한수열을 아주 편하게 사용할 수 있는데 그 이유는 Haskell이 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. 무한수열을 만드는 또 다른 함수는 iterate 입니다.
+
+    > take 5 (iterate (\x -> x^2) 2)
+    [2,4,16,256,65536]
+
+위 코드에서 (\x -> x^2) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다.
+
+연습2) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
+
+    > let fib = 1:1:zipWith (+) ? ?
+
+fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함수는 값을 계속 누적해 나갑니다. scanl 과 scanr 함수가 있습니다.
+
+    > scanl (+) 0 [1..10]
+    [0,1,3,6,10,15,21,28,36,45,55]
+
+연습3) 아까zipWith 함수를 써서 만든 fibonacci 수열을 이번에는 scanl을 써서 만들어보세요.
+
+    > let fib = 1:scanl (+) ? ?
 
 
 ## 두 번째 시간
