@@ -164,7 +164,16 @@ List를 반복적으로 편리하게 만들어 주는 함수들이 있습니다.
     > take 3 (cycle [1,2])
     [1,2,1]
 
-그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 이렇게 무한수열을 아주 편하게 사용할 수 있는데 그 이유는 Haskell이 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. 무한수열을 만드는 또 다른 함수는 iterate 입니다.
+그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 이렇게 무한수열을 아주 편하게 사용할 수 있는데 그 이유는 Haskell이 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. List를 선언할 때 무한수열 형태로 선언할 수도 있습니다. List의 끝을 정해주지 않으면 무한수열이 됩니다.
+
+    > take 3 [1..]
+    [1,2,3]
+    > take 5 [1,3..]
+    [1,3,5,7,9]
+
+Lazy evalution에서는 값이 필요할 때까지 expression은 expression그대로 남아 있습니다. 예를 들어 [1..] 라는 expression은 어떠한 값도 아닌 그냥 expression입니다. 그러다가 take 3 함수가 오면 그제서야 맨 앞 3개 요소를 값으로 평가합니다. 즉 1:2:3:[4..] 가 되어버립니다. [4..] 부분은 여전히 expression으로 남아있게 됩니다.
+
+무한수열을 만드는 또 다른 함수는 iterate 입니다.
 
     > take 5 (iterate (\x -> x^2) 2)
     [2,4,16,256,65536]
@@ -179,11 +188,27 @@ fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함
 
     > scanl (+) 0 [1..10]
     [0,1,3,6,10,15,21,28,36,45,55]
+    > scanr (+) 0 [1..10]
+    [55,54,52,49,45,40,34,27,19,10,0]
 
 연습3) 아까zipWith 함수를 써서 만든 fibonacci 수열을 이번에는 scanl을 써서 만들어보세요.
 
     > let fib = 1:scanl (+) ? ?
 
+List를 만드는 또 다른 방법으로는 List comprehension이 있습니다.
+
+    > [x | x <- [1..10], odd x]
+    [1,3,5,7,9]
+    > [x*y | x <- [1..3], y <- [10,11]]
+    [10,11,20,22,30,33]
+
+List comprehension을 이용하여 isPrime 함수를 만들겠습니다.
+
+    > isPrime n = 2 == length [d | d <- [1..n], n `mod` d == 0]
+    > zip [1..] $ map isPrime [1..10]
+    [(1,False),(2,True),(3,True),(4,False),(5,True),(6,False),(7,True),(8,False),(9,False),(10,False)]
+
+새로운 문법이 나왔습니다. mod 함수는 modulo 연산자입니다. mod 7 2 의 결과는 1 입니다. 그런데 mod 함수와 같은 이항연산자는 보통 infix 
 
 ## 두 번째 시간
 
