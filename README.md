@@ -335,20 +335,20 @@ Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료
     foldBinTree f base Empty = base
     foldBinTree f base (Fork a l r) = f a v
         where v = foldBinTree f i l
-              i = foldBinTree f base r 
+              i = foldBinTree f base r
 
 새로운 문법인 where 가 나왔습니다. where 는 중간값이 필요할 때 사용하는 구문입니다.
 
 이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
 
     type Forest a = [RoseTree a]
-    foldtree:: (a -> b -> b) -> ([b] -> b) -> b -> RoseTree a -> b
-    foldtree f g base (Branch a ts) = f a v
-        where v = foldforest f g base ts
-    foldforest:: (a -> b -> b) -> ([b] -> b) -> b -> Forest a -> b
-    foldforest f g base ts = ?
-     
-연습문제10) 위의 foldforest 함수를 완성해 보세요.
+    foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
+    foldtree f g (Branch a ts) = f a v
+        where v = foldforest f g ts
+    foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
+    foldforest f g ts = ?
+
+연습10) 위의 foldforest 함수를 완성해 보세요.
 
 
 ## 세 번째 시간
@@ -366,13 +366,63 @@ List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 
         mconcat :: [m] -> m
         mconcat = foldr mappend mempty
 
-Monoid는 한 마디로 말해서 두 개가 하나가 될 수 있는 자료형을 뜻합니다. Monoid이기 위해서는 두 가지 요건이 있으면 되는데 하나는 항등원(mempty)이 있으면 되고, 다른 하나는 결합법칙이 성립하는 이항연산자(mappend)가 있으면 됩니다. 예를 들어 List는 Monoid입니다. List는 항등원 [] 가 있고,  결합법칙이 성립하는 이항연산자 ++ 이 있습니다.
+Monoid는 한 마디로 말해서 두 개가 하나가 될 수 있는 자료형을 뜻합니다. mappend 함수의 type이 이를 잘 설명해 주는 데 m -> m -> m 은 어떤 값 두 개를 받아서 하나를 내놓는 함수를 뜻합니다.
+Monoid이기 위해서는 두 가지 요건이 있으면 되는데 하나는 항등원(mempty)이 있으면 되고, 다른 하나는 결합법칙이 성립하는 이항연산자(mappend)가 있으면 됩니다. mconcat 함수는 이 두개가 있으면 자동으로 얻을 수 있는 함수 입니다. 예를 들어 List는 Monoid입니다. List는 항등원 [] 가 있고,  결합법칙이 성립하는 이항연산자 ++ 이 있습니다.
 
     instance Monoid [a] where
         mempty = []
         mappend = (++)
 
-Monoid는 triple(T, \*, e) 이라고도 정의하는데, 어떤 type T에 대하여 결합법칙을 만족하는 이항연산자 \*가 있고 항등원 e가 있음을 뜻합니다.
+Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 대하여 결합법칙을 만족하는 이항연산자 **\* **가 있고 항등원 *e*가 있음을 뜻합니다.
+
+두 개를 하나로 만드는 연산을 반복해서 수행하다 보면 결국 여러 개의 값이 단 하나의 값으로 줄어들게 됩니다. 이 점이 바로 Monoid가 Foldable typeclass의 foldMap 함수에 등장하는 이유입니다.
+
+이제 Foldable을 배웠으니까 과거처럼 Tree를 fold하는 함수를 직접 만들필요 없이 Tree를 Foldable의 instance로 만들면 Tree를 fold할 수 있게 됩니다. 먼저 이진 트리를 Foldable의 instance로 만들겠습니다.
+
+    instance Foldable BinTree where
+        foldMap f Empty = mempty
+        foldMap f (Fork a l r) = f a `mappend` (foldMap f l) `mappend` (foldMap f r)
+
+위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
+
+연습11) RoseTree를 Foldable의 instance로 만들어 보세요.
+
+    instance Foldable RoseTree where
+        foldMap f (Branch a ts) = ?
+
+이제 다시 List에 관한 함수들을 마저 살펴보겠습니다. List에 대한 함수들은 Data.List 모듈에 있습니다.
+
+    > import Data.List
+    > takeWhile (<3) [1..5] -- [1,2]
+    > dropWhile (<3) [1..5] -- [3,4,5]
+    > group [1,2,2,3,3,2] -- [[1],[2,2],[3,3],[2]]
+    > maximum [1,3,2] -- 3
+    > minimum [3,1,2] -- 1
+    > elem 1 [1,2,3] -- True
+    > notElem 4 [1,2,3] -- True
+    > nub [1,2,2,3,3,2] -- [1,2,3]
+    > [1,2,3] !! 1 -- 2
+    > inits [1,2,3] -- [[],[1],[1,2],[1,2,3]]
+    > tails [1,2,3] -- [[1,2,3],[2,3],[3],[]]
+    > splitAt 2 [1,2,3] -- ([1,2],[3])
+    > sort [1,4,3,2,5] -- [1,2,3,4,5]
+    > partition (>3) [1,4,3,2,5] -- ([4,5],[1,3,2])
+
+연습12) partition 함수를 구현해 보세요.
+
+    partition :: (a -> Bool) -> [a] -> ([a], [a])
+    partition p xs = ?
+
+차집합, 합집합, 교집합의 기능을 수행하는 함수도 있습니다.
+
+    > [1,2,3,4,5] \\ [2,4] -- [1,3,5]
+    > union [1,2,3] [2,4] -- [1,2,3,4]
+    > intersect [1,2,3] [2,4] -- [2]
+
+sort, group 등의 함수에 By 붙으면 좀 더 일반적인 용도로 쓸 수 있습니다.
+
+    > sortBy
+    > groupBy
 
 ## 네 번째 시간
 
