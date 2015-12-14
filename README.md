@@ -358,10 +358,27 @@ List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 
         foldMap :: Monoid m => (a -> m) -> t a -> m
         foldr :: (a -> b -> b) -> b -> t a -> b
 
-어떤 자료형이 Foldable이기 위해서는 foldMap 함수나 foldr 함수 둘 중 하나만 구현하면 됩니다. 그런데 foldMap 함수를 보니 Monoid 라는 typeclass constraints가 붙어 있스니다. 그래서 Monoid에 대해 알아보겠습니다.
+어떤 자료형이 Foldable이기 위해서는 foldMap 함수나 foldr 함수 둘 중 하나만 구현하면 됩니다. 그런데 foldMap 함수를 보니 Monoid 라는 typeclass constraints가 붙어 있습니다. 그래서 Monoid에 대해 알아보겠습니다. Monoid typeclass는 Data.Monoid 모듈에 정의되어 있습니다.
+
+    class Monoid m where
+        mempty :: m
+        mappend :: m -> m -> m
+        mconcat :: [m] -> m
+        mconcat = foldr mappend mempty
+
+Monoid는 한 마디로 말해서 두 개가 하나가 될 수 있는 자료형을 뜻합니다. Monoid이기 위해서는 두 가지 요건이 있으면 되는데 하나는 항등원(mempty)이 있으면 되고, 다른 하나는 결합법칙이 성립하는 이항연산자(mappend)가 있으면 됩니다. 예를 들어 List는 Monoid입니다. List는 항등원 [] 가 있고,  결합법칙이 성립하는 이항연산자 ++ 이 있습니다.
+
+    instance Monoid [a] where
+        mempty = []
+        mappend = (++)
+
+Monoid는 triple(T, \*, e) 이라고도 정의하는데, 어떤 type T에 대하여 결합법칙을 만족하는 이항연산자 \*가 있고 항등원 e가 있음을 뜻합니다.
+
+## 네 번째 시간
+
+## 다섯 번째 시간
 
 
-## 네 번째 시간 
 
 ## License
 Eclipse Public License
