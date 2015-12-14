@@ -98,6 +98,11 @@ ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합�
     [1 of 1] Compiling Main             ( my_filter.hs, interpreted )
     Ok, modules loaded: Main.
 
+foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가 있는데, 이 함수들은 기본값(base)을 받지 않습니다. 즉, List에서 첫번째로 fold하는 원소를 기본값으로 삼습니다.
+
+    > foldr1 (+) [1,2,3,4] -- 10
+    > foldl1 (++) ["I","Love","You"] -- "ILoveYou"
+
 그 다음, (x:xs) 와 같은 것을 pattern matiching이라고 합니다. 다음 코드를 보세요.
 
     > let (a:as) = [1,2,3]
@@ -146,7 +151,7 @@ zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 �
 
 zip 함수의 실행 결과에서 새로운 자료형이 등장합니다. 바로 Tuple 입니다. Haskell에서 List는 homogeneous 자료형입니다. [1,'a',"xyz"] 같은 것은 불가능합니다. 반면에 Tuple은 heterogenous 자료형입니다.
 
-Tuple은 위의 예처럼 원소 두 개짜리 뿐만 아니라 (1,'a',True) 같은 세 개, 네 개 짜리도 가능합니다. 원소가 두 개짜리인 Tuple을 Pair라고 부르는데 다음과 같은 함수를 사용할 수 있습니다.
+Tuple은 위의 예처럼 원소 두 개짜리 뿐만 아니라 (1,'a',True) 같은 세 개, 네 개 짜리도 가능합니다. 원소가 두 개짜리인 Tuple을 특별히 Pair라고 부르는데 다음과 같은 함수를 사용할 수 있습니다.
 
     > fst (1,'a')
     1
@@ -155,8 +160,14 @@ Tuple은 위의 예처럼 원소 두 개짜리 뿐만 아니라 (1,'a',True) 같
 
 zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주어진 함수를 가지고 두 개 List의 각 원소에 대한 연산을 수행합니다.
 
-    > zipWith (+) [1,2,3] [10,20,30]
+    > zipWith (+) [1,2,3] [10,20,30,40]
     [11,22,33]
+
+연습2) zipWith 를 재귀적으로 구현해 보세요.
+
+    zipWith f [] _ = []
+    zipWith f _ [] = []
+    zipWith f (x:xs) (y:ys) = ?
 
 List를 반복적으로 편리하게 만들어 주는 함수들이 있습니다.
 
@@ -185,11 +196,11 @@ Lazy evalution에서는 값이 필요할 때까지 expression은 expression그�
 
 위 코드에서 (\x -> x^2) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다.
 
-연습2) iterate 함수를 재귀적으로 구현해 보세요.
+연습3) iterate 함수를 재귀적으로 구현해 보세요.
 
     > let iterate f x = ?
 
-연습3) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
+연습4) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
 
     > let fib = 1:1:zipWith (+) ? ?
 
@@ -200,15 +211,15 @@ fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함
     > scanr (+) 0 [1..10]
     [55,54,52,49,45,40,34,27,19,10,0]
 
-연습4) iterate 함수를 scanl을 써서 구현해 보세요.
+연습5) iterate 함수를 scanl을 써서 구현해 보세요.
 
     > let iterate f x = scanl ? ? ?
 
-연습5) fibonacci 수열을 scanl을 써서 만들어보세요.
+연습6) fibonacci 수열을 scanl을 써서 만들어보세요.
 
     > let fib = 1:scanl (+) ? ?
 
-연습6) scanl을 foldl을 써서 만들어 보세요.
+연습7) scanl을 foldl을 써서 만들어 보세요.
 
     > let scanl f base xs = foldl ? ? ?
 
@@ -234,7 +245,7 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
     > take 10 prime
     [2,3,5,7,11,13,17,19,23,29]
 
-연습7) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
+연습8) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
 
     > let sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
     > let prime = ?
@@ -315,7 +326,7 @@ fmap 함수의 type에서 f 에 해당하는 부분을 List로 바꾸면 그대�
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
 
-연습8) 우리가 만든 이진트리를 Functor로 만들어보세요.
+연습9) 우리가 만든 이진트리를 Functor로 만들어보세요.
 
     instance Functor BinTree where
         fmap f Empty = Empty
@@ -325,7 +336,7 @@ fmap 함수의 type에서 f 에 해당하는 부분을 List로 바꾸면 그대�
 
     data RoseTree a = Branch a [RoseTree a] deriving Show
 
-연습9) RoseTree를 Functor로 만들어보세요.
+연습10) RoseTree를 Functor로 만들어보세요.
 
     instance Functor RoseTree where
         fmap f (Branch a ts) = ?
@@ -348,7 +359,7 @@ Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료
     foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
     foldforest f g ts = ?
 
-연습10) 위의 foldforest 함수를 완성해 보세요.
+연습11) 위의 foldforest 함수를 완성해 보세요.
 
 
 ## 세 번째 시간
@@ -385,7 +396,7 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
-연습11) RoseTree를 Foldable의 instance로 만들어 보세요.
+연습12) RoseTree를 Foldable의 instance로 만들어 보세요.
 
     instance Foldable RoseTree where
         foldMap f (Branch a ts) = ?
@@ -407,8 +418,17 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
     > splitAt 2 [1,2,3] -- ([1,2],[3])
     > sort [1,4,3,2,5] -- [1,2,3,4,5]
     > partition (>3) [1,4,3,2,5] -- ([4,5],[1,3,2])
+    > span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
+    > break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
 
-연습12) partition 함수를 구현해 보세요.
+연습13) max 함수와 min함수는 각각 이름 그대로 다음처럼 같이 동작합니다.
+
+    max 2 5 -- 5
+    min 2 5 -- 2
+
+    max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
+
+연습14) partition 함수를 구현해 보세요.
 
     partition :: (a -> Bool) -> [a] -> ([a], [a])
     partition p xs = ?
@@ -419,12 +439,42 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
     > union [1,2,3] [2,4] -- [1,2,3,4]
     > intersect [1,2,3] [2,4] -- [2]
 
-sort, group 등의 함수에 By 붙으면 좀 더 일반적인 용도로 쓸 수 있습니다.
+sortOn 함수는 어떤 식으로 sort 를 할 지 정해줄 수 있습니다.
 
-    > sortBy
-    > groupBy
+    > sortOn length [[1,2],[3],[4],[5,6,7],[8,9]] -- [[3],[4],[1,2],[8,9],[5,6,7]]
+
+find 계열 함수들을 살펴봅시다.
+
+    > :t find
+    find :: Foldable t => (a -> Bool) -> t a -> Maybe a
+    > find (=='a') "abcde"
+    Just 'a'
+    > find (=='f') "abcde"
+    Nothing
+
+    > :t findIndex
+    findIndex :: (a -> Bool) -> [a] -> Maybe Int
+    > findIndex (>7) [5..9]
+    Just 3
+    > findIndex (>10) [5..9]
+    Nothing
+
+    > :t elemIndex
+    elemIndex :: Eq a => a -> [a] -> Maybe Int
+    > elemIndex 'a' "abcde"
+    Just 0
+    > elemIndex 'f' "abcde"
+    Nothing
+
+이 함수들의 type에는 공통적으로 Maybe가 나옵니다. Maybe는 값이 있거나 없는 경우에 사용합니다. 보통 값이 없는 경우에 null check을 많이 합니다. 하지만 null check을 하는 것은 무척 오류가 생기기 쉽습니다. 오죽하면 null 을 처음으로 도입한 사람이 자신이 null을 만든 것은 Billion Dollar Mistake라는 고백을 하기도 했습니다. Maybe와 같은 type은 이러한 것으로부터 자유롭습니다.
+
+    data Maybe a = Nothing | Just a
+
+
 
 ## 네 번째 시간
+
+currying, composition.
 
 ## 다섯 번째 시간
 
