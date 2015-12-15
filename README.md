@@ -535,6 +535,27 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
 
 피타고라스 triplet중 a+b+c=1,000인 triplet은 딱 하나 있습니다. 이 triplet을 구하는 함수를 만들어보세요. (projecteuler.net 문제9)
 
+다음 두 문제를 풀기 위해서는 몇 가지 더 알아야 할 내용이 있습니다. lines 함수는 String을 받아서 newline character를 구분자 삼아 List로 바꾸는 일을 합니다.
+
+    > lines "abc\nxyz"
+    ["abc","xyz"]
+
+read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 Int로 바꾸었습니다.
+
+    > read "52"::Int
+    52
+    > read "5.8"::Float
+    5.8
+
+파일을 읽고 쓰는 IO 처리는 Haskell에서 do block안에서 합니다.
+
+    main = do
+        contents <- readFile "triangle1.txt"
+        let triangle = map (map (\x -> read x::Int)) . map words . lines $ contents
+        print triangle
+
+이 코드를 t.hs 파일에 저장하고 컴파일 하려면 ghc --make t.hs 하면 실행파일이 만들어집니다.
+
 연습19) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
 <pre>
         <b>3</b>
@@ -552,9 +573,14 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
-연습21)
+연습21) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
 
-coin change 문제.
+    3+1
+    2+2
+    2+1+1
+    1+1+1+1
+
+어떤 수 n을 자연수의 덧셈으로 만들 수 있는 방법의 가짓 수를 구하는 함수를 만들어보세요. 그 함수를 이용하여 100의 경우의 가짓수를 구해보세요.
 
 ## 다섯 번째 시간
 
