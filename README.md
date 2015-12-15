@@ -484,14 +484,14 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
     > :t chr . maxmimum
     > chr . maximum :: Foldable t => t Int -> Char
 
-합성함수에 값을 적용했을 때 어떻게 나오는지 살펴보자.
+합성함수에 값을 적용했을 때 어떻게 나오는지 살펴봅시다.
 
     > map (negate . abs) [5, -3, -6, 7, -3, 2, -19, 24]
     [-5, -3, -6, -7, -3, -2, -19, -24]
     > map (negate.sum.tail) [[1..5],[3..6],[1..7]]
     [-14, -15, -27]
 
-그런데 합성할 함수가 (+) 나 max 처럼 인자를 두 개 받는 함수이면 어떻게 해야 할까요? 그럴때는 partial application을 이용합니다. Partial application이 무엇인지 먼저 살펴보자.
+그런데 합성할 함수가 (+) 나 max 처럼 인자를 두 개 받는 함수이면 어떻게 해야 할까요? 그럴때는 partial application을 이용합니다. Partial application이 무엇인지 먼저 살펴봅시다.
 
     > :t (+)
     (+) :: Num a => a -> a -> a
@@ -501,7 +501,7 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
     > add5 7
     12
 
-위에서 보듯 partial application 이란 인자 n개를 받는 함수가 있을 때 이 함수에 n보다 적은 갯수의 인자만을 먼저 일부 적용하는 것을 말한다. 위에서 보듯 (+) 함수는 인자를 두 개 받는 함수인데 이에 인자 하나를 먼저 partial apply 한 결과인 add5 함수는 인자를 하나만 받는 함수가 되었다. Haskell에서는 함수의 partial application이 이처럼 언어차원에서 바로 지원이 되는데, 그 이유는 Haskell의 모든 함수는 curried function이기 때문이다. Currying이라는 새로운 용어가 또 나왔습니다.
+위에서 보듯 partial application 이란 인자 n개를 받는 함수가 있을 때 이 함수에 n보다 적은 갯수의 인자만을 먼저 일부 적용하는 것을 말합니다. 위에서 보듯 (+) 함수는 인자를 두 개 받는 함수인데 이에 인자 하나를 먼저 partial apply 한 결과인 add5 함수는 인자를 하나만 받는 함수가 되었습니다. Haskell에서는 함수의 partial application이 이처럼 언어차원에서 바로 지원이 되는데, 그 이유는 Haskell의 모든 함수는 curried function이기 때문입니다. Currying이라는 새로운 용어가 또 나왔습니다.
 
 Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 만드는 일을 말합니다. Haskell의 모든 함수는 curried function이라고 했습니다. 즉, (+) 함수는 사실 인자 두 개를 받아서 결과 하나를 내놓는 함수가 아니라 인자 하나를 받아서 "인자하나를 받아 결과를 내놓는 함수"를 결과로 내놓는 함수인 셈입니다. (+) 함수의 type을 이에 맞게 다시 써 보면 다음과 같습니다.
 
@@ -512,7 +512,9 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
     > (sum . replicate 5 . max 6.7) 8.9
     44.5
 
-연습15) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수이다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수이다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻한다)
+참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
+
+연습15) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 
     rmDuplicate::(Ord a) => [a] -> [a]
     rmDuplicate xs = ?
@@ -534,12 +536,12 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
 피타고라스 triplet중 a+b+c=1,000인 triplet은 딱 하나 있습니다. 이 triplet을 구하는 함수를 만들어보세요. (projecteuler.net 문제9)
 
 연습19) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
-
-        *3*
-       7 4
+<pre>
+        <b>3</b>
+       <b>7</b> 4
       2 4 6
      8 5 9 3
-
+</pre>
 
 
 coin change 문제.
