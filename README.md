@@ -549,7 +549,7 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
 
 연습20) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
 <pre>
-<a href="triangle2.txt"></a>
+<a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
 연습21)
