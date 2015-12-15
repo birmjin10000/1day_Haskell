@@ -539,8 +539,12 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
 <pre>
         <b>3</b>
        <b>7</b> 4
-      2 4 6
-     8 5 9 3
+      2 <b>4</b> 6
+     8 5 <b>9</b> 3
+</pre>
+다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제18)
+<pre>
+<a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
 
