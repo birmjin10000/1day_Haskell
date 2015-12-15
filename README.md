@@ -476,9 +476,9 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
 
     > :t (.)
     (.) :: (b -> c) -> (a -> b) -> a -> c
+    > import Data.Char
     > :t chr
     chr :: Int -> Char
-    succ :: Enum a => a -> a
     > :t maximum
     maximum :: (Ord a, Foldable t) => t a -> a
     > :t chr . maxmimum
@@ -512,15 +512,40 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 �
     > (sum . replicate 5 . max 6.7) 8.9
     44.5
 
-연습15) 
+연습15) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수이다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수이다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻한다)
+
+    rmDuplicate::(Ord a) => [a] -> [a]
+    rmDuplicate xs = ?
 
 ## 네 번째 시간
 
-currying, composition.
+이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
+
+연습16) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
+
+연습17) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
+
+연습18) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
+
+  >1) a < b < c
+  >2) a^2 + b^2 = c^2
+
+피타고라스 triplet중 a+b+c=1,000인 triplet은 딱 하나 있습니다. 이 triplet을 구하는 함수를 만들어보세요. (projecteuler.net 문제9)
+
+연습19) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
+
+      3
+     7 4
+    2 4 6
+   8 5 9 3
+
+
 
 coin change 문제.
 
 ## 다섯 번째 시간
+
+## 여섯 번째 시간
 
 
 
