@@ -1,11 +1,11 @@
 # 하루만 배워보는 Haskell Programming
 
-Haskell Programming을 딱 하루만 배워봅시자.
+Haskell Programming을 딱 하루만 배워봅시다.
 
 6시간 동안 Haskell을 배워서 Haskell로 실용적인 도구를 만들어봅시다.
 
 ## 사전 학습
-Haskell platform을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수직선 두 개로 표시합니다.
+Haskell platform을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다.
 
     > [1,2,3] -- [1,2,3]
 
@@ -94,9 +94,26 @@ foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 
 위 코드에서 새로 나온 것들이 몇 개 있습니다. 우선, ghci 에서 여러 줄에 걸쳐 코드를 작성하려면 :{ 로 시작하고 :} 로 끝내면 됩니다. 이 때, :{ 와 :} 가 있는 줄에는 다른 것은 쓰지 않아야 합니다.
 ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합니다. 그래서 이제부터는 여러 소스 파일을 작성하고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 소스파일에서 함수 정의할 때는 let을 쓰지 않습니다.
 
+    {-
+      my_filter.hs
+      Haskell에서 여러 줄 주석은 {- 로 시작하고 -} 로 끝납니다.
+    -}
+    my_filter:: (a -> Bool) -> [a] -> [a]
+    my_filter f [] = []
+    my_filter f (x:xs) = if (f x)
+                         then x:(my_filter f xs)
+                         else my_filter f xs
+
     > :l my_filter.hs
     [1 of 1] Compiling Main             ( my_filter.hs, interpreted )
     Ok, modules loaded: Main.
+
+Haskell source 파일을 작성할 때는 off-side rule을 지켜야 합니다. 이는 축구의 off-side rule과 똑같은 맥락이며 들여쓰기를 할 때 계층을 맞추어주어야 합니다. 예를 들어 다음과 같이 작성하면 파일을 불러올 때 오류가 납니다.
+
+    compareLength::String->String->Ordering
+     compareLength x y = length x `compare` length y
+
+그 이유는 같은 compareLength 함수의 type signature와 함수 정의부는 정의의 계층이 같기에 서로 들여쓰기 계층이 맞아야 하는데, 위에서는 compareLength함수 정의부가 그것의 type signature와 들여쓰기 깊이가 다르기 때문입니다. 참고로 { 와 } 를 써서 명시적으로 묶어줄 수도 있습니다. Off-side rule을 가지는 프로그래밍 언어는 이외에도 Python, F# 등이 있습니다.
 
 foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가 있는데, 이 함수들은 기본값(base)을 받지 않습니다. 즉, List에서 첫번째로 fold하는 원소를 기본값으로 삼습니다.
 
@@ -112,6 +129,13 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
     [2,3]
 
 즉, List [1,2,3] 을 (a:as) 꼴 패턴에 대응하여 각각 a 와 as 의 값을 정하는 것입니다.
+다음의 코드에서 my\_filter 함수의 정의부가 두 번 등장하는 것도 pattern matching입니다.
+
+    my_filter f [] = []
+    my_filter f (x:xs) = if (f x)
+                         then x:(my_filter f xs)
+                         else my_filter f xs
+
 다음으로 if..then..else 구문이 나왔습니다. 이는 자명하므로 설명하지 않겠습니다.
 
 우리가 filter 함수를 재귀적으로 구현했는데, foldr 함수는 재귀를 보다 추상화한 함수이기 때문에 재귀적으로 구현할 수 있는 코드는 foldr 로도 구현할 수 있습니다. 이제 filter 함수를 foldr 로 구현해보겠습니다.
@@ -554,7 +578,7 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
         let triangle = map (map (\x -> read x::Int)) . map words . lines $ contents
         print triangle
 
-이 코드를 t.hs 파일에 저장하고 컴파일 하려면 ghc --make t.hs 하면 실행파일이 만들어집니다.
+이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다.
 
 연습19) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
 <pre>
