@@ -613,11 +613,16 @@ Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. �
     > concatMap (\x -> replicate x x) [1,2,3]
     [1,2,2,3,3,3]
 
-이름에서 드러나듯 concat 과 map 의 기능을합친 것처럼 동작합니다.
+이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
+
+Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 봅시다.
 
 ## 여섯 번째 시간
 
-
+## 더 읽을 거리
+###범주론 Category Theory
+Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 가져왔기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor가 뭔지 Monoid가 Category Theory에서 왔다는 것만 상식처럼 알고 있으면 될 뿐입니다. 그래도 호기심 많은 사람들을
+위해 Category Theory를 간략하게 소개하겠습니다.
 
 ## License
 Eclipse Public License
