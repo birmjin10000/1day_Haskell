@@ -113,7 +113,7 @@ Haskell source 파일을 작성할 때는 off-side rule을 지켜야 합니다. 
     compareLength::String->String->Ordering
      compareLength x y = length x `compare` length y
 
-그 이유는 같은 compareLength 함수의 type signature와 함수 정의부는 정의의 계층이 같기에 서로 들여쓰기 계층이 맞아야 하는데, 위에서는 compareLength함수 정의부가 그것의 type signature와 들여쓰기 깊이가 다르기 때문입니다. 참고로 { 와 } 를 써서 명시적으로 묶어줄 수도 있습니다. Off-side rule을 가지는 프로그래밍 언어는 이외에도 Python, F# 등이 있습니다.
+그 이유는 같은 compareLength 함수의 type signature와 함수 정의부는 정의의 계층이 같기에 서로 들여쓰기 계층이 맞아야 하는데, 위에서는 compareLength함수 정의부가 그것의 type signature와 들여쓰기 깊이가 다르기 때문입니다. 참고로 들여쓰기를 지키는 대신 { 와 } 를 써서 명시적으로 묶어줄 수도 있습니다. Off-side rule을 가지는 프로그래밍 언어는 이외에도 Python, F# 등이 있습니다.
 
 foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가 있는데, 이 함수들은 기본값(base)을 받지 않습니다. 즉, List에서 첫번째로 fold하는 원소를 기본값으로 삼습니다.
 
@@ -607,6 +607,13 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 어떤 수 n을 자연수의 덧셈으로 만들 수 있는 방법의 가짓 수를 구하는 함수를 만들어보세요. 그 함수를 이용하여 100의 경우의 가짓수를 구해보세요.
 
 ## 다섯 번째 시간
+
+Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. 이 함수는 다음 처럼 동작합니다.
+
+    > concatMap (\x -> replicate x x) [1,2,3]
+    [1,2,2,3,3,3]
+
+이름에서 드러나듯 concat 과 map 의 기능을합친 것처럼 동작합니다.
 
 ## 여섯 번째 시간
 
