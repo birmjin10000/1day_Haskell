@@ -617,14 +617,30 @@ Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. �
 
 Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 봅시다.
 
+먼저 command line utility이므로 console에 뭔가를 써야 합니다. 이 용도의 함수 중 하나는 이미 앞에서 나왔는데, 바로 print입니다. 비슷한 종류의 함수들로 putStr, putStrLn 이 있습니다.
+
+    > print 9
+    9
+    > putStr "haha"
+    Haha> putStrLn "hoho"
+    hoho
+
+그리고 우리가 만들 wc utility의 기능을 생각해봅니다. 먼저 다음 세가지 옵션을 지원해야 합니다.
+
+    -c - 문자 숫자 세기
+    -w - 단어 숫자 세기
+    -l - 줄 수 세기
+
+
+
 ## 여섯 번째 시간
 
 ## 더 읽을 거리
 ####범주론 Category Theory
-Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 가져왔기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
-그러므로 여기서 소개하는 Category Theory는 가볍게 읽어보시기 바랍니다.
+Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 넣었기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
+그러므로 여기서 소개하는 Category Theory는 가볍게 읽어보고 넘어가시기 바랍니다.
 
-우리가 중고등학교 시절 수학책에서 가장 먼저 나오는 단원이 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리일 텐데, 범주론 소개 역시 집합에서 출발하겠습니다.
+우리가 중고등학교 시절 수학책에서 가장 먼저 나오는 단원이 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리인데, 범주론 소개 역시 집합에서 출발하겠습니다.
 
 Set
 
@@ -642,7 +658,9 @@ Ring - Abelian group + 두 번째 associative binary operation
 
 이러한 것들을 Algebraic structure(대수적 구조) 라고 부릅니다. 여기 소개된 것 말고도 Field, Vector space 등 훨씬 더 많습니다.
 
-Group의 예를 들어보겠습니다. 0부터 6까지의 자연수를 원소로 갖는 집합 ℤ<sub>6</sub>과 이항 연산자 additon of modular 6 를 묶어서 <ℤ<sub>6</sub>, +<sub>6</sub>> 라고 할 때 이는 Group입니다.
+Group의 예를 들어보겠습니다. 0부터 5까지 6개의 자연수를 원소로 갖는 집합 ℤ<sub>6</sub>과 이항 연산자 additon of modular 6 를 묶어서 <ℤ<sub>6</sub>, +<sub>6</sub>> 라고 할 때 이는 Group입니다.
+
+Category theory란 이러한 Algebraic structure들 간의 관계를 연구하는 수학의 한 분야입니다. 몇 가지 개념을 더하면 모든 Algebraic structure는 Category라는 것으로 승급될 수 있습니다. Functor란 Category들 간의 관계를 뜻하는데, A 라는 Category와 B라는 Category간에는 C 라는 Functor 관계가 있다 정도의 개념으로 이해하면 됩니다. Haskell에서 List가 Functor 인 것도 List의 모든 원소들이 다른 종류의 것들로 바뀔 수 있기에 그렇다고 생각하시면 됩니다.
 
 ## License
 Eclipse Public License
