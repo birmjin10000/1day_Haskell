@@ -620,9 +620,20 @@ Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 봅시다.
 ## 여섯 번째 시간
 
 ## 더 읽을 거리
-###범주론 Category Theory
-Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 가져왔기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor가 뭔지 Monoid가 Category Theory에서 왔다는 것만 상식처럼 알고 있으면 될 뿐입니다. 그래도 호기심 많은 사람들을
-위해 Category Theory를 간략하게 소개하겠습니다.
+####범주론 Category Theory
+Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 가져왔기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
+그러므로 여기서 소개하는 Category Theory는 가볍게 읽어보시기 바랍니다.
+
+우리가 중고등학교 시절 수학책에서 가장 먼저 나오는 단원이 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리일 텐데, 범주론 소개 역시 집합에서 출발하겠습니다.
+
+Set
+Magma - Set + binary operation
+Semigroup - Magma + associative binary operation(결합법칙을 만족하는 이항연산자)
+Monoid - Semigroup + Identity(항등원)
+Group - Monoid + Inverse(역원)
+Abelian group - Group의 이항연산자가 communicative law(교환법칙) 까지 만족할 때
+Ring - Abelian group + 두 번째 associative binary operation
+
 
 ## License
 Eclipse Public License
