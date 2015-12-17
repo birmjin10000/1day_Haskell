@@ -642,7 +642,7 @@ Ring - Abelian group + 두 번째 associative binary operation
 
 이러한 것들을 Algebraic structure(대수적 구조) 라고 부릅니다. 여기 소개된 것 말고도 Field, Vector space 등 훨씬 더 많습니다.
 
-Group의 예를 들어보겠습니다. 0부터 6까지의 자연수를 원소로 갖는 집합 ℤ<sub>6</sub>과 이항 연산자 additon of modular 6 를 묶어서 <ℤ<sub>6<sub>, +<sub>6<sub>> 라고 할 때 이는 Group입니다.
+Group의 예를 들어보겠습니다. 0부터 6까지의 자연수를 원소로 갖는 집합 ℤ<sub>6</sub>과 이항 연산자 additon of modular 6 를 묶어서 <ℤ<sub>6</sub>, +<sub>6</sub>> 라고 할 때 이는 Group입니다.
 
 ## License
 Eclipse Public License
