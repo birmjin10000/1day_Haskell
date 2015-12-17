@@ -725,7 +725,20 @@ WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자�
     showWords = elem 'w'
     showChars = elem 'c'
 
+마지막으로 지금까지 작성한 내용을 하나로 합쳐야 합니다.
+
+    import System.Environment (getArgs)
+
+    main:: IO ()
+    main = do
+        options:[file] <- getArgs
+        wc options [file]
+
+이제 컴파일하고 실행하여 봅시다.
+
 ## 여섯 번째 시간
+
+
 
 ## 더 읽을 거리
 ####범주론 Category Theory
