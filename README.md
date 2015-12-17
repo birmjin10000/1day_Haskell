@@ -645,13 +645,18 @@ concatMap 함수의 type을 보면 첫 번째 인자인 함수의 type이 a -> [
 
 Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수도 있고 없을 수도 있는 상황에 매우 유용합니다. 우리가 프로그래밍 할 때는 이러한 상황이 무척 많습니다. Null checking하는 코드를 그동안 얼마나 봐왔는지 생각해 보십시요. 그래서 많은 경우에 값이 단지 값 혼자만 이리 저리 전달되는 것이 아니라 context와 함께 전달이 됩니다. 즉 프로그래밍에서 concatMap과 같은 함수를 쓰는 일이 무척 자주 있다는 뜻입니다. 그래서 Haskell에서는 value with context에 대해 동작하는 함수를 두고 있습니다. >>= 함수가 그것이며 이를 bind라고 부릅니다.
 
-    > let filteringTimesOf7 = (x -> if (x `mod` 7 == 0) then Just x else Nothing)
-    > Just 9 >>= filteringTimesOf7
+    > let filterTimesOf7 = (x -> if x `mod` 7 == 0 then return x else Nothing)
+    > Just 9 >>= filterTimesOf7
     Nothing
-    > Just 7 >>= filteringTimesOf7
+    > Just 7 >>= filterTimesOf7
     Just 7
-    > Nothing >>= filteringTimesOf7
+    > Nothing >>= filterTimesOf7
     Nothing
+    > let filterOdd = (x -> if odd x then return x else [])
+    > [1..5] >>= filterOdd
+    [1,3,5]
+
+위의 코드들은 어떤 값을 조사해서 그것이 조건에 부합하면 다시 값을 상자에 넘어서 전달하고 그렇지 않으면 빈 상자를 전달하는 모습을 보여주고 있습니다. return이라는 키워드가 새로 나왔는데 이는 다른 언어들에서 함수의 return으로 쓰는 것과는 전혀 별개의 것입니다. Haskell에서의 return은 값을 상자에 넣어서 value with context를 만드는 함수 입니다.
 
 지금부터는 Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 보겠습니다.
 
@@ -676,6 +681,7 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
 이제 wc 함수의 type을 생각해 봅시다. wc 함수는 위의 여러 가지 옵션들과 함께 파일 경로 목록을 받아 뭔가 계산을 한 다음에 IO에 뭔가를 기록할 것입니다. 이를 바탕으로 wc 함수의 type을 써보면 다음과 같이 될 것입니다. 여기서 FilePath 는 Haskell의 System.IO에 미리 정의가 되어있기 때문에 import하였습니다. import할 때 전체 모듈을 import하지 않고 원하는 것들만 import하려면 괄호를 써주고 괄호안에 원하는 것만 나열하면 됩니다.
 
     import System.IO (FilePath)
+
     type Options = String
     wc:: Options -> [FilePath] -> IO ()
 
@@ -738,7 +744,39 @@ WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자�
 
 ## 여섯 번째 시간
 
+아직 파일이 여러 개 있을 때를 처리하지 않았습니다.
 
+    wc options files = undefined
+
+일단 앞서 작성한 단일 파일의 경우 처리시와 비슷한 형태로 갖추게 하면 다음처럼 될 것 같습니다.
+
+    wc options files = do
+      totalCount <- ?
+      printCount options totalCount
+
+totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수가 담겨있을 것입니다. 그렇다면 개발 파일들에 대해 count를 하고 print 하는 코드가 ? 부분에 들어가야 할 것 같습니다. 여러 개의 파일에 대해 처리하므로 여기에도 fold를 쓰면 될 것 같습니다. 그러면 코드 모양이 다음처럼 됩니다.
+
+    wc options files = do
+      totalCount <- foldl countAndPrint (0,0,0) files
+      printCount options totalCount
+
+이제 countAndPrint 함수를 구현해 봅시다. countAndPrint함수는 파일 하나에 대한 계산 결과를 print하고 동시에 결과로서 넘겨주기도 해야 합니다. 따라서 type은 다음처럼 될 것입니다.
+
+    countAndPrint:: WordCount -> FilePath -> IO WordCount
+
+그런데 print를 하려면 문자수만 출력할지 아니면 전부다 출력할 지 정보를 갖고 있는 options도 필요하니까 countAndPrint 함수의 type이 다음처럼 되야 합니다.
+
+    countAndPrint:: Options -> WordCount -> FilePath -> IO WordCount
+
+게다가 countAndPrint 함수의 최종 결과물은 IO WordCount로 그냥 값이 아니라 상자에 담긴 값입니다. 즉, Maybe나 List 처럼 value with context입니다. IO WordCount 는 단순히 WordCount가 아니라 출력 즉, IO 작업이 발생하는 WordCount임을 뜻합니다. 상자에 담긴 값을 처리할 때는 fold함수도 별도로 있습니다. foldlM 을 쓰면 됩니다. 그에 따라 이를 사용하는 코드도 다음처럼 바뀝니다.
+
+    wc options files = do
+      totalCount <- foldlM (countAndPrint options) (0,0,0) files
+      printCount options totalCount
+
+연습26) countAndPrint 함수를 구현해 보세요.
+
+연습27) wc utility를 최종 완성해 보세요.
 
 ## 더 읽을 거리
 ####범주론 Category Theory
