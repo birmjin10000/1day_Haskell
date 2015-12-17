@@ -616,7 +616,30 @@ Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. �
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
-Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 봅시다.
+연습22) concatMap 함수를 직접 구현하세요.
+
+    my_concatMap:: (a -> [b]) -> [a] -> [b]
+    my_concatMap f xs = ?
+
+연습23) concatMap 함수를 써서 filter 함수를 구현하세요.
+
+    my_filter f xs = concatMap ? ?
+
+연습문제 23의 풀이를 보면, 어떤 패턴이 생각납니다. Predicate을 만족하면 값이 있고 그렇지 않으면 값이 없게 됩니다. 값이 있거나 없을 수 있는 경우에 우리는 Maybe 를 사용했습니다. 즉, List와 Maybe간에 공통점이 드러납니다. 둘 다 값이 있거나 없을 수 있다는 점. 다시 말해 [] 는 비어 있는 리스트로서 값이 없는 것이고 Nothing은 값이 없음을 뜻하는 Maybe type의 값입니다.
+
+concatMap 함수의 type을 보면 첫 번째 인자인 함수의 type이 a -> [b] 입니다. 즉, 어떤 값을 하나 받아서 적절하게 처리한 후에 List에 담아서 내놓는 것입니다. 적절히 처리한 결과 값이 사라져버리면 그 때는 역시 List를 내놓는 데 그것은 비어있는 List 입니다. 이제 여기서 List를 어떤 값을 담는 상자라고 생각해보면 Maybe 역시 어떤 값을 담고 있는 상자라고 볼 수 있게 됩니다. 둘 다 상자안에 값이 들어 있을 수도 없을 수도 있는 것이지요. 이처럼 Maybe와 List같은 것들은 단순히 값만 가지고 있는 것이 아니라 어떤 의미를 지닌 상자에 값이 들어있는 것이라고 볼 수 있기에 이를 value with context로 표현합니다.
+
+Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수도 있고 없을 수도 있는 상황에 매우 유용합니다. 우리가 프로그래밍 할 때는 이러한 상황이 무척 많습니다. Null checking하는 코드를 그동안 얼마나 봐왔는지 생각해 보십시요. 그래서 많은 경우에 값이 단지 값 혼자만 이리 저리 전달되는 것이 아니라 context와 함께 전달이 됩니다. 즉 프로그래밍에서 concatMap과 같은 함수를 쓰는 일이 무척 자주 있다는 뜻입니다. 그래서 Haskell에서는 value with context에 대해 동작하는 함수를 두고 있습니다. >>= 함수가 그것이며 이를 bind라고 부릅니다.
+
+    > let filteringTimesOf7 = (x -> if (x `mod` 7 == 0) then Just x else Nothing)
+    > Just 9 >>= filteringTimesOf7
+    Nothing
+    > Just 7 >>= filteringTimesOf7
+    Just 7
+    > Nothing >>= filteringTimesOf7
+    Nothing
+
+지금부터는 Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 보겠습니다.
 
 먼저 command line utility이므로 console에 뭔가를 써야 합니다. 이 용도의 함수 중 하나는 이미 앞에서 나왔는데, 바로 print입니다. 비슷한 종류의 함수들로 putStr, putStrLn 이 있습니다.
 
