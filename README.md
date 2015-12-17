@@ -35,12 +35,13 @@ List에 사용할 수 있는 기본 함수들을 살펴봅니다.
     > concat [[1,2],[3],[4,5]] -- [1,2,3,4,5]
 
 Haskell 에서는 모든 동작에 있어서 함수가 중심이 됩니다. 위의 예에서 볼 수 있들이 List 에 어떤 함수를 적용할 때는 "함수 List" 꼴로 적용할 함수가 먼저 나오고 그 뒤에 List가 나옵니다.
-가령 sum 함수의 경우 "sum [1,2,3]" 꼴로 호출이 되었습니다. 즉, sum 함수는 List를 하나 받아서 그List의 원소들의 합을 구하는 함수 입니다. 다시 말해 sum함수의 입력은 "List 하나"이고 출력은 "값 하나" 꼴이 됩니다. 이렇듯 함수의 입력과 출력관계를 정의할 수 있는데 이를 함수의 type이라고 합니다. ghci에서는 :type 명령(혹은 :t) 을 사용하여 어떤 함수의 type을 알 수 있습니다.
+가령 sum 함수의 경우 "sum [1,2,3]" 꼴로 호출이 되었습니다. Haskell에서는 함수를 값에 적용하는 function application이 모든 연산 중에서 가장 우선 순위가 높습니다. function application 연산자는 공백입니다. 그래서 Haskell에서 함수 호출은 함수이름 + 공백 + 함수인자 꼴로 이루어집니다. f 가 함수이고 x 가 인자일 때 f x 가 곧 함수 호출이 됩니다.
+sum 함수는 List를 하나 받아서 그List의 원소들의 합을 구하는 함수 입니다. 다시 말해 sum함수의 입력은 "List 하나"이고 출력은 "값 하나" 꼴이 됩니다. 이렇듯 함수의 입력과 출력관계를 정의할 수 있는데 이를 함수의 type이라고 합니다. ghci에서는 :type 명령(혹은 :t) 을 사용하여 어떤 함수의 type을 알 수 있습니다.
 
     > :t sum
     sum :: (Num a, Foldable t) => t a -> a
 
-sum의 type에서 Num이나 Foldable은 나중에 다시 다루겠습니다. 여기서는 t a -> a 부분만 보면 됩니다. t a -> a 를 해석해 보면 입력(t a)으로는 '리스트 하나'를 받고 출력(a) 으로는 '값 하나' 를 내놓는 함수가 됩니다.
+sum의 type에서 Num이나 Foldable은 나중에 다시 다루겠습니다. 여기서는 t a -> a 부분만 보면 됩니다. t a -> a 를 해석해 보면 입력(t a)으로는 '리스트 하나'를 받고 출력(a) 으로는 '값 하나' 를 내놓는 함수가 됩니다. => 를 사용한 부분은 나중에 다루므로 여기서는 신경쓰지 않습니다.
 
 참고로 모든 함수는 반드시 소문자로 시작해야 합니다. 즉, 함수이름으로 Sum 은 불가능합니다. Haskell에서는 대소문자가 문법적으로 의미가 있습니다.
 
@@ -120,6 +121,11 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
     > foldr1 (+) [1,2,3,4] -- 10
     > foldl1 (++) ["I","Love","You"] -- "ILoveYou"
 
+주의할 점은 이 함수들은 기본값이 애초에 없기 때문에 비어있는 List에 적용하면 에러가 납니다.
+
+    > foldl1 (+) []
+    *** Exception: Prelude.foldl1: empty list
+
 그 다음, (x:xs) 와 같은 것을 pattern matiching이라고 합니다. 다음 코드를 보세요.
 
     > let (a:as) = [1,2,3]
@@ -142,7 +148,8 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 
     > let my_filter f xs = foldr (\x base -> if (f x) then x:base else base) [] xs
 
-재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
+위 코드에서 (\x base -> ...) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다. x와 base는 변수 이름입니다.
+foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
 
 사전 학습은 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 수료 요건 중 하나입니다.
 
@@ -163,7 +170,16 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 ## 첫 1시간
 먼저 숙제를 함께 복기하겠습니다.
 
-연습 1) foldl 함수를 재귀적으로 구현해보세요.
+연습1) foldl 함수를 재귀적으로 구현해 보세요.
+
+    my_foldl:: (b -> a -> b) -> b -> [a] -> b
+    my_foldl f base [] = ?
+    my_foldl f base (x:xs) = ?
+
+연습2) reverse 함수를 foldl을 써서 구현해 보세요.
+
+    my_reverse:: [a] -> [a]
+    my_reverse = foldl ? ?
 
 List에 대해 더 알아봅시다.
 zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 로 묶어줍니다.
@@ -187,7 +203,7 @@ zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주�
     > zipWith (+) [1,2,3] [10,20,30,40]
     [11,22,33]
 
-연습2) zipWith 를 재귀적으로 구현해 보세요.
+연습3) zipWith 를 재귀적으로 구현해 보세요.
 
     zipWith f [] _ = []
     zipWith f _ [] = []
@@ -218,13 +234,11 @@ Lazy evalution에서는 값이 필요할 때까지 expression은 expression그�
     > take 5 (iterate (map (*2)) [1,2,3])
     [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,32,48]]
 
-위 코드에서 (\x -> x^2) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다.
-
-연습3) iterate 함수를 재귀적으로 구현해 보세요.
+연습4) iterate 함수를 재귀적으로 구현해 보세요.
 
     > let iterate f x = ?
 
-연습4) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
+연습5) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
 
     > let fib = 1:1:zipWith (+) ? ?
 
@@ -235,15 +249,15 @@ fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함
     > scanr (+) 0 [1..10]
     [55,54,52,49,45,40,34,27,19,10,0]
 
-연습5) iterate 함수를 scanl을 써서 구현해 보세요.
+연습6) iterate 함수를 scanl을 써서 구현해 보세요.
 
     > let iterate f x = scanl ? ? ?
 
-연습6) fibonacci 수열을 scanl을 써서 만들어보세요.
+연습7) fibonacci 수열을 scanl을 써서 만들어보세요.
 
     > let fib = 1:scanl (+) ? ?
 
-연습7) scanl을 foldl을 써서 만들어 보세요.
+연습8) scanl을 foldl을 써서 만들어 보세요.
 
     > let scanl f base xs = foldl ? ? ?
 
@@ -269,7 +283,7 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
     > take 10 prime
     [2,3,5,7,11,13,17,19,23,29]
 
-연습8) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
+연습9) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
 
     > let sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
     > let prime = ?
@@ -351,7 +365,7 @@ fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
 
-연습9) 우리가 만든 이진트리를 Functor로 만들어보세요.
+연습10) 우리가 만든 이진트리를 Functor로 만들어보세요.
 
     instance Functor BinTree where
         fmap f Empty = Empty
@@ -361,7 +375,7 @@ fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 
 
     data RoseTree a = Branch a [RoseTree a] deriving Show
 
-연습10) RoseTree를 Functor로 만들어보세요.
+연습11) RoseTree를 Functor로 만들어보세요.
 
     instance Functor RoseTree where
         fmap f (Branch a ts) = ?
@@ -384,7 +398,7 @@ Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료
     foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
     foldforest f g ts = ?
 
-연습11) 위의 foldforest 함수를 완성해 보세요.
+연습12) 위의 foldforest 함수를 완성해 보세요.
 
 
 ## 세 번째 시간
@@ -421,7 +435,7 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
-연습12) RoseTree를 Foldable의 instance로 만들어 보세요.
+연습13) RoseTree를 Foldable의 instance로 만들어 보세요.
 
     instance Foldable RoseTree where
         foldMap f (Branch a ts) = ?
@@ -446,14 +460,14 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
     > span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
     > break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
 
-연습13) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
+연습14) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
 
     max 2 5 -- 5
     min 2 5 -- 2
 
 max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
 
-연습14) partition 함수를 구현해 보세요.
+연습15) partition 함수를 구현해 보세요.
 
     partition :: (a -> Bool) -> [a] -> ([a], [a])
     partition p xs = ?
@@ -539,7 +553,7 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
-연습15) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
+연습16) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 
     rmDuplicate::(Ord a) => [a] -> [a]
     rmDuplicate xs = ?
@@ -548,11 +562,11 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
 
-연습16) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
+연습17) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
 
-연습17) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
+연습18) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
 
-연습18) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
+연습19) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
 
   >1) a < b < c
 
@@ -581,7 +595,7 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 
 이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다. 또는 ghc t 만 해도 됩니다.
 
-연습19) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
+연습20) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
 <pre>
         <b>3</b>
        <b>7</b> 4
@@ -593,12 +607,12 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 <a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
-연습20) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
+연습21) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
 <pre>
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
-연습21) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
+연습22) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
 
     3+1
     2+2
@@ -616,12 +630,12 @@ Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. �
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
-연습22) concatMap 함수를 직접 구현하세요.
+연습23) concatMap 함수를 직접 구현하세요.
 
     my_concatMap:: (a -> [b]) -> [a] -> [b]
     my_concatMap f xs = ?
 
-연습23) concatMap 함수를 써서 filter 함수를 구현하세요.
+연습24) concatMap 함수를 써서 filter 함수를 구현하세요.
 
     my_filter f xs = concatMap ? ?
 
@@ -659,8 +673,10 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
 
 그리고 wc utility는 여러 개의 파일들을 입력받아 각각 파일별 계산 결과와 모든 것의 합을 출력할 수 있어야 합니다. 만일 입력파일이 주어지지 않으면 stdin 으로부터의 입력에 대해 계산을 합니다.
 
-이제 wc 함수의 type을 생각해 봅시다. wc 함수는 위의 여러 가지 옵션들과 함께 파일 경로 목록을 받아 뭔가 계산을 한 다음에 IO에 뭔가를 기록할 것입니다. 이를 바탕으로 wc 함수의 type을 써보면 다음과 같이 될 것입니다.
+이제 wc 함수의 type을 생각해 봅시다. wc 함수는 위의 여러 가지 옵션들과 함께 파일 경로 목록을 받아 뭔가 계산을 한 다음에 IO에 뭔가를 기록할 것입니다. 이를 바탕으로 wc 함수의 type을 써보면 다음과 같이 될 것입니다. 여기서 FilePath 는 Haskell의 System.IO에 미리 정의가 되어있기 때문에 import하였습니다. import할 때 전체 모듈을 import하지 않고 원하는 것들만 import하려면 괄호를 써주고 괄호안에 원하는 것만 나열하면 됩니다.
 
+    import System.IO (FilePath)
+    type Options = String
     wc:: Options -> [FilePath] -> IO ()
 
 먼저 입력파일이 없을 때의 처리를 어떻게 할 것인지 생각해 봅시다. 다음과 같은 꼴이 되면 될 것 같습니다.
@@ -674,12 +690,40 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
 
 다음으로 입력파일이 하나만 있을 때의 처리를 생각해 봅시다. 다음처럼 간단하게 하면 될 것 같습니다.
 
-    wc options [FilePath] = do
-      text <- readFile FilePath
+    wc options [file] = do
+      text <- readFile file
       let count = getCount text
       printCount options count
 
-마지막으로 입력 파일이 여러 개 있을 때의 처리를 생각해 봅시다.
+입력 파일이 여러 개 있을 때의 처리는 잠시 미루어 두고 일단 위의 구현을 완성해 봅시다. 구현을 안한 상태로 두려면 다음처럼 undefined라고 쓰면 됩니다.
+
+    wc options files = undefined
+
+먼저 getContents 파일은 Haskell 기본 함수입니다. getCount 함수를 구현해야 합니다. getCount 함수의 type은 다음이 될 것입니다.
+
+    type WordCount = (Int, Int, Int)
+    getCount:: String -> WordCount
+
+WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
+
+연습25) getCount 함수를 완성하세요.
+
+    getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
+
+이제 printCount 함수를 만들겠습니다. 먼저 type을 생각해 봅니다. Options와 WordCount를 입력으로 받아서 적절하게 Console에 기록하게 될 것입니다. 따라서 다음과 같은 type을 가지게 될 것입니다.
+
+    printCount:: Options -> WordCount -> IO ()
+
+이제 이를 구현해 봅시다.
+
+    printCount options (c,w,l) =
+        putStrLn ("\t" ++ (if showLines options then (show l) ++ "\t" else "")
+                       ++ (if showWords options then (show w) ++ "\t" else "")
+                       ++ (if showChars options then (show c) ++ "\t" else ""))
+
+    showLines = elem 'l'
+    showWords = elem 'w'
+    showChars = elem 'c'
 
 ## 여섯 번째 시간
 
@@ -690,25 +734,25 @@ Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하�
 
 우리가 중고등학교 시절 수학책에서 가장 먼저 나오는 단원이 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리인데, 범주론 소개 역시 집합에서 출발하겠습니다.
 
-Set
+Set: 우리가 알고 있는 그 집합
 
-Magma - Set + binary operation
+Magma: Set + binary operation
 
-Semigroup - Magma + associative binary operation(결합법칙을 만족하는 이항연산자)
+Semigroup: Magma + associative binary operation(결합법칙을 만족하는 이항연산자)
 
-Monoid - Semigroup + Identity(항등원)
+Monoid: Semigroup + Identity(항등원)
 
-Group - Monoid + Inverse(역원)
+Group: Monoid + Inverse(역원)
 
-Abelian group - Group의 이항연산자가 communicative law(교환법칙) 까지 만족할 때
+Abelian group: Group의 이항연산자가 communicative law(교환법칙) 까지 만족할 때
 
-Ring - Abelian group + 두 번째 associative binary operation
+Ring: Abelian group + 두 번째 associative binary operation
 
 이러한 것들을 Algebraic structure(대수적 구조) 라고 부릅니다. 여기 소개된 것 말고도 Field, Vector space 등 훨씬 더 많습니다.
 
 Group의 예를 들어보겠습니다. 0부터 5까지 6개의 자연수를 원소로 갖는 집합 ℤ<sub>6</sub>과 이항 연산자 additon of modular 6 를 묶어서 <ℤ<sub>6</sub>, +<sub>6</sub>> 라고 할 때 이는 Group입니다.
 
-Category theory란 이러한 Algebraic structure들 간의 관계를 연구하는 수학의 한 분야입니다. 몇 가지 개념을 더하면 모든 Algebraic structure는 Category라는 것으로 승급될 수 있습니다. Functor란 Category들 간의 관계를 뜻하는데, A 라는 Category와 B라는 Category간에는 C 라는 Functor 관계가 있다 정도의 개념으로 이해하면 됩니다. Haskell에서 List가 Functor 인 것도 List의 모든 원소들이 다른 종류의 것들로 바뀔 수 있기에 그렇다고 생각하시면 됩니다.
+Category theory란 이러한 Algebraic structure들 간의 관계를 연구하는 수학의 한 분야입니다. Algebraic structure에 몇 가지 개념을 더하면 Category라는 개념으로 승급이 됩니다. Functor란 Category들 간의 관계를 뜻하는데, A 라는 Category와 B라는 Category간에는 C 라는 Functor 관계가 있다 정도의 개념으로 이해하면 됩니다. Haskell에서 List가 Functor 인 것도 List에 담긴 값들이 다른 종류의 것들로 바뀔 수 있기에 그렇다고 생각하시면 됩니다.
 
 ## License
 Eclipse Public License
