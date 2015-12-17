@@ -627,13 +627,22 @@ Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하�
 우리가 중고등학교 시절 수학책에서 가장 먼저 나오는 단원이 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리일 텐데, 범주론 소개 역시 집합에서 출발하겠습니다.
 
 Set
+
 Magma - Set + binary operation
+
 Semigroup - Magma + associative binary operation(결합법칙을 만족하는 이항연산자)
+
 Monoid - Semigroup + Identity(항등원)
+
 Group - Monoid + Inverse(역원)
+
 Abelian group - Group의 이항연산자가 communicative law(교환법칙) 까지 만족할 때
+
 Ring - Abelian group + 두 번째 associative binary operation
 
+이러한 것들을 Algebraic structure(대수적 구조) 라고 부릅니다. 여기 소개된 것 말고도 Field, Vector space 등 훨씬 더 많습니다.
+
+Group의 예를 들어보겠습니다. 0부터 6까지의 자연수를 원소로 갖는 집합 ℤ<sub>6</sub>과 이항 연산자 additon of modular 6 를 묶어서 <ℤ<sub>6<sub>, +<sub>6<sub>> 라고 할 때 이는 Group입니다.
 
 ## License
 Eclipse Public License
