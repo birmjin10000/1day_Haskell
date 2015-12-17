@@ -656,7 +656,9 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
     > [1..5] >>= filterOdd
     [1,3,5]
 
-위의 코드들은 어떤 값을 조사해서 그것이 조건에 부합하면 다시 값을 상자에 넘어서 전달하고 그렇지 않으면 빈 상자를 전달하는 모습을 보여주고 있습니다. return이라는 키워드가 새로 나왔는데 이는 다른 언어들에서 함수의 return으로 쓰는 것과는 전혀 별개의 것입니다. Haskell에서의 return은 값을 상자에 넣어서 value with context를 만드는 함수 입니다.
+위의 코드들은 어떤 값을 조사해서 그것이 조건에 부합하면 다시 값을 상자에 넘어서 전달하고 그렇지 않으면 빈 상자를 전달하는 모습을 보여주고 있습니다. return이라는 키워드가 새로 나왔는데 이는 다른 언어들에서 함수의 return으로 쓰는 것과는 전혀 별개의 것입니다. Haskell에서의 return은 값을 상자에 넣어서 value with context로 만드는 함수 입니다.
+
+return:: a poor naked value --(put some nice & meaningful clothing on a value)--> a fanciful value with context
 
 지금부터는 Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 보겠습니다.
 
@@ -779,6 +781,10 @@ totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수�
 연습27) wc utility를 최종 완성해 보세요.
 
 ## 더 읽을 거리
+#### 람다 계산 Lambda Calculus
+람단 계산은 왜 이름이 람다 계산일까? Alonzo Church가 람다계산을 발견하고 이를 출판하려고 했을 때는 람다계산임을 뜻하는 기호로 수식의 첫글자위에 삿갓모양의 기호를 그려넣었습니다. 그런데 이를 출판하려고 하니 당시의 조판시스템에서는 글자를 다른 글자위에 함께 찍는 게 불가능했습니다. 그래서 대안으로 생각한 것이 모양이 비슷한 라틴어 대문자 Lambda Λ 를 수식의 맨 앞에 넣었습니다. 그 이후로 람다계산이라는 이름이 생겼고 지금은 라틴어 소문자 lambda λ 를 주로 사용합니다. Haskell에서 lambda expression 을
+나타낼때 역슬래쉬를 쓰는 것도 λ 문자와 가장 비슷해 보이는 문자여서 그렇습니다.
+
 ####범주론 Category Theory
 Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 넣었기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
 그러므로 여기서 소개하는 Category Theory는 가볍게 읽어보고 넘어가시기 바랍니다.
