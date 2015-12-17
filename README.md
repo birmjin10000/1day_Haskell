@@ -56,14 +56,14 @@ Haskell에서 type 은 모든 것에 있습니다.
 
 [1,2,3] 은 각 요소가 숫자인 List 입니다.
 
-함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과물로도 나올 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
+함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
 
     > :t map
     map :: (a -> b) -> [a] -> [b]
     > map (*2) [1,2,3]
     [2,4,6]
 
-map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b] 꼴 List 함수를 결과로 내놓는 함수 입니다.
+map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b] 꼴 List 를 결과로 내놓는 함수 입니다.
 
     > :t filter
     filter :: (a -> Bool) -> [a] -> [a]
@@ -77,7 +77,7 @@ filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아�
     > foldr (+) 0 [1,2,3]
     6
 
-foldr 함수는 (a -> b -> b) 꼴 함수 하나와 b 꼴 값 하나, 그리고 t a 꼴 List 하나(사실 Foldable은 List 보다 좀 더 포괄적인 개념이지만 일단 여기서는 List에 대해서만 생각하기로 합니다)를 입력으로 받아서 b 꼴 값을 하나 내놓는 함수 입니다. foldr 함수는 이름 그대로 List와 값은 여러 요소를 갖고 있는 자료형을 하나의 값으로 접는(fold) 일을 합니다. 여기서 끝에 붙은 r 은 right의 뜻으로 foldr은 fold하는 방향이 오른쪽에서 왼쪽으로 진행됩니다. fold가 왼쪽에서 오른쪽으로 진행되는 foldl 함수도 물론 있습니다.
+foldr 함수는 (a -> b -> b) 꼴 함수 하나와 b 꼴 값 하나, 그리고 t a 꼴 List 하나(사실 Foldable은 List 보다 좀 더 포괄적인 개념이지만 일단 여기서는 List에 대해서만 생각하기로 합니다)를 입력으로 받아서 b 꼴 값을 하나 내놓는 함수 입니다. foldr 함수는 이름 그대로 List처럼 여러 요소를 갖고 있는 자료형을 하나의 값으로 접는(fold) 일을 합니다. 여기서 끝에 붙은 r 은 right의 뜻으로 foldr은 fold하는 방향이 오른쪽에서 왼쪽으로 진행됩니다. fold가 왼쪽에서 오른쪽으로 진행되는 foldl 함수도 물론 있습니다.
 
     > :t foldl
     foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
@@ -144,7 +144,7 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 
 재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
 
-사전 학습이 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 수료 요건 중 하나입니다.
+사전 학습은 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 수료 요건 중 하나입니다.
 
 숙제1) foldr 함수를 이용해서 sum 함수를 직접 구현해보세요.
 
@@ -166,7 +166,7 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 연습 1) foldl 함수를 재귀적으로 구현해보세요.
 
 List에 대해 더 알아봅시다.
-zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 대로 묶어줍니다.
+zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 로 묶어줍니다.
 
     > :t zip
     zip :: [a] -> [b] -> [(a, b)]
@@ -202,7 +202,7 @@ List를 반복적으로 편리하게 만들어 주는 함수들이 있습니다.
     > take 3 (cycle [1,2])
     [1,2,1]
 
-그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 이렇게 무한수열을 아주 편하게 사용할 수 있는데 그 이유는 Haskell이 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. List를 선언할 때 무한수열 형태로 선언할 수도 있습니다. List의 끝을 정해주지 않으면 무한수열이 됩니다.
+그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 이렇게 무한수열을 아주 편하게 사용할 수 있는데 그 이유는 Haskell에서는 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. List를 선언할 때 무한수열 형태로 선언할 수도 있습니다. List의 끝을 정해주지 않으면 무한수열이 됩니다.
 
     > take 3 [1..]
     [1,2,3]
@@ -260,7 +260,7 @@ List comprehension을 이용하여 isPrime 함수를 만들겠습니다.
     > zip [1..] $ map isPrime [1..10]
     [(1,False),(2,True),(3,True),(4,False),(5,True),(6,False),(7,True),(8,False),(9,False),(10,False)]
 
-새로운 문법이 나왔습니다. mod 함수는 modulo 연산자입니다. mod 7 2 의 결과는 1 입니다. 그런데 mod 함수와 같은 이항연산자는 보통 중위표기로 쓰는 것이 읽기 편합니다. 그래서 Haskell에서는 이항연산자를 중위표기법으로 쓸 때는 backtick 으로 감싸줍니다. `mod` 이런 식으로. 
+새로운 문법이 나왔습니다. mod 함수는 modulo 연산자입니다. mod 7 2 의 결과는 1 입니다. 그런데 mod 함수와 같은 이항연산자는 보통 중위표기로 쓰는 것이 읽기 편합니다. 그래서 Haskell에서는 이항연산자를 중위표기법으로 쓸 때는 backtick 으로 감싸줍니다. `mod` 이런 식으로.
 $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자는 괄호를 쓰는 불편함을 덜기 위해 있습니다. 즉, 위의 코드에서 zip [1..] (map isPrime [1..10]) 라고 써야 할 코드가 $ 연산자를 이용해서 zip [1..] $ map isPrime [1..10] 으로 작성될 수 있었습니다.
 
 이제 isPrime 함수를 써서 다음처럼 소수의 목록을 구할 수 있습니다.
@@ -300,7 +300,8 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
     > data Gender = Male | Female derivng (Show, Eq)
 
-이렇게 하면 Gender 라는 새로운 type이 생겼고 해당 type의 값은 Male 또는 Female입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다. deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 이렇게 써야 Male과 Female 이라는 값을 문자열로 출력 가능합니다. Eq의 경우 비교를 할 수 있는 값으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
+이렇게 하면 Gender 라는 새로운 type이 생겼고 해당 type의 값은 Male 또는 Female입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
+deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 이렇게 써야 Male과 Female 이라는 값을 문자열로 출력 가능합니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
 
 이제 새로 만든 Gender type을 이용하는 함수를 하나 만들겠습니다.
 
@@ -343,7 +344,7 @@ BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전�
 
     map :: (a -> b) -> [a] -> [b]
 
-fmap 함수의 type에서 f 에 해당하는 부분을 List로 바꾸면 그대로 map 함수의 type이 됨을 볼 수 있다. 어떤 자료형이 특정 typeclass이기 위해서는 어떤 자료형을 해당 typeclass의 instance로 선언하면 된다. List는 어떤 식으로 Functor의 instance로 선언되어 있는지 확인하자.
+fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 그대로 map 함수의 type이 됨을 볼 수 있습니다. 어떤 자료형이 특정 typeclass이기 위해서는 어떤 자료형을 해당 typeclass의 instance로 선언하면 됩니다. List는 어떤 식으로 Functor의 instance로 선언되어 있는지 확인합시다.
 
     instance Functor [] where
         fmap = map
@@ -527,7 +528,7 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
 
 위에서 보듯 partial application 이란 인자 n개를 받는 함수가 있을 때 이 함수에 n보다 적은 갯수의 인자만을 먼저 일부 적용하는 것을 말합니다. 위에서 보듯 (+) 함수는 인자를 두 개 받는 함수인데 이에 인자 하나를 먼저 partial apply 한 결과인 add5 함수는 인자를 하나만 받는 함수가 되었습니다. Haskell에서는 함수의 partial application이 이처럼 언어차원에서 바로 지원이 되는데, 그 이유는 Haskell의 모든 함수는 curried function이기 때문입니다. Currying이라는 새로운 용어가 또 나왔습니다.
 
-Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수를 만드는 일을 말합니다. Haskell의 모든 함수는 curried function이라고 했습니다. 즉, (+) 함수는 사실 인자 두 개를 받아서 결과 하나를 내놓는 함수가 아니라 인자 하나를 받아서 "인자하나를 받아 결과를 내놓는 함수"를 결과로 내놓는 함수인 셈입니다. (+) 함수의 type을 이에 맞게 다시 써 보면 다음과 같습니다.
+Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 만드는 일을 말합니다. Haskell의 모든 함수는 curried function이라고 했습니다. 즉, (+) 함수는 사실 인자 두 개를 받아서 결과 하나를 내놓는 함수가 아니라 인자 하나를 받아서 "인자하나를 받아 결과를 내놓는 함수"를 결과로 내놓는 함수인 셈입니다. (+) 함수의 type을 이에 맞게 다시 써 보면 다음과 같습니다.
 
     (+):: a -> (a -> a)
 
@@ -571,14 +572,14 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
     > read "5.8"::Float
     5.8
 
-파일을 읽고 쓰는 IO 처리는 Haskell에서 do block안에서 합니다.
+파일을 읽고 쓰는 IO 처리는 Haskell에서는 do block안에서 합니다.
 
     main = do
         contents <- readFile "triangle1.txt"
         let triangle = map (map (\x -> read x::Int)) . map words . lines $ contents
         print triangle
 
-이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다.
+이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다. 또는 ghc t 만 해도 됩니다.
 
 연습19) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
 <pre>
@@ -625,13 +626,37 @@ Unix 계열 OS에 있는 wc utility를 Haskell로 한 번 만들어 봅시다.
     Haha> putStrLn "hoho"
     hoho
 
-그리고 우리가 만들 wc utility의 기능을 생각해봅니다. 먼저 다음 세가지 옵션을 지원해야 합니다.
+이들 함수의 type을 확인해 보면 모두 출력이 IO () 인 것을 볼 수 있다. 이는 이들 함수가 IO에 뭔가를 기록하지만 함수 자체의 반환값은 () 로 아무것도 없음을 뜻합니다. () 은 void 라고 생각하시면 됩니다.
+
+우리가 만들 wc utility의 기능을 생각해봅니다. 먼저 다음 세가지 옵션을 지원해야 합니다. 만약에 아무런 옵션도 주어지지 않으면, 이 세 가지 값을 모두 계산해서 보여주어야 합니다.
 
     -c - 문자 숫자 세기
     -w - 단어 숫자 세기
     -l - 줄 수 세기
 
+그리고 wc utility는 여러 개의 파일들을 입력받아 각각 파일별 계산 결과와 모든 것의 합을 출력할 수 있어야 합니다. 만일 입력파일이 주어지지 않으면 stdin 으로부터의 입력에 대해 계산을 합니다.
 
+이제 wc 함수의 type을 생각해 봅시다. wc 함수는 위의 여러 가지 옵션들과 함께 파일 경로 목록을 받아 뭔가 계산을 한 다음에 IO에 뭔가를 기록할 것입니다. 이를 바탕으로 wc 함수의 type을 써보면 다음과 같이 될 것입니다.
+
+    wc:: Options -> [FilePath] -> IO ()
+
+먼저 입력파일이 없을 때의 처리를 어떻게 할 것인지 생각해 봅시다. 다음과 같은 꼴이 되면 될 것 같습니다.
+
+    wc options [] = do
+      text <- getContents
+      let count = getCount text
+      printCount options count
+
+먼저 getContents 함수를 통해 stdin으로부터의 입력을 가지고 오고, getCount 함수에서 문자수, 단어수, 줄수 등을 계산합니다. 그리고 마지막으로 주어진 options에 따라 형식을 갖추어 출력을 합니다.
+
+다음으로 입력파일이 하나만 있을 때의 처리를 생각해 봅시다. 다음처럼 간단하게 하면 될 것 같습니다.
+
+    wc options [FilePath] = do
+      text <- readFile FilePath
+      let count = getCount text
+      printCount options count
+
+마지막으로 입력 파일이 여러 개 있을 때의 처리를 생각해 봅시다.
 
 ## 여섯 번째 시간
 
