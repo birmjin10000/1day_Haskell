@@ -326,7 +326,7 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
 이번에는 실제로 새로운 type을 정의해 보겠습니다.
 
-    > data Gender = Male | Female derivng (Show, Eq)
+    > data Gender = Male | Female deriving (Show, Eq)
 
 이렇게 하면 Gender 라는 새로운 type이 생겼고 해당 type의 값은 Male 또는 Female입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
 deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 이렇게 써야 Male과 Female 이라는 값을 문자열로 출력 가능합니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
