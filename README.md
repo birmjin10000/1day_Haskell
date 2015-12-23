@@ -4,7 +4,7 @@ Haskell Programming을 딱 하루만 배워봅시다.
 
 7시간 동안 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념들에 익숙해지길 기대합니다.
 
-First-class citizen, Higher-order function, Currying, Partial application, Function composition, Typeclass, Type system, Type inference, Lazy evaluation, Pattern matching, List comprehension, Functor, Monoid, A value with context
+First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Pattern matching, List comprehension, Functor, Monoid, A value with context
 
 ## 사전 학습
 Haskell platform을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다.
