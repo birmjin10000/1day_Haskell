@@ -7,7 +7,7 @@ Haskell Programming을 딱 하루만 배워봅시다.
 First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Pattern matching, List comprehension, Functor, Monoid, A value with context
 
 ## 사전 학습
-Haskell platform을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다.
+<a href="https://www.haskell.org/platform/">Haskell platform</a>을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다.
 
     > [1,2,3] -- [1,2,3]
 
@@ -40,6 +40,8 @@ Haskell 에서는 모든 동작에 있어서 함수가 중심이 됩니다. 위�
 가령 sum 함수의 경우 "sum [1,2,3]" 꼴로 호출이 되었습니다. Haskell에서는 함수를 값에 적용하는 function application이 모든 연산 중에서 가장 우선 순위가 높습니다. function application 연산자는 공백입니다. 그래서 Haskell에서 함수 호출은 함수이름 + 공백 + 함수인자 꼴로 이루어집니다. f 가 함수이고 x 가 인자일 때 f x 가 곧 함수 호출이 됩니다.
 sum 함수는 List를 하나 받아서 그List의 원소들의 합을 구하는 함수 입니다. 다시 말해 sum함수의 입력은 "List 하나"이고 출력은 "값 하나" 꼴이 됩니다. 이렇듯 함수의 입력과 출력관계를 정의할 수 있는데 이를 함수의 type이라고 합니다. ghci에서는 :type 명령(혹은 :t) 을 사용하여 어떤 함수의 type을 알 수 있습니다.
 
+    > sum [1,2,3]
+    6
     > :t sum
     sum :: (Num a, Foldable t) => t a -> a
 
@@ -47,6 +49,8 @@ sum의 type에서 Num이나 Foldable은 나중에 다시 다루겠습니다. 여
 
 참고로 모든 함수는 반드시 소문자로 시작해야 합니다. 즉, 함수이름으로 Sum 은 불가능합니다. Haskell에서는 대소문자가 문법적으로 의미가 있습니다.
 
+    > take 2 [1,2,3]
+    [1,2]
     > :t take
     take :: Int -> [a] -> [a]
 
@@ -61,24 +65,24 @@ Haskell에서 type 은 모든 것에 있습니다.
 
 함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
 
-    > :t map
-    map :: (a -> b) -> [a] -> [b]
     > map (*2) [1,2,3]
     [2,4,6]
+    > :t map
+    map :: (a -> b) -> [a] -> [b]
 
 map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b] 꼴 List 를 결과로 내놓는 함수 입니다.
 
-    > :t filter
-    filter :: (a -> Bool) -> [a] -> [a]
     > filter odd [1,2,3]
     [1,3]
+    > :t filter
+    filter :: (a -> Bool) -> [a] -> [a]
 
 filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [a] 꼴 List 하나를 결과로 내놓는 함수입니다. (a -> Bool) 꼴 함수는 많이 등장하는 형태이어서 특별히 Predicate 이라고 부릅니다.
 
-    > :t foldr
-    foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
     > foldr (+) 0 [1,2,3]
     6
+    > :t foldr
+    foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
 
 foldr 함수는 (a -> b -> b) 꼴 함수 하나와 b 꼴 값 하나, 그리고 t a 꼴 List 하나(사실 Foldable은 List 보다 좀 더 포괄적인 개념이지만 일단 여기서는 List에 대해서만 생각하기로 합니다)를 입력으로 받아서 b 꼴 값을 하나 내놓는 함수 입니다. foldr 함수는 이름 그대로 List처럼 여러 요소를 갖고 있는 자료형을 하나의 값으로 접는(fold) 일을 합니다. 여기서 끝에 붙은 r 은 right의 뜻으로 foldr은 fold하는 방향이 오른쪽에서 왼쪽으로(*right* to left) 진행됩니다. fold가 왼쪽에서 오른쪽으로(*left* to right) 진행되는 foldl 함수도 물론 있습니다. 동풍이 동쪽에서 불어오는 바람이듯이 foldr 은 오른쪽에서부터 접어들어갑니다.
 
@@ -163,33 +167,33 @@ foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구�
 
     > let my_map:: (a -> b) -> [a] -> [b]; my_map f xs = ?
 
-숙제3) foldr 함수를 재귀적으로 직접 구현해보세요.
-
-    my_foldr:: (a -> b -> b) -> b -> [a] -> b
-    my_foldr f base [] = ?
-    my_foldr f base (x:xs) = ?
-
-## 첫 1시간
-먼저 숙제를 함께 복기하겠습니다.
-
-연습1) foldl 함수를 재귀적으로 구현해 보세요.
-
-    my_foldl:: (b -> a -> b) -> b -> [a] -> b
-    my_foldl f base [] = ?
-    my_foldl f base (x:xs) = ?
-
-연습2) reverse 함수를 foldl을 써서 구현해 보세요.
+숙제3) reverse 함수를 foldl을 써서 구현해 보세요.
 
     my_reverse:: [a] -> [a]
     my_reverse = foldl ? ?
 
+## 첫 1시간
+먼저 숙제를 함께 복기하겠습니다.
+
+이제 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
+
+    my_foldr:: (a -> b -> b) -> b -> [a] -> b
+    my_foldr f base [] = base
+    my_foldr f base (x:xs) = ?
+
+연습1) foldl 함수를 재귀적으로 구현해 보세요.
+
+    my_foldl:: (b -> a -> b) -> b -> [a] -> b
+    my_foldl f base [] = base
+    my_foldl f base (x:xs) = ?
+
 List에 대해 더 알아봅시다.
 zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 로 묶어줍니다.
 
-    > :t zip
-    zip :: [a] -> [b] -> [(a, b)]
     > zip [1,2,3] ['a','b','c']
     [(1,'a'),(2,'b'),(3,'c')]
+    > :t zip
+    zip :: [a] -> [b] -> [(a, b)]
 
 zip 함수의 실행 결과에서 새로운 자료형이 등장합니다. 바로 Tuple 입니다. Haskell에서 List는 homogeneous 자료형입니다. [1,'a',"xyz"] 같은 것은 불가능합니다. 반면에 Tuple은 heterogenous 자료형입니다.
 
@@ -205,7 +209,7 @@ zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주�
     > zipWith (+) [1,2,3] [10,20,30,40]
     [11,22,33]
 
-연습3) zipWith 를 재귀적으로 구현해 보세요.
+연습2) zipWith 를 재귀적으로 구현해 보세요.
 
     zipWith f [] _ = []
     zipWith f _ [] = []
@@ -236,11 +240,11 @@ Lazy evalution에서는 값이 필요할 때까지 expression은 expression그�
     > take 5 (iterate (map (*2)) [1,2,3])
     [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,32,48]]
 
-연습4) iterate 함수를 재귀적으로 구현해 보세요.
+연습3) iterate 함수를 재귀적으로 구현해 보세요.
 
     > let iterate f x = ?
 
-연습5) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
+연습4) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
 
     > let fib = 1:1:zipWith (+) ? ?
 
@@ -251,11 +255,11 @@ fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함
     > scanr (+) 0 [1..10]
     [55,54,52,49,45,40,34,27,19,10,0]
 
-연습6) iterate 함수를 scanl을 써서 구현해 보세요.
+연습5) iterate 함수를 scanl을 써서 구현해 보세요.
 
     > let iterate f x = scanl ? ? ?
 
-연습7) fibonacci 수열을 scanl을 써서 만들어보세요.
+연습6) fibonacci 수열을 scanl을 써서 만들어보세요.
 
     > let fib = 1:scanl (+) ? ?
 
@@ -265,6 +269,8 @@ List를 만드는 또 다른 방법으로는 List comprehension이 있습니다.
     [1,3,5,7,9]
     > [x*y | x <- [1..3], y <- [10,11]]
     [10,11,20,22,30,33]
+
+x <- [1..10] 부분은 generator로서 숫자들을 만들어 내고 있고 odd x 는 filter로서 generator가 만든 숫자들 중 조건에 맞는 것만 걸러내고 있습니다. x <- [1..3], y <- [10,11] 처럼 generator는 여러 개가 있을 수 있습니다.
 
 List comprehension을 이용하여 isPrime 함수를 만들겠습니다.
 
@@ -281,7 +287,7 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
     > take 10 prime
     [2,3,5,7,11,13,17,19,23,29]
 
-연습8) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
+연습7) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
 
     > let sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
     > let prime = ?
@@ -290,14 +296,14 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
 첫 시간에 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
 
-연습9) merge 함수를 구현하세요.
+연습8) merge 함수를 구현하세요.
 
     merge:: Ord a => [a] -> [a] -> [a]
     merge [] ys = ys
     merge xs [] = xs
     merge xall@(x:xs) yall@(y:ys) = ?
 
-연습10) mergeSort 함수를 구현하세요.
+연습9) mergeSort 함수를 구현하세요.
 
     mergeSort:: Ord a => [a] -> [a]
     mergeSort xs = ?
@@ -377,7 +383,7 @@ fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
 
-연습11) 우리가 만든 이진트리를 Functor로 만들어보세요.
+연습10) 우리가 만든 이진트리를 Functor로 만들어보세요.
 
     instance Functor BinTree where
         fmap f Empty = Empty
@@ -387,7 +393,7 @@ fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 
 
     data RoseTree a = Branch a [RoseTree a] deriving Show
 
-연습12) RoseTree를 Functor로 만들어보세요.
+연습11) RoseTree를 Functor로 만들어보세요.
 
     instance Functor RoseTree where
         fmap f (Branch a ts) = ?
@@ -410,7 +416,7 @@ Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료
     foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
     foldforest f g ts = ?
 
-연습13) 위의 foldforest 함수를 완성해 보세요.
+연습12) 위의 foldforest 함수를 완성해 보세요.
 
 
 ## 세 번째 시간
@@ -447,7 +453,7 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
-연습14) RoseTree를 Foldable의 instance로 만들어 보세요.
+연습13) RoseTree를 Foldable의 instance로 만들어 보세요.
 
     instance Foldable RoseTree where
         foldMap f (Branch a ts) = ?
@@ -472,14 +478,14 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
     > span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
     > break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
 
-연습15) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
+연습14) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
 
     max 2 5 -- 5
     min 2 5 -- 2
 
 max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
 
-연습16) span 함수를 구현해 보세요.
+연습15) span 함수를 구현해 보세요.
 
     span :: (a -> Bool) -> [a] -> ([a], [a])
     span p xs = ?
@@ -496,30 +502,39 @@ sortOn 함수는 어떤 식으로 sort 를 할 지 정해줄 수 있습니다.
 
 find 계열 함수들을 살펴봅시다.
 
-    > :t find
-    find :: Foldable t => (a -> Bool) -> t a -> Maybe a
     > find (=='a') "abcde"
     Just 'a'
     > find (=='f') "abcde"
     Nothing
+    > :t find
+    find :: Foldable t => (a -> Bool) -> t a -> Maybe a
 
-    > :t findIndex
-    findIndex :: (a -> Bool) -> [a] -> Maybe Int
     > findIndex (>7) [5..9]
     Just 3
     > findIndex (>10) [5..9]
     Nothing
+    > :t findIndex
+    findIndex :: (a -> Bool) -> [a] -> Maybe Int
 
-    > :t elemIndex
-    elemIndex :: Eq a => a -> [a] -> Maybe Int
     > elemIndex 'a' "abcde"
     Just 0
     > elemIndex 'f' "abcde"
     Nothing
+    > :t elemIndex
+    elemIndex :: Eq a => a -> [a] -> Maybe Int
 
-이 함수들의 type에는 공통적으로 Maybe가 나옵니다. Maybe는 값이 있거나 없는 경우에 사용합니다. 보통 값이 없는 경우에 null check을 많이 합니다. 하지만 null check을 하는 것은 무척 오류가 생기기 쉽습니다. 오죽하면 null 을 처음으로 도입한 Tony Hoare가 자신이 null을 만든 것은 Billion Dollar Mistake라는 고백을 하기도 했습니다. Maybe와 같은 type은 이러한 것으로부터 자유롭습니다.
+이 함수들의 type에는 공통적으로 Maybe가 나옵니다. Maybe는 값이 있거나 없는 경우에 사용합니다. 보통 값이 없는 경우에 null check을 많이 합니다. 하지만 null check을 하는 것은 무척 오류가 생기기 쉽습니다. 오죽하면 1965년에 null 을 처음으로 도입한 Tony Hoare가 자신이 null을 만든 것은 Billion Dollar Mistake라는 고백을 하기도 했습니다. Maybe와 같은 type은 이러한 것으로부터 자유롭습니다.
 
     data Maybe a = Nothing | Just a
+
+lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
+
+    > lookup "James" [("John", 7), ("Jack", 9), ("James", 3)]
+    Just 3
+    > lookup "Joyce" [("John", 7), ("Jack", 9), ("James", 3)]
+    Nothing
+    > :t lookup
+    lookup :: Eq a => a -> [(a, b)] -> Maybe b
 
 이번 시간 마지막 내용으로 함수의 합성에 대해 알아보겠습니다.
 
@@ -565,7 +580,7 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
-연습17) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
+연습16) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 
     rmDuplicate::(Ord a) => [a] -> [a]
     rmDuplicate xs = ?
@@ -574,11 +589,11 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
 
-연습18) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
+연습17) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
 
-연습19) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
+연습18) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
 
-연습20) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
+연습19) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
 
   >1) a < b < c
 
@@ -607,7 +622,7 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 
 이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다. 또는 ghc t 만 해도 됩니다.
 
-연습21) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
+연습20) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
 <pre>
         <b>3</b>
        <b>7</b> 4
@@ -619,12 +634,12 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 <a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
-연습22) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
+연습21) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
 <pre>
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
-연습23) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
+연습22) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
 
     3+1
     2+2
@@ -642,12 +657,12 @@ Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. �
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
-연습24) concatMap 함수를 직접 구현하세요.
+연습23) concatMap 함수를 직접 구현하세요.
 
     my_concatMap:: (a -> [b]) -> [a] -> [b]
     my_concatMap f xs = ?
 
-연습25) concatMap 함수를 써서 filter 함수를 구현하세요.
+연습24) concatMap 함수를 써서 filter 함수를 구현하세요.
 
     my_filter f xs = concatMap ? ?
 
@@ -726,7 +741,7 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
 
 WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
 
-연습26) getCount 함수를 완성하세요.
+연습25) getCount 함수를 완성하세요.
 
     getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
 
@@ -788,9 +803,9 @@ totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수�
       totalCount <- foldlM (countAndPrint options) (0,0,0) files
       printCount options totalCount
 
-연습27) countAndPrint 함수를 구현해 보세요.
+연습26) countAndPrint 함수를 구현해 보세요.
 
-연습28) wc utility를 최종 완성해 보세요.
+연습27) wc utility를 최종 완성해 보세요.
 
 ## 더 읽을 거리
 #### 람다 계산법 Lambda Calculus
