@@ -185,10 +185,12 @@ foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구�
     my_reverse:: [a] -> [a]
     my_reverse = foldl ? ?
 
-## 첫 1시간
-먼저 숙제를 함께 복기하겠습니다.
+## 숙제 복기 시간
+시작하기에 앞서 숙제를 함께 복기해 보겠습니다.
 
-다음으로 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
+## 첫 1시간
+
+foldr 함수를 재귀적으로 직접 구현해보겠습니다.
 
     my_foldr:: (a -> b -> b) -> b -> [a] -> b
     my_foldr f base [] = base
@@ -330,7 +332,7 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
     merge xs [] = xs
     merge xall@(x:xs) yall@(y:ys) = ?
 
-연습9) mergeSort 함수를 구현하세요.
+연습9) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
 
     mergeSort:: Ord a => [a] -> [a]
     mergeSort xs = ?
@@ -353,25 +355,36 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
     type String = [Char]
 
-이러한 것을 type synonym이라고 부릅니다.
+이러한 것을 type synonym이라고 부릅니다. Programmer가 일반적인 data type에 특별한 의미를 주기 위해 사용합니다.
 
-이번에는 실제로 새로운 type을 정의해 보겠습니다.
+    type Address = String
+    myHomeAddr::Address
+    myHomeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Earth"
 
-    > data Gender = Male | Female deriving (Show, Eq)
+이번에는 실제로 새로운 type을 정의해 보겠습니다. data 라는 keyword를 사용하면 사용자 정의 data type을 만들 수 있습니다.
 
-이렇게 하면 Gender 라는 새로운 type이 생겼고 해당 type의 값은 Male 또는 Female입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
-deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 이렇게 써야 Male과 Female 이라는 값을 문자열로 출력 가능합니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
+    data Gender = Male | Female | Unknown deriving (Show, Eq)
+
+이렇게 하면 Gender 라는 새로운 type이 생깁니다. 해당 type의 값은 Male 또는 Female 또는 Unknown입니다. 이 세 가지 값은 방금 우리가 직접 전역으로 선언해 준 것입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
+deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 Male, Female, Unknown 이라는 값을 문자열로 출력할 수 있다는 것을 컴파일러에게 알려줍니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
 
 이제 새로 만든 Gender type을 이용하는 함수를 하나 만들겠습니다.
 
     sayHello:: Gender -> String
     sayHello gender
         | gender == Male = "Good morning, sir."
-        | otherwise = "Good morning, ma'am."
+        | gender == Female = "Good morning, ma'am."
+        | otherwise = "Good morning, whoever you are."
 
 새로운 문법이 나왔는데, 수직선(|)을 사용하여 조건 분기하는 이러한 문법을 guard 라고 부릅니다. guard 문법의 otherwise 부분은 if..then..else 구문의 else에 해당합니다.
 
-또 다른 자료형을 만들어보겠습니다. 이번에 이진트리를 만들겠습니다.
+자료형은 재귀적으로도 선언이 가능합니다. 자연수를 뜻하는 자료형을 만들어 보겠습니다.
+
+    data Natural = One | Succ Natural deriving (Show, Eq)
+
+이제 Natural 자료형은 값으로 One, Succ One, Succ (Succ One), Succ (Succ (Succ One)), ... 등 무한개의 값을 가질 수 있습니다.
+
+또 다른 재귀적인 구조의 자료형을 만들어보겠습니다. 이진트리를 만들겠습니다.
 
     data BinTree a = Empty | Fork a (BinTree a) (BinTree a) deriving Show
     myTree = Fork 'a' (Fork 'b' Empty Empty) (Fork 'c' Empty (Fork 'd' Empty Empty))
@@ -394,7 +407,7 @@ BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전�
 
 위의 코드에서 toUpper 함수는 소문자를 대문자로 바꾸어 주는 함수로 Data.Char 모듈에 있기 때문에 사용하려고 해당모듈을 import 하였습니다.
 
-그런데 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다.
+그런데 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
 
     class Functor f where
         fmap :: (a -> b) -> f a -> f b
@@ -444,7 +457,6 @@ Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료
     foldforest f g ts = ?
 
 연습12) 위의 foldforest 함수를 완성해 보세요.
-
 
 ## 세 번째 시간
 List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
