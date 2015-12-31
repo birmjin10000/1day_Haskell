@@ -7,7 +7,7 @@ Haskell Programming을 딱 하루만 배워봅시다.
 First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Pattern matching, List comprehension, Functor, Monoid, A value with context
 
 ## 사전 학습
-<a href="https://www.haskell.org/platform/">Haskell platform</a>을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다.
+<a href="https://www.haskell.org/platform/">Haskell platform</a>을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다. 이 문서에는 편의상 한 줄 주석을 해당 expressio의 실행결과를 표시할 때 사용하도록 하겠습니다.
 
     > [1,2,3] -- [1,2,3]
 
@@ -40,8 +40,7 @@ Haskell 에서는 모든 동작에 있어서 함수가 중심이 됩니다. 위�
 가령 sum 함수의 경우 "sum [1,2,3]" 꼴로 호출이 되었습니다. Haskell에서는 함수를 값에 적용하는 function application이 모든 연산 중에서 가장 우선 순위가 높습니다. function application 연산자는 공백입니다. 그래서 Haskell에서 함수 호출은 함수이름 + 공백 + 함수인자 꼴로 이루어집니다. f 가 함수이고 x 가 인자일 때 f x 가 곧 함수 호출이 됩니다.
 sum 함수는 List를 하나 받아서 그List의 원소들의 합을 구하는 함수 입니다. 다시 말해 sum함수의 입력은 "List 하나"이고 출력은 "값 하나" 꼴이 됩니다. 이렇듯 함수의 입력과 출력관계를 정의할 수 있는데 이를 함수의 type이라고 합니다. ghci에서는 :type 명령(혹은 :t) 을 사용하여 어떤 함수의 type을 알 수 있습니다.
 
-    > sum [1,2,3]
-    6
+    > sum [1,2,3] -- 6
     > :t sum
     sum :: (Num a, Foldable t) => t a -> a
 
@@ -49,8 +48,7 @@ sum의 type에서 Num이나 Foldable은 나중에 다시 다루겠습니다. 여
 
 참고로 모든 함수는 반드시 소문자로 시작해야 합니다. 즉, 함수이름으로 Sum 은 불가능합니다. Haskell에서는 대소문자가 문법적으로 의미가 있습니다.
 
-    > take 2 [1,2,3]
-    [1,2]
+    > take 2 [1,2,3] -- [1,2]
     > :t take
     take :: Int -> [a] -> [a]
 
@@ -65,22 +63,19 @@ Haskell에서 type 은 모든 것에 있습니다.
 
 함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
 
-    > map (*2) [1,2,3]
-    [2,4,6]
+    > map (*2) [1,2,3] -- [2,4,6]
     > :t map
     map :: (a -> b) -> [a] -> [b]
 
 map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b] 꼴 List 를 결과로 내놓는 함수 입니다.
 
-    > filter odd [1,2,3]
-    [1,3]
+    > filter odd [1,2,3] -- [1,3]
     > :t filter
     filter :: (a -> Bool) -> [a] -> [a]
 
 filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [a] 꼴 List 하나를 결과로 내놓는 함수입니다. (a -> Bool) 꼴 함수는 많이 등장하는 형태이어서 특별히 Predicate 이라고 부릅니다.
 
-    > foldr (+) 0 [1,2,3]
-    6
+    > foldr (+) 0 [1,2,3] -- 6
     > :t foldr
     foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
 
@@ -135,10 +130,8 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 그 다음, (x:xs) 와 같은 것을 pattern matiching이라고 합니다. 다음 코드를 보세요.
 
     > let (a:as) = [1,2,3]
-    > a
-    1
-    > as
-    [2,3]
+    > a -- 1
+    > as -- [2,3]
 
 즉, List [1,2,3] 을 (a:as) 꼴 패턴에 대응하여 각각 a 와 as 의 값을 정하는 것입니다.
 다음의 코드에서 my\_filter 함수의 정의부가 두 번 등장하는 것도 pattern matching입니다.
@@ -159,15 +152,15 @@ foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구�
 
 사전 학습은 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 수료 요건 중 하나입니다.
 
-숙제1) foldr 함수를 이용해서 sum 함수를 직접 구현해보세요.
+숙제1) foldr 함수를 써서 sum 함수를 직접 만들어보세요.
 
     > let my_sum:: Num a => [a] -> a; my_sum xs = ?
 
-숙제2) foldr 함수를 이용해서 map 함수를 직접 구현해보세요.
+숙제2) foldr 함수를 써서 map 함수를 직접 만들어보세요.
 
     > let my_map:: (a -> b) -> [a] -> [b]; my_map f xs = ?
 
-숙제3) reverse 함수를 foldl을 써서 구현해 보세요.
+숙제3) foldl 함수를 써서 reverse 함수를 직접 만들어 보세요.
 
     my_reverse:: [a] -> [a]
     my_reverse = foldl ? ?
@@ -181,14 +174,13 @@ foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구�
     my_foldr f base [] = base
     my_foldr f base (x:xs) = ?
 
-연습1) foldl 함수를 재귀적으로 구현해 보세요.
+연습1) foldl 함수를 위의 foldr 함수처럼 재귀적으로 직접 구현해 보세요.
 
     my_foldl:: (b -> a -> b) -> b -> [a] -> b
     my_foldl f base [] = base
     my_foldl f base (x:xs) = ?
 
-List에 대해 더 알아봅시다.
-zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 로 묶어줍니다.
+List에 대해 더 알아봅시다. zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 로 묶어줍니다.
 
     > zip [1,2,3] ['a','b','c']
     [(1,'a'),(2,'b'),(3,'c')]
@@ -199,15 +191,28 @@ zip 함수의 실행 결과에서 새로운 자료형이 등장합니다. 바로
 
 Tuple은 위의 예처럼 원소 두 개짜리 뿐만 아니라 (1,'a',True) 같은 세 개, 네 개 짜리도 가능합니다. 원소가 두 개짜리인 Tuple을 특별히 Pair라고 부르는데 다음과 같은 함수를 사용할 수 있습니다.
 
-    > fst (1,'a')
-    1
-    > snd (1,'a')
-    'a'
+    > fst (1,'a') -- 1
+    > snd (1,'a') -- 'a'
+
+특별히 Pair를 만들 때는 (,) 연산자를 쓸 수도 있습니다.
+
+    > (,) 2 True -- (2, True)
+
+원소가 세개 짜리인 Tuple, 즉 Triple들을 List 세 개로부터 만들려면 어떻게 해야 할까요? Haskell에서는 zip3 라는 함수도 있습니다. 참고로 zip7 까지 함수가 있습니다.
+
+    > zip3 [1,2] ['a','b'] [True, False]
+    [(1,'a',True),(2,'b',False)]
 
 zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주어진 함수를 가지고 두 개 List의 각 원소에 대한 연산을 수행합니다.
 
     > zipWith (+) [1,2,3] [10,20,30,40]
     [11,22,33]
+
+사실 앞서 배운 zip 함수는 zipWith 함수를 써서 구현할 수 있습니다.
+
+    > let zip = zipWith (,)
+
+zipWith 함수도 zip함수처럼 zipWith3 부터 zipWith7 까지 인자 갯수에 따라 자매 함수들이 있습니다.
 
 연습2) zipWith 를 재귀적으로 구현해 보세요.
 
@@ -217,21 +222,16 @@ zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주�
 
 List를 반복적으로 편리하게 만들어 주는 함수들이 있습니다.
 
-    > replicate 3 1
-    [1,1,1]
-    > take 3 (repeat [1,2])
-    [[1,2],[1,2],[1,2]]
-    > take 3 (cycle [1,2])
-    [1,2,1]
+    > replicate 3 1 -- [1,1,1]
+    > take 3 (repeat [1,2]) -- [[1,2],[1,2],[1,2]]
+    > take 3 (cycle [1,2]) -- [1,2,1]
 
-그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 이렇게 무한수열을 아주 편하게 사용할 수 있는데 그 이유는 Haskell에서는 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. List를 선언할 때 무한수열 형태로 선언할 수도 있습니다. List의 끝을 정해주지 않으면 무한수열이 됩니다.
+그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 무한수열을 아주 쉽게 사용할 수 있는데 그 이유는 Haskell에서는 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. List를 선언할 때 List의 끝을 정해주지 않으면 무한수열 형태로 선언할 수 있습니다.
 
-    > take 3 [1..]
-    [1,2,3]
-    > take 5 [1,3..]
-    [1,3,5,7,9]
+    > take 3 [1..] -- [1,2,3]
+    > take 5 [1,3..] -- [1,3,5,7,9]
 
-Lazy evalution에서는 값이 필요할 때까지 expression은 expression그대로 남아 있습니다. 예를 들어 [1..] 라는 expression은 어떠한 값도 아닌 그냥 expression입니다. 그러다가 take 3 함수가 오면 그제서야 맨 앞 3개 요소를 값으로 평가합니다. 즉 1:2:3:[4..] 가 되어버립니다. [4..] 부분은 여전히 expression으로 남아있게 됩니다.
+Lazy evalution에서는 값이 필요할 때까지 expression은 expression그대로 남아 있습니다. 예를 들어 [1..] 라는 expression은 어떠한 값도 아닌 그냥 expression입니다. 그러다가 take 2 함수처럼 값을 요구하는 것이 오면 그제서야 맨 앞 2개 요소를 값으로 평가합니다. 즉 1:2:[3..] 가 되어버립니다. [3..] 부분은 여전히 expression으로 남아있게 됩니다.
 
 무한수열을 만드는 또 다른 함수는 iterate 입니다.
 
