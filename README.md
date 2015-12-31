@@ -195,7 +195,8 @@ foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구�
     my_foldr f base (x:xs) = ?
 
 이는 그림을 그려보면 직관적으로 코드를 작성할 수 있습니다. 다음 그림을 봅시다.
-<img src="foldr_implementation.png" style="border:2px outset rgb(64,64,64)">
+<img src="foldr_implementation.png" width=406 height=156 style="border:3px solid blue">
+
 즉, 함수 f의 두번째 인자는 해당 부분만큼을 또 다시 foldr한 것이 됩니다. 따라서 다음처럼 코드를 작성할 수 있습니다.
 
     f x (my_foldr f base xs)
