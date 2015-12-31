@@ -7,7 +7,13 @@ Haskell Programming을 딱 하루만 배워봅시다.
 First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Pattern matching, List comprehension, Functor, Monoid, A value with context
 
 ## 사전 학습
-<a href="https://www.haskell.org/platform/">Haskell platform</a>을 설치합니다. 설치후 ghci를 실행합니다. Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다. 이 문서에는 편의상 한 줄 주석을 해당 expressio의 실행결과를 표시할 때 사용하도록 하겠습니다.
+<a href="https://www.haskell.org/platform/">Haskell platform</a>을 설치합니다. 설치후 ghci를 실행합니다.
+
+    $ ghci
+    GHCi, version 7.10.2: http://www.haskell.org/ghc/  :? for help
+    >
+
+Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다. 이 문서에는 편의상 한 줄 주석을 expression의 실행결과를 표시할 때 사용하도록 하겠습니다.
 
     > [1,2,3] -- [1,2,3]
 
@@ -75,14 +81,24 @@ map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b]
 
 filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [a] 꼴 List 하나를 결과로 내놓는 함수입니다. (a -> Bool) 꼴 함수는 많이 등장하는 형태이어서 특별히 Predicate 이라고 부릅니다.
 
-    > foldr (+) 0 [1,2,3] -- 6
+    > foldl (/) 1000 [2,5]
+    100.0
+    > foldr (/) 1000 [2,5]
+    400.0
+
+fold함수는 folding 방향에 따라 foldl과 foldr 두 개의 함수가 있습니다.
+
+    > foldr (^) 2 [2,3] -- 512
     > :t foldr
     foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
-
-foldr 함수는 (a -> b -> b) 꼴 함수 하나와 b 꼴 값 하나, 그리고 t a 꼴 List 하나(사실 Foldable은 List 보다 좀 더 포괄적인 개념이지만 일단 여기서는 List에 대해서만 생각하기로 합니다)를 입력으로 받아서 b 꼴 값을 하나 내놓는 함수 입니다. foldr 함수는 이름 그대로 List처럼 여러 요소를 갖고 있는 자료형을 하나의 값으로 접는(fold) 일을 합니다. 여기서 끝에 붙은 r 은 right의 뜻으로 foldr은 fold하는 방향이 오른쪽에서 왼쪽으로(*right* to left) 진행됩니다. fold가 왼쪽에서 오른쪽으로(*left* to right) 진행되는 foldl 함수도 물론 있습니다. 동풍이 동쪽에서 불어오는 바람이듯이 foldr 은 오른쪽에서부터 접어들어갑니다.
-
+    > foldl (^2) 2 [2,3] -- 64
     > :t foldl
     foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
+
+먼저 foldr 함수는 (a -> b -> b) 꼴 함수 하나와 b 꼴 값 하나, 그리고 t a 꼴 List 하나(사실 Foldable은 List 보다 좀 더 포괄적인 개념이지만 일단 여기서는 List에 대해서만 생각하기로 합니다)를 입력으로 받아서 b 꼴 값을 하나 내놓는 함수 입니다. foldr 함수는 이름 그대로 List처럼 여러 요소를 갖고 있는 자료형을 하나의 값으로 접는(fold) 일을 합니다. 여기서 끝에 붙은 r 은 right의 뜻으로 foldr은 접기가 오른쪽에서 왼쪽으로(*right* to left) 진행됩니다. 반대로 foldl은 왼쪽에서 오른쪽으로(*left* to right) 접어들어갑니다. 동풍이 동쪽에서 불어오는 바람이듯이 foldr 은 오른쪽에서부터 접어들어가고 foldl은 왼쪽에서부터 접어들어갑니다.
+
+다음 그림이 foldr 의 동작을 설명해 주고 있습니다.
+<img src="foldr_explained.png">
 
 foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 특히 foldr 함수는 다른 고차 함수들을 만들 수 있는 함수이므로 매우 중요합니다. 예를 들어 filter 함수를 재귀적으로 다음처럼 만들 수 있습니다.
 
@@ -112,10 +128,10 @@ ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합�
 
 Haskell source 파일을 작성할 때는 off-side rule을 지켜야 합니다. 이는 축구의 off-side rule과 똑같은 맥락이며 들여쓰기를 할 때 계층을 맞추어주어야 합니다. 예를 들어 다음과 같이 작성하면 파일을 불러올 때 오류가 납니다.
 
-    compareLength::String->String->Ordering
-     compareLength x y = length x `compare` length y
+    compareLength::String -> String -> Ordering
+     compareLength x y = compare (length x) (length y)
 
-그 이유는 같은 compareLength 함수의 type signature와 함수 정의부는 정의의 계층이 같기에 서로 들여쓰기 계층이 맞아야 하는데, 위에서는 compareLength함수 정의부가 그것의 type signature와 들여쓰기 깊이가 다르기 때문입니다. 참고로 들여쓰기를 지키는 대신 { 와 } 를 써서 명시적으로 묶어줄 수도 있습니다. Off-side rule을 가지는 프로그래밍 언어는 이외에도 Python, F# 등이 있습니다.
+그 이유는 같은 compareLength 함수의 type signature와 함수 정의부는 정의의 계층이 같기에 서로 들여쓰기 계층이 맞아야 하는데, 위에서는 compareLength함수 정의부가 그것의 type signature와 들여쓰기 깊이가 다르기 때문입니다. 참고로 들여쓰기를 지키는 대신 { 와 } 를 써서 명시적으로 묶어주어도 됩니다. Off-side rule을 가지는 프로그래밍 언어는 이외에도 Python, F# 등이 있습니다.
 
 foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가 있는데, 이 함수들은 기본값(base)을 받지 않습니다. 즉, List에서 첫번째로 fold하는 원소를 기본값으로 삼습니다.
 
@@ -147,7 +163,11 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 
     > let my_filter f xs = foldr (\x base -> if (f x) then x:base else base) [] xs
 
-위 코드에서 (\x base -> ...) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다. x와 base는 변수 이름입니다.
+위 코드에서 (\x base -> ...) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다. (\x base -> ...) 부분 전체는 이름 없는 함수이며 두 개의 인자 x와 base를 받습니다. 화살표 왼쪽은 인자 이름 목록이고 화살표 오른쪽은 함수의 구현부입니다. 즉, 다음처럼 사용할 수 있습니다.
+
+    > (\x y -> x + y) 2 5
+    7
+
 foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
 
 사전 학습은 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 수료 요건 중 하나입니다.
