@@ -341,10 +341,8 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
     > :t words
     words :: String -> [String]
-    > words "Hello, world!"
-    ["Hello,","world!"]
-    > unwords ["Jack","said","hello"]
-    "Jack said hello"
+    > words "Hello, world!" -- ["Hello,","world!"]
+    > unwords ["Jack","said","hello"] -- "Jack said hello"
 
 그런데 "Hello, world!" 의 type은 String이 아니라 [Char] 로 나옵니다.
 
@@ -574,6 +572,8 @@ lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
     Nothing
     > :t lookup
     lookup :: Eq a => a -> [(a, b)] -> Maybe b
+
+Maybe와 같은 type으로는 Java8의 Optional, Rust의 Option, Scala의 Option 등이 있습니다.
 
 이번 시간 마지막 내용으로 함수의 합성에 대해 알아보겠습니다.
 
@@ -852,10 +852,10 @@ totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수�
 나타낼때 역슬래쉬를 쓰는 것도 λ 문자와 가장 비슷해 보이는 문자여서 그렇습니다.
 
 ####범주론 Category Theory
-Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 넣었기 때문입니다. 하지만 Haskell을 더 잘 알기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 아주 일부일 뿐입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
+Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 넣었기 때문입니다. 하지만 Haskell로 프로그래밍을 잘 하기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 일부입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
 그러므로 여기서 소개하는 Category Theory는 가볍게 읽어보고 넘어가시기 바랍니다.
 
-우리가 중고등학교 시절 수학책에서 가장 먼저 나오는 단원이 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리인데, 범주론 소개 역시 집합에서 출발하겠습니다.
+중고등학교 수학책에서 가장 먼저 나오는 단원은 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리인데, 범주론  역시 집합과 관련있습니다.
 
 Set: 우리가 알고 있는 그 집합
 
