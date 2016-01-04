@@ -15,7 +15,9 @@ First-class citizen, Higher-order function, Lambda expression, Currying, Partial
 
 Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다. 이 문서에는 편의상 한 줄 주석을 expression의 실행결과를 표시할 때 사용하도록 하겠습니다.
 
-    > [1,2,3] -- [1,2,3]
+```haskell
+[1,2,3] -- [1,2,3]
+```
 
 List를 만들 때는 여러 가지 편리한 방법이 있습니다.
 
