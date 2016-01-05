@@ -2,7 +2,7 @@
 
 Haskell Programming을 딱 하루만 배워봅시다.
 
-7시간 동안 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념 및 용어에 익숙해지길 기대합니다.
+사전학습을 포함하여 약 8시간 가량 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념 및 용어에 익숙해지길 기대합니다.
 
 First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, A value with context
 
@@ -345,6 +345,9 @@ scanl (+) 0 [1..10] -- [0,1,3,6,10,15,21,28,36,45,55]
 scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
 ```
 
+scanl 함수의 동작은 다음 수식처럼 표현할 수 있습니다.
+<img src="scanl_explained.png">
+
 연습5) iterate 함수를 scanl을 써서 구현해 보세요.
 
 ```haskell
@@ -353,7 +356,9 @@ iterate f x = scanl ? ? ?
 
 연습6) fibonacci 수열을 scanl을 써서 만들어보세요.
 
-    > let fib = 1:scanl (+) ? ?
+```haskell
+fib = 1:scanl (+) ? ?
+```
 
 List를 만드는 또 다른 방법으로는 List comprehension이 있습니다.
 
