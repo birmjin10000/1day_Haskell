@@ -57,7 +57,7 @@ sum 함수는 List를 하나 받아서 그List의 원소들의 합을 구하는 
     sum :: (Num a, Foldable t) => t a -> a
 
 함수 이름 sum 뒤에 나오는 :: 기호 뒷 부분이 sum 함수의 type입니다. 그 중에서도 => 기호 뒷부분이 핵심입니다. 즉, 여기서는 "t a -> a" 부분만 보면 됩니다. => 기호 앞에 나오는 Num이나 Foldable은 나중에 다시 다루겠습니다. t a -> a 를 해석해 보면 입력(t a)으로는 '리스트 하나'를 받고 출력(a) 으로는 '값 하나' 를 내놓는 함수가 됩니다.
-
+ 화살표 기호 -> 의 앞과 뒤가 각각 입력과 출력을 뜻합니다. 즉, "입력" -> "출력" 꼴이 됩니다. 화살표가 여러 개 있을 때는 마지막 화살표의 뒤가 출력이 되고 그 이전의 것들은 모두 입력이 됩니다. 즉, a -> b -> c -> d 꼴 함수인 경우 "입력1" -> "입력2" -> "입력3" -> "출력" 을 뜻합니다.
 참고로 모든 함수는 반드시 소문자로 시작해야 합니다. 즉, 함수이름으로 Sum 은 불가능합니다. Haskell에서는 대소문자가 문법적으로 의미가 있습니다.
 
     > take 2 [1,2,3] -- [1,2]
@@ -145,8 +145,10 @@ compareLength::String -> String -> Ordering
 
 foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가 있는데, 이 함수들은 기본값(base)을 받지 않습니다. 즉, List에서 첫번째로 fold하는 원소를 기본값으로 삼습니다.
 
-    > foldr1 (+) [1,2,3,4] -- 10
-    > foldl1 (++) ["I","Love","You"] -- "ILoveYou"
+```haskell
+foldr1 (+) [1,2,3,4] -- 10
+foldl1 (++) ["I","Love","You"] -- "ILoveYou"
+```
 
 주의할 점은 이 함수들은 기본값이 애초에 없기 때문에 비어있는 List에 적용하면 에러가 납니다.
 
@@ -156,16 +158,18 @@ foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가
 그 다음, (x:xs) 와 같은 것을 pattern matiching이라고 합니다. 다음 코드를 보세요.
 
     > let (a:as) = [1,2,3]
-    > a -- 1
-    > as -- [2,3]
+    > a
+    1
+    > as
+    [2,3]
 
 즉, List [1,2,3] 을 (a:as) 꼴 패턴에 대응하여 각각 a 와 as 의 값을 정하는 것입니다.
 다음의 코드에서 my\_filter 함수의 정의부가 두 번 등장하는 것도 pattern matching입니다.
 
 ```haskell
 my_filter f [] = []
-my_filter f (x:xs) = if (f x)
-                     then x:(my_filter f xs)
+my_filter f (x:xs) = if f x
+                     then x:my_filter f xs
                      else my_filter f xs
 ```
 
@@ -173,7 +177,9 @@ my_filter f (x:xs) = if (f x)
 
 우리가 filter 함수를 재귀적으로 구현했는데, foldr 함수는 재귀를 보다 추상화한 함수이기 때문에 재귀적으로 구현할 수 있는 코드는 foldr 로도 구현할 수 있습니다. 이제 filter 함수를 foldr 로 구현해보겠습니다.
 
-    > let my_filter f xs = foldr (\x base -> if (f x) then x:base else base) [] xs
+```haskell
+my_filter f xs = foldr (\x base -> if (f x) then x:base else base) [] xs
+```
 
 위 코드에서 (\x base -> ...) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다. (\x base -> ...) 부분 전체는 이름 없는 함수이며 두 개의 인자 x와 base를 받습니다. 화살표 왼쪽은 인자 이름 목록이고 화살표 오른쪽은 함수의 구현부입니다. 즉, 다음처럼 사용할 수 있습니다.
 
@@ -182,15 +188,21 @@ my_filter f (x:xs) = if (f x)
 
 foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
 
-사전 학습은 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 수료 요건 중 하나입니다.
+사전 학습은 여기까지입니다. 다음 세 개의 숙제를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 참석 요건입니다.
 
 숙제1) foldr 함수를 써서 sum 함수를 직접 만들어보세요.
 
-    > let my_sum:: Num a => [a] -> a; my_sum xs = ?
+```haskell
+my_sum:: Num a => [a] -> a
+my_sum xs = ?
+```
 
 숙제2) foldr 함수를 써서 map 함수를 직접 만들어보세요.
 
-    > let my_map:: (a -> b) -> [a] -> [b]; my_map f xs = ?
+```haskell
+my_map:: (a -> b) -> [a] -> [b]
+my_map f xs = ?
+```
 
 숙제3) foldl 함수를 써서 reverse 함수를 직접 만들어 보세요.
 
@@ -207,9 +219,9 @@ my_reverse = foldl ? ?
 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
 
 ```haskell
-    my_foldr:: (a -> b -> b) -> b -> [a] -> b
-    my_foldr f base [] = base
-    my_foldr f base (x:xs) = ?
+my_foldr:: (a -> b -> b) -> b -> [a] -> b
+my_foldr f base [] = base
+my_foldr f base (x:xs) = ?
 ```
 
 이는 그림을 그려보면 직관적으로 코드를 작성할 수 있습니다. 다음 그림을 봅시다.
@@ -218,7 +230,7 @@ foldr 함수를 재귀적으로 직접 구현해보겠습니다.
 즉, 함수 f의 두번째 인자는 해당 부분만큼을 또 다시 foldr한 것이 됩니다. 따라서 다음처럼 코드를 작성할 수 있습니다.
 
 ```haskell
-    f x (my_foldr f base xs)
+f x (my_foldr f base xs)
 ```
 
 연습1) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현해 보세요.
@@ -301,11 +313,15 @@ take 5 (iterate (map (*2)) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,3
 
 연습3) iterate 함수를 재귀적으로 구현해 보세요.
 
-    > let iterate f x = ?
+```haskell
+iterate f x = ?
+```
 
 연습4) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
 
-    > let fib = 1:1:zipWith (+) ? ?
+```haskell
+fib = 1:1:zipWith (+) ? ?
+```
 
 fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함수는 값을 계속 누적해 나갑니다. scanl 과 scanr 함수가 있습니다.
 
@@ -316,7 +332,9 @@ scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
 
 연습5) iterate 함수를 scanl을 써서 구현해 보세요.
 
-    > let iterate f x = scanl ? ? ?
+```haskell
+iterate f x = scanl ? ? ?
+```
 
 연습6) fibonacci 수열을 scanl을 써서 만들어보세요.
 
@@ -343,11 +361,12 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
 이제 isPrime 함수를 써서 다음처럼 소수의 목록을 구할 수 있습니다.
 
-    > let prime = filter isPrime [1..]
-    > take 10 prime
-    [2,3,5,7,11,13,17,19,23,29]
+```haskell
+prime = filter isPrime [1..]
+take 10 prime -- [2,3,5,7,11,13,17,19,23,29]
+```
 
-연습7) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
+연습7) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요. 참고로 아래 코드에서 /= 연산자는 "같지 않음"을 검사합니다. 수학의 같지 않음을 뜻하는 기호 ≠ 와 닮아있습니다.
 
 ```haskell
 sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
@@ -396,8 +415,8 @@ type String = [Char]
 
 ```haskell
 type Address = String
-myHomeAddr::Address
-myHomeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Earth"
+myOfficeAddr::Address
+myOfficeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Earth"
 ```
 
 이번에는 실제로 새로운 type을 정의해 보겠습니다. data 라는 keyword를 사용하면 사용자 정의 data type을 만들 수 있습니다.
@@ -416,7 +435,7 @@ sayHello:: Gender -> String
 sayHello gender
     | gender == Male = "Good morning, sir."
     | gender == Female = "Good morning, ma'am."
-    | otherwise = "Good morning, whoever you are."
+    | otherwise = "Good morning, mysterious people."
 ```
 
 새로운 문법이 나왔는데, 수직선(|)을 사용하여 조건 분기하는 이러한 문법을 guard 라고 부릅니다. guard 문법의 otherwise 부분은 if..then..else 구문의 else에 해당합니다.
@@ -429,7 +448,7 @@ data Natural = One | Succ Natural deriving (Show, Eq)
 
 이제 Natural 자료형은 값으로 One, Succ One, Succ (Succ One), Succ (Succ (Succ One)), ... 등 무한개의 값을 가질 수 있습니다.
 
-또 다른 재귀적인 구조의 자료형을 만들어보겠습니다. 이진트리를 만들겠습니다.
+재귀적인 구조의 자료형을 하나 더 만들어보겠습니다. 이진트리를 만들겠습니다.
 
 ```haskell
 data BinTree a = Empty | Fork a (BinTree a) (BinTree a) deriving Show
