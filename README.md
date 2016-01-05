@@ -116,7 +116,16 @@ foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 
     Prelude| :}
 
 위 코드에서 새로 나온 것들이 몇 개 있습니다. 우선, ghci 에서 여러 줄에 걸쳐 코드를 작성하려면 :{ 로 시작하고 :} 로 끝내면 됩니다. 이 때, :{ 와 :} 가 있는 줄에는 다른 것은 쓰지 않아야 합니다.
-ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합니다. 그래서 이제부터는 여러 소스 파일을 작성하고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 소스파일에서 함수 정의할 때는 let을 쓰지 않습니다.
+또한 let 이 나왔는데, ghci에서는 어떠한 변수에 값을 줄때는 let 구문을 써야 합니다. 이러한 것을 binding 이라고 합니다. Haskell과 같은 함수형 프로그래밍에서는 변수 할당(assignment)의 개념이 존재하지 않습니다. 대신 binding이라는 말을 쓰며 한 번 binding된 것은 이후에 값이 바뀌지 않습니다. 다음 코드를 보세요.
+
+    > let a = 1
+    > a = 2
+
+    <interactive>:3:3: parse error on input ‘=’
+
+변수 a 에 1이라는 값을 binding한 후에 다시 변수 a에 2라는 값을 할당하려고 하니 에러가 났습니다. 우리가 기존에 익숙한 C, Java와 같은 언어에서는 변수 assignment가 매우 자연스러우나 함수형 언어에서는 한 번 값이 변수에 묶인 후에는 또 다시 binding 하지 않는 이상 값은 변하지 않습니다.
+
+ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합니다. 그래서 이제부터는 여러 소스 파일을 작성하고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 그리고 소스파일에서 binding 할 때는 let을 쓰지 않습니다.
 
 ```haskell
 {-
@@ -377,7 +386,7 @@ prime = ?
 
 첫 시간에 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
 
-연습8) merge 함수를 구현하세요.
+연습8) merge 함수를 구현하세요. 아래 코드에서 @ 기호를 사용한 부분은 as pattern 이라고 부르는 것으로 pattern matching된 전체 부분을 뜻합니다. 가령 xall@(x:y:ys) = [1,2,3] 인 경우에 x, y, ys 는 각각 1, 2, [3] 에 binding되고 xall 은 pattern matching된 전체 부분인 [1,2,3] 에 binding됩니다.
 
 ```haskell
 merge:: Ord a => [a] -> [a] -> [a]
@@ -463,13 +472,14 @@ BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전�
     > :t myTree2
     myTree2 :: Num a => Tree a
 
-새로운 문법이 나왔는데, => 부분은 Typeclass constraint라고 부르는 부분으로 type parameter 'a'가 어느 Typeclass에 속하는지를 밝히는 것입니다.
+사전 학습에서 나온 => 기호에 대해 여기서 설명하겠습니다. 이는 Typeclass constraint라고 부르는 부분으로 type parameter 'a'가 어느 Typeclass에 속하는지를 밝히는 것입니다. 즉, Num 이라는 Typeclass에 속하는 Int, Float 등의 type이 해당 위치에 올 수 있다는 뜻입니다.
 
 우리가 만든 이진 트리 자료형도 List에서 쓰던 map 같은 함수를 쓸 수 있으면 좋겠습니다. 가령 다음처럼.
 
-    > import Data.Char
-    > treeMap toUpper myTree
-    Fork 'A' (Fork 'B' Empty Empty) (Fork 'C' Empty (Fork 'D' Empty Empty))
+```haskell
+import Data.Char
+treeMap toUpper myTree -- Fork 'A' (Fork 'B' Empty Empty) (Fork 'C' Empty (Fork 'D' Empty Empty))
+```
 
 위의 코드에서 toUpper 함수는 소문자를 대문자로 바꾸어 주는 함수로 Data.Char 모듈에 있기 때문에 사용하려고 해당모듈을 import 하였습니다.
 
@@ -668,7 +678,7 @@ find 계열 함수들을 살펴봅시다.
 이 함수들의 type에는 공통적으로 Maybe가 나옵니다. Maybe는 값이 있거나 없는 경우에 사용합니다. 보통 값이 없는 경우에 null check을 많이 합니다. 하지만 null check을 하는 것은 무척 오류가 생기기 쉽습니다. 오죽하면 1965년에 null 을 처음으로 도입한 Tony Hoare가 자신이 null을 만든 것은 Billion Dollar Mistake라는 고백을 하기도 했습니다. Maybe와 같은 type은 이러한 것으로부터 자유롭습니다.
 
 ```haskell
-    data Maybe a = Nothing | Just a
+data Maybe a = Nothing | Just a
 ```
 
 lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
@@ -754,15 +764,16 @@ rmDuplicate xs = ?
 
 다음 두 문제를 풀기 위해서는 몇 가지 더 알아야 할 내용이 있습니다. lines 함수는 String을 받아서 newline character를 구분자 삼아 List로 바꾸는 일을 합니다.
 
-    > lines "abc\nxyz"
-    ["abc","xyz"]
+```haskell
+lines "abc\nxyz" -- ["abc","xyz"]
+```
 
 read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 Int로 바꾸었습니다.
 
-    > read "52"::Int
-    52
-    > read "5.8"::Float
-    5.8
+```haskell
+read "52"::Int -- 52
+read "5.8"::Float -- 5.8
+```
 
 파일을 읽고 쓰는 IO 처리는 Haskell에서는 do block안에서 합니다.
 
@@ -826,7 +837,7 @@ my_filter f xs = concatMap ? ?
 
 연습문제 23의 풀이를 보면, 어떤 패턴이 생각납니다. Predicate을 만족하면 값이 있고 그렇지 않으면 값이 없게 됩니다. 값이 있거나 없을 수 있는 경우에 우리는 Maybe 를 사용했습니다. 즉, List와 Maybe간에 공통점이 드러납니다. 둘 다 값이 있거나 없을 수 있다는 점. 다시 말해 [] 는 비어 있는 리스트로서 값이 없는 것이고 Nothing은 값이 없음을 뜻하는 Maybe type의 값입니다.
 
-concatMap 함수의 type을 보면 첫 번째 인자인 함수의 type이 a -> [b] 입니다. 즉, 어떤 값을 하나 받아서 적절하게 처리한 후에 List에 담아서 내놓는 것입니다. 적절히 처리한 결과 값이 사라져버리면 그 때는 역시 List를 내놓는 데 그것은 비어있는 List 입니다. 이제 여기서 List를 어떤 값을 담는 상자라고 생각해보면 Maybe 역시 어떤 값을 담고 있는 상자라고 볼 수 있게 됩니다. 둘 다 상자안에 값이 들어 있을 수도 없을 수도 있는 것이지요. 이처럼 Maybe와 List같은 것들은 단순히 값만 가지고 있는 것이 아니라 어떤 의미를 지닌 상자에 값이 들어있는 것이라고 볼 수 있기에 이를 value with context로 표현합니다.
+concatMap 함수의 type을 보면 첫 번째 인자인 함수의 type이 a -> [b] 입니다. 즉, 어떤 값을 하나 받아서 적절하게 처리한 후에 List에 담아서 내놓는 것입니다. 적절히 처리한 결과 값이 사라져버리면 그 때는 역시 List를 내놓는 데 그것은 비어있는 List 입니다. 이제 여기서 List를 어떤 값을 담는 상자라고 생각해보면 Maybe 역시 어떤 값을 담고 있는 상자라고 볼 수 있게 됩니다. 둘 다 상자안에 값이 들어 있을 수도 없을 수도 있는 것이지요. 이처럼 Maybe와 List같은 것들은 단순히 값만 가지고 있는 것이 아니라 어떤 의미를 지닌 상자에 값이 들어있는 것이라고 볼 수 있기에 이를 *value with context*로 표현합니다.
 
 Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수도 있고 없을 수도 있는 상황에 매우 유용합니다. 우리가 프로그래밍 할 때는 이러한 상황이 무척 많습니다. Null checking하는 코드를 그동안 얼마나 봐왔는지 생각해 보십시요. 그래서 많은 경우에 값이 단지 값 혼자만 이리 저리 전달되는 것이 아니라 context와 함께 전달이 됩니다. 즉 프로그래밍에서 concatMap과 같은 함수를 쓰는 일이 무척 자주 있다는 뜻입니다. 그래서 Haskell에서는 value with context에 대해 동작하는 함수를 두고 있습니다. >>= 함수가 그것이며 이를 bind라고 부릅니다.
 
