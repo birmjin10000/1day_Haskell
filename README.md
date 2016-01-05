@@ -2,9 +2,9 @@
 
 Haskell Programming을 딱 하루만 배워봅시다.
 
-7시간 동안 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념들에 익숙해지길 기대합니다.
+7시간 동안 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념 및 용어에 익숙해지길 기대합니다.
 
-First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Pattern matching, List comprehension, Functor, Monoid, A value with context
+First-class citizen, Higher-order function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, A value with context
 
 ## 사전 학습
 <a href="https://www.haskell.org/platform/">Haskell platform</a>을 설치합니다. 설치후 ghci를 실행합니다.
@@ -56,7 +56,7 @@ sum 함수는 List를 하나 받아서 그List의 원소들의 합을 구하는 
     > :t sum
     sum :: (Num a, Foldable t) => t a -> a
 
-sum의 type에서 Num이나 Foldable은 나중에 다시 다루겠습니다. 여기서는 t a -> a 부분만 보면 됩니다. t a -> a 를 해석해 보면 입력(t a)으로는 '리스트 하나'를 받고 출력(a) 으로는 '값 하나' 를 내놓는 함수가 됩니다. => 를 사용한 부분은 나중에 다루므로 여기서는 신경쓰지 않습니다.
+함수 이름 sum 뒤에 나오는 :: 기호 뒷 부분이 sum 함수의 type입니다. 그 중에서도 => 기호 뒷부분이 핵심입니다. 즉, 여기서는 "t a -> a" 부분만 보면 됩니다. => 기호 앞에 나오는 Num이나 Foldable은 나중에 다시 다루겠습니다. t a -> a 를 해석해 보면 입력(t a)으로는 '리스트 하나'를 받고 출력(a) 으로는 '값 하나' 를 내놓는 함수가 됩니다.
 
 참고로 모든 함수는 반드시 소문자로 시작해야 합니다. 즉, 함수이름으로 Sum 은 불가능합니다. Haskell에서는 대소문자가 문법적으로 의미가 있습니다.
 
@@ -73,7 +73,7 @@ Haskell에서 type 은 모든 것에 있습니다.
 
 [1,2,3] 은 각 요소가 숫자인 List 입니다.
 
-함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
+함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 일반적인 값을 다루듯이 함수를 다룰 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
 
     > map (*2) [1,2,3] -- [2,4,6]
     > :t map
@@ -119,15 +119,15 @@ foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 
 ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합니다. 그래서 이제부터는 여러 소스 파일을 작성하고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 소스파일에서 함수 정의할 때는 let을 쓰지 않습니다.
 
 ```haskell
-    {-
-      my_filter.hs
-      Haskell에서 여러 줄 주석은 {- 로 시작하고 -} 로 끝납니다.
-    -}
-    my_filter:: (a -> Bool) -> [a] -> [a]
-    my_filter f [] = []
-    my_filter f (x:xs) = if (f x)
-                         then x:(my_filter f xs)
-                         else my_filter f xs
+{-
+  my_filter.hs
+  Haskell에서 여러 줄 주석은 {- 로 시작하고 -} 로 끝납니다.
+-}
+my_filter:: (a -> Bool) -> [a] -> [a]
+my_filter f [] = []
+my_filter f (x:xs) = if (f x)
+                     then x:(my_filter f xs)
+                     else my_filter f xs
 ```
 
     > :l my_filter.hs
@@ -194,8 +194,10 @@ foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구�
 
 숙제3) foldl 함수를 써서 reverse 함수를 직접 만들어 보세요.
 
-    my_reverse:: [a] -> [a]
-    my_reverse = foldl ? ?
+```haskell
+my_reverse:: [a] -> [a]
+my_reverse = foldl ? ?
+```
 
 ## 숙제 복기 시간
 시작하기에 앞서 숙제를 함께 복기해 보겠습니다.
@@ -215,14 +217,16 @@ foldr 함수를 재귀적으로 직접 구현해보겠습니다.
 
 즉, 함수 f의 두번째 인자는 해당 부분만큼을 또 다시 foldr한 것이 됩니다. 따라서 다음처럼 코드를 작성할 수 있습니다.
 
+```haskell
     f x (my_foldr f base xs)
+```
 
 연습1) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현해 보세요.
 
 ```haskell
-    my_foldl:: (b -> a -> b) -> b -> [a] -> b
-    my_foldl f base [] = base
-    my_foldl f base (x:xs) = ?
+my_foldl:: (b -> a -> b) -> b -> [a] -> b
+my_foldl f base [] = base
+my_foldl f base (x:xs) = ?
 ```
 
 List에 대해 더 알아봅시다. zip 함수가 있습니다. zip 함수는 이름 그대로 바지 지퍼처럼 두 개의 List의 각 원소들을 1:1 로 묶어줍니다.
@@ -305,10 +309,10 @@ take 5 (iterate (map (*2)) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,3
 
 fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함수는 값을 계속 누적해 나갑니다. scanl 과 scanr 함수가 있습니다.
 
-    > scanl (+) 0 [1..10]
-    [0,1,3,6,10,15,21,28,36,45,55]
-    > scanr (+) 0 [1..10]
-    [55,54,52,49,45,40,34,27,19,10,0]
+```haskell
+scanl (+) 0 [1..10] -- [0,1,3,6,10,15,21,28,36,45,55]
+scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
+```
 
 연습5) iterate 함수를 scanl을 써서 구현해 보세요.
 
@@ -320,18 +324,19 @@ fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함
 
 List를 만드는 또 다른 방법으로는 List comprehension이 있습니다.
 
-    > [x | x <- [1..10], odd x]
-    [1,3,5,7,9]
-    > [x*y | x <- [1..3], y <- [10,11]]
-    [10,11,20,22,30,33]
+```haskell
+[x | x <- [1..10], odd x] -- [1,3,5,7,9]
+[x*y | x <- [1..3], y <- [10,11]] -- [10,11,20,22,30,33]
+```
 
 x <- [1..10] 부분은 generator로서 숫자들을 만들어 내고 있고 odd x 는 filter로서 generator가 만든 숫자들 중 조건에 맞는 것만 걸러내고 있습니다. x <- [1..3], y <- [10,11] 처럼 generator는 여러 개가 있을 수 있습니다.
 
 List comprehension을 이용하여 isPrime 함수를 만들겠습니다.
 
-    > isPrime n = 2 == length [d | d <- [1..n], n `mod` d == 0]
-    > zip [1..] $ map isPrime [1..10]
-    [(1,False),(2,True),(3,True),(4,False),(5,True),(6,False),(7,True),(8,False),(9,False),(10,False)]
+```haskell
+isPrime n = 2 == length [d | d <- [1..n], n `mod` d == 0]
+zip [1..] $ map isPrime [1..10] -- [(1,False),(2,True),(3,True),(4,False),(5,True),(6,False),(7,True),(8,False),(9,False),(10,False)]
+```
 
 새로운 문법이 나왔습니다. mod 함수는 modulo 연산자입니다. mod 7 2 의 결과는 1 입니다. 그런데 mod 함수와 같은 이항연산자는 보통 중위표기로 쓰는 것이 읽기 편합니다. 그래서 Haskell에서는 이항연산자를 중위표기법으로 쓸 때는 backtick 으로 감싸줍니다. \`mod\` 이런 식으로.
 $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자는 괄호를 쓰는 불편함을 덜기 위해 있습니다. 즉, 위의 코드에서 zip [1..] (map isPrime [1..10]) 라고 써야 할 코드가 $ 연산자를 이용해서 zip [1..] $ map isPrime [1..10] 으로 작성될 수 있었습니다.
@@ -344,8 +349,10 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
 연습7) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요.
 
-    > let sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
-    > let prime = ?
+```haskell
+sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
+prime = ?
+```
 
 ## 두 번째 시간
 
@@ -353,15 +360,19 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
 연습8) merge 함수를 구현하세요.
 
-    merge:: Ord a => [a] -> [a] -> [a]
-    merge [] ys = ys
-    merge xs [] = xs
-    merge xall@(x:xs) yall@(y:ys) = ?
+```haskell
+merge:: Ord a => [a] -> [a] -> [a]
+merge [] ys = ys
+merge xs [] = xs
+merge xall@(x:xs) yall@(y:ys) = ?
+```
 
 연습9) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
 
-    mergeSort:: Ord a => [a] -> [a]
-    mergeSort xs = ?
+```haskell
+mergeSort:: Ord a => [a] -> [a]
+mergeSort xs = ?
+```
 
 "Hello, world!" 와 같은 문자열을 Haskell 에서는 String이라고 부릅니다. 이 String에 대한 작업을 수행하는 함수 중 하나로 words, unwords 가 있습니다.
 
@@ -377,42 +388,54 @@ $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자�
 
 그 이유는 Haskell에서 String은 별도의 type이 아니라 [Char]의 또 다른 이름입니다. 즉, String은 다음처럼 선언되어 있습니다.
 
-    type String = [Char]
+```haskell
+type String = [Char]
+```
 
 이러한 것을 type synonym이라고 부릅니다. Programmer가 일반적인 data type에 특별한 의미를 주기 위해 사용합니다.
 
-    type Address = String
-    myHomeAddr::Address
-    myHomeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Earth"
+```haskell
+type Address = String
+myHomeAddr::Address
+myHomeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Earth"
+```
 
 이번에는 실제로 새로운 type을 정의해 보겠습니다. data 라는 keyword를 사용하면 사용자 정의 data type을 만들 수 있습니다.
 
-    data Gender = Male | Female | Unknown deriving (Show, Eq)
+```haskell
+data Gender = Male | Female | Unknown deriving (Show, Eq)
+```
 
 이렇게 하면 Gender 라는 새로운 type이 생깁니다. 해당 type의 값은 Male 또는 Female 또는 Unknown입니다. 이 세 가지 값은 방금 우리가 직접 전역으로 선언해 준 것입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
 deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 Male, Female, Unknown 이라는 값을 문자열로 출력할 수 있다는 것을 컴파일러에게 알려줍니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
 
 이제 새로 만든 Gender type을 이용하는 함수를 하나 만들겠습니다.
 
-    sayHello:: Gender -> String
-    sayHello gender
-        | gender == Male = "Good morning, sir."
-        | gender == Female = "Good morning, ma'am."
-        | otherwise = "Good morning, whoever you are."
+```haskell
+sayHello:: Gender -> String
+sayHello gender
+    | gender == Male = "Good morning, sir."
+    | gender == Female = "Good morning, ma'am."
+    | otherwise = "Good morning, whoever you are."
+```
 
 새로운 문법이 나왔는데, 수직선(|)을 사용하여 조건 분기하는 이러한 문법을 guard 라고 부릅니다. guard 문법의 otherwise 부분은 if..then..else 구문의 else에 해당합니다.
 
 자료형은 재귀적으로도 선언이 가능합니다. 자연수를 뜻하는 자료형을 만들어 보겠습니다.
 
-    data Natural = One | Succ Natural deriving (Show, Eq)
+```haskell
+data Natural = One | Succ Natural deriving (Show, Eq)
+```
 
 이제 Natural 자료형은 값으로 One, Succ One, Succ (Succ One), Succ (Succ (Succ One)), ... 등 무한개의 값을 가질 수 있습니다.
 
 또 다른 재귀적인 구조의 자료형을 만들어보겠습니다. 이진트리를 만들겠습니다.
 
-    data BinTree a = Empty | Fork a (BinTree a) (BinTree a) deriving Show
-    myTree = Fork 'a' (Fork 'b' Empty Empty) (Fork 'c' Empty (Fork 'd' Empty Empty))
-    myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
+```haskell
+data BinTree a = Empty | Fork a (BinTree a) (BinTree a) deriving Show
+myTree = Fork 'a' (Fork 'b' Empty Empty) (Fork 'c' Empty (Fork 'd' Empty Empty))
+myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
+```
 
 BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전체 Tree의 type이 결정됩니다.
 
@@ -433,76 +456,98 @@ BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전�
 
 그런데 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
 
-    class Functor f where
-        fmap :: (a -> b) -> f a -> f b
+```haskell
+class Functor f where
+    fmap :: (a -> b) -> f a -> f b
+```
 
 위의 코드는 Functor typeclass의 정의입니다. Typeclass 를 정의할 때는 위처럼 class 라는 키워드를 통해 합니다. 위의 코드에서 보이듯이 Functor typeclass 이기 위해서는 단 하나의 조건만 있으면 되는데, 바로 fmap 함수가 해당 자료형에 대하여 정의되어 있으면 됩니다. 우리는 이미 Functor 인 자료형을 하나 배웠습니다. 바로 List 입니다. List 에 대해 동작하는 map 함수의 type을 다시 확인해 봅시다.
 
-    map :: (a -> b) -> [a] -> [b]
+```haskell
+map :: (a -> b) -> [a] -> [b]
+```
 
 fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 그대로 map 함수의 type이 됨을 볼 수 있습니다. 어떤 자료형이 특정 typeclass이기 위해서는 어떤 자료형을 해당 typeclass의 instance로 선언하면 됩니다. List는 어떤 식으로 Functor의 instance로 선언되어 있는지 확인합시다.
 
-    instance Functor [] where
-        fmap = map
+```haskell
+instance Functor [] where
+    fmap = map
+```
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
 
 연습10) 우리가 만든 이진트리를 Functor로 만들어보세요.
 
-    instance Functor BinTree where
-        fmap f Empty = Empty
-        fmap f (Fork a l r) = ?
+```haskell
+instance Functor BinTree where
+    fmap f Empty = Empty
+    fmap f (Fork a l r) = ?
+```
 
 이번에는 노드를 여러 개 가질 수 있는 Tree를 만들어보겠습니다.
 
-    data RoseTree a = Branch a [RoseTree a] deriving Show
+```haskell
+data RoseTree a = Branch a [RoseTree a] deriving Show
+```
 
 연습11) RoseTree를 Functor로 만들어보세요.
 
-    instance Functor RoseTree where
-        fmap f (Branch a ts) = ?
+```haskell
+instance Functor RoseTree where
+    fmap f (Branch a ts) = ?
+```
 
 Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료형입니다. 이진 트리에 대하여 fold함수를 정의해 보겠습니다.
 
-    foldBinTree f base Empty = base
-    foldBinTree f base (Fork a l r) = f a v
-        where v = foldBinTree f i l
-              i = foldBinTree f base r
+```haskell
+foldBinTree f base Empty = base
+foldBinTree f base (Fork a l r) = f a v
+    where v = foldBinTree f i l
+          i = foldBinTree f base r
+```
 
 새로운 문법인 where 가 나왔습니다. where 는 중간값이 필요할 때 사용하는 구문입니다.
 
 이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
 
-    type Forest a = [RoseTree a]
-    foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
-    foldtree f g (Branch a ts) = f a v
-        where v = foldforest f g ts
-    foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
-    foldforest f g ts = ?
+```haskell
+type Forest a = [RoseTree a]
+foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
+foldtree f g (Branch a ts) = f a v
+    where v = foldforest f g ts
+foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
+foldforest f g ts = ?
+```
 
 연습12) 위의 foldforest 함수를 완성해 보세요.
 
 ## 세 번째 시간
 List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
 
-    class Foldable t where
-        foldMap :: Monoid m => (a -> m) -> t a -> m
-        foldr :: (a -> b -> b) -> b -> t a -> b
+```haskell
+class Foldable t where
+    foldMap :: Monoid m => (a -> m) -> t a -> m
+    foldr :: (a -> b -> b) -> b -> t a -> b
+```
 
 어떤 자료형이 Foldable이기 위해서는 foldMap 함수나 foldr 함수 둘 중 하나만 구현하면 됩니다. 그런데 foldMap 함수를 보니 Monoid 라는 typeclass constraints가 붙어 있습니다. 그래서 Monoid에 대해 알아보겠습니다. Monoid typeclass는 Data.Monoid 모듈에 정의되어 있습니다.
 
-    class Monoid m where
-        mempty :: m
-        mappend :: m -> m -> m
-        mconcat :: [m] -> m
-        mconcat = foldr mappend mempty
+```haskell
+class Monoid m where
+    mempty :: m
+    mappend :: m -> m -> m
+    mconcat :: [m] -> m
+    mconcat = foldr mappend mempty
+```
 
 Monoid는 한 마디로 말해서 두 개가 하나가 될 수 있는 자료형을 뜻합니다. mappend 함수의 type이 이를 잘 설명해 주는 데 m -> m -> m 은 어떤 값 두 개를 받아서 하나를 내놓는 함수를 뜻합니다.
 Monoid이기 위해서는 두 가지 요건이 있으면 되는데 하나는 항등원(mempty)이 있으면 되고, 다른 하나는 결합법칙이 성립하는 이항연산자(mappend)가 있으면 됩니다. mconcat 함수는 이 두개가 있으면 자동으로 얻을 수 있는 함수 입니다. 예를 들어 List는 Monoid입니다. List는 항등원 [] 가 있고,  결합법칙이 성립하는 이항연산자 ++ 이 있습니다.
 
-    instance Monoid [a] where
-        mempty = []
-        mappend = (++)
+```haskell
+instance Monoid [a] where
+    mempty = []
+    mappend = (++)
+```
 
 Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 대하여 결합법칙을 만족하는 이항연산자 **\* **가 있고 항등원 *e*가 있음을 뜻합니다.
 
@@ -510,58 +555,73 @@ Monoid는 triple(T, **\* **, e) 이라고도 정의하는데, 어떤 type T에 �
 
 이제 Foldable을 배웠으니까 과거처럼 Tree를 fold하는 함수를 직접 만들필요 없이 Tree를 Foldable의 instance로 만들면 Tree를 fold할 수 있게 됩니다. 먼저 이진 트리를 Foldable의 instance로 만들겠습니다.
 
-    instance Foldable BinTree where
-        foldMap f Empty = mempty
-        foldMap f (Fork a l r) = f a `mappend` (foldMap f l) `mappend` (foldMap f r)
+```haskell
+instance Foldable BinTree where
+    foldMap f Empty = mempty
+    foldMap f (Fork a l r) = f a `mappend` (foldMap f l) `mappend` (foldMap f r)
+```
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
 연습13) RoseTree를 Foldable의 instance로 만들어 보세요.
 
-    instance Foldable RoseTree where
-        foldMap f (Branch a ts) = ?
+```haskell
+instance Foldable RoseTree where
+    foldMap f (Branch a ts) = ?
+```
 
 이제 다시 List에 관한 함수들을 마저 살펴보겠습니다. List에 대한 함수들은 Data.List 모듈에 있습니다.
 
-    > import Data.List
-    > takeWhile (<3) [1..5] -- [1,2]
-    > dropWhile (<3) [1..5] -- [3,4,5]
-    > group [1,2,2,3,3,2] -- [[1],[2,2],[3,3],[2]]
-    > maximum [1,3,2] -- 3
-    > minimum [3,1,2] -- 1
-    > elem 1 [1,2,3] -- True
-    > notElem 4 [1,2,3] -- True
-    > nub [1,2,2,3,3,2] -- [1,2,3]
-    > [1,2,3] !! 1 -- 2
-    > inits [1,2,3] -- [[],[1],[1,2],[1,2,3]]
-    > tails [1,2,3] -- [[1,2,3],[2,3],[3],[]]
-    > splitAt 2 [1,2,3] -- ([1,2],[3])
-    > sort [1,4,3,2,5] -- [1,2,3,4,5]
-    > partition (>3) [1,4,3,2,5] -- ([4,5],[1,3,2])
-    > span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
-    > break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
+```haskell
+import Data.List
+
+takeWhile (<3) [1..5] -- [1,2]
+dropWhile (<3) [1..5] -- [3,4,5]
+group [1,2,2,3,3,2] -- [[1],[2,2],[3,3],[2]]
+maximum [1,3,2] -- 3
+minimum [3,1,2] -- 1
+elem 1 [1,2,3] -- True
+notElem 4 [1,2,3] -- True
+nub [1,2,2,3,3,2] -- [1,2,3]
+[1,2,3] !! 1 -- 2
+inits [1,2,3] -- [[],[1],[1,2],[1,2,3]]
+tails [1,2,3] -- [[1,2,3],[2,3],[3],[]]
+splitAt 2 [1,2,3] -- ([1,2],[3])
+sort [1,4,3,2,5] -- [1,2,3,4,5]
+partition (>3) [1,4,3,2,5] -- ([4,5],[1,3,2])
+span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
+break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
+```
 
 연습14) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
 
-    max 2 5 -- 5
-    min 2 5 -- 2
+```haskell
+max 2 5 -- 5
+min 2 5 -- 2
+```
 
 max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
 
 연습15) span 함수를 구현해 보세요.
 
-    span :: (a -> Bool) -> [a] -> ([a], [a])
-    span p xs = ?
+```haskell
+span :: (a -> Bool) -> [a] -> ([a], [a])
+span p xs = ?
+```
 
 차집합, 합집합, 교집합의 기능을 수행하는 함수도 있습니다.
 
-    > [1,2,3,4,5] \\ [2,4] -- [1,3,5]
-    > union [1,2,3] [2,4] -- [1,2,3,4]
-    > intersect [1,2,3] [2,4] -- [2]
+```haskell
+[1,2,3,4,5] \\ [2,4] -- [1,3,5]
+union [1,2,3] [2,4] -- [1,2,3,4]
+intersect [1,2,3] [2,4] -- [2]
+```
 
 sortOn 함수는 어떤 식으로 sort 를 할 지 정해줄 수 있습니다.
 
-    > sortOn length [[1,2],[3],[4],[5,6,7],[8,9]] -- [[3],[4],[1,2],[8,9],[5,6,7]]
+```haskell
+sortOn length [[1,2],[3],[4],[5,6,7],[8,9]] -- [[3],[4],[1,2],[8,9],[5,6,7]]
+```
 
 find 계열 함수들을 살펴봅시다.
 
@@ -588,7 +648,9 @@ find 계열 함수들을 살펴봅시다.
 
 이 함수들의 type에는 공통적으로 Maybe가 나옵니다. Maybe는 값이 있거나 없는 경우에 사용합니다. 보통 값이 없는 경우에 null check을 많이 합니다. 하지만 null check을 하는 것은 무척 오류가 생기기 쉽습니다. 오죽하면 1965년에 null 을 처음으로 도입한 Tony Hoare가 자신이 null을 만든 것은 Billion Dollar Mistake라는 고백을 하기도 했습니다. Maybe와 같은 type은 이러한 것으로부터 자유롭습니다.
 
+```haskell
     data Maybe a = Nothing | Just a
+```
 
 lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
 
@@ -617,10 +679,10 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
 
 합성함수에 값을 적용했을 때 어떻게 나오는지 살펴봅시다.
 
-    > map (negate . abs) [5, -3, -6, 7, -3, 2, -19, 24]
-    [-5, -3, -6, -7, -3, -2, -19, -24]
-    > map (negate.sum.tail) [[1..5],[3..6],[1..7]]
-    [-14, -15, -27]
+```haskell
+map (negate . abs) [5, -3, -6, 7, -3, 2, -19, 24] -- [-5, -3, -6, -7, -3, -2, -19, -24]
+map (negate.sum.tail) [[1..5],[3..6],[1..7]] -- [-14, -15, -27]
+```
 
 그런데 합성할 함수가 (+) 나 max 처럼 인자를 두 개 받는 함수이면 어떻게 해야 할까요? 그럴때는 partial application을 이용합니다. Partial application이 무엇인지 먼저 살펴봅시다.
 
@@ -636,19 +698,24 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
 
 Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 만드는 일을 말합니다. Haskell의 모든 함수는 curried function이라고 했습니다. 즉, (+) 함수는 사실 인자 두 개를 받아서 결과 하나를 내놓는 함수가 아니라 인자 하나를 받아서 "인자하나를 받아 결과를 내놓는 함수"를 결과로 내놓는 함수인 셈입니다. (+) 함수의 type을 이에 맞게 다시 써 보면 다음과 같습니다.
 
-    (+):: a -> (a -> a)
+```haskell
+(+):: a -> (a -> a)
+```
 
 이제 모든 함수가 curried function이기 때문에 function composition을 하는데 장애물은 없습니다. 다음처럼 partial application을 쓰면 됩니다.
 
-    > (sum . replicate 5 . max 6.7) 8.9
-    44.5
+```haskell
+(sum . replicate 5 . max 6.7) 8.9 -- 44.5
+```
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
 연습16) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 
-    rmDuplicate::(Ord a) => [a] -> [a]
-    rmDuplicate xs = ?
+```haskell
+rmDuplicate::(Ord a) => [a] -> [a]
+rmDuplicate xs = ?
+```
 
 ## 네 번째 시간
 
@@ -680,10 +747,12 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 
 파일을 읽고 쓰는 IO 처리는 Haskell에서는 do block안에서 합니다.
 
-    main = do
-        contents <- readFile "triangle1.txt"
-        let triangle = map (map (\x -> read x::Int)) . map words . lines $ contents
-        print triangle
+```haskell
+main = do
+    contents <- readFile "triangle1.txt"
+    let triangle = map (map (\x -> read x::Int)) . map words . lines $ contents
+    print triangle
+```
 
 이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다. 또는 ghc t 만 해도 됩니다.
 
@@ -717,19 +786,24 @@ read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 
 
 Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. 이 함수는 다음 처럼 동작합니다.
 
-    > concatMap (\x -> replicate x x) [1,2,3]
-    [1,2,2,3,3,3]
+```haskell
+concatMap (\x -> replicate x x) [1,2,3] -- [1,2,2,3,3,3]
+```
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
 연습23) concatMap 함수를 직접 구현하세요.
 
-    my_concatMap:: (a -> [b]) -> [a] -> [b]
-    my_concatMap f xs = ?
+```haskell
+my_concatMap:: (a -> [b]) -> [a] -> [b]
+my_concatMap f xs = ?
+```
 
 연습24) concatMap 함수를 써서 filter 함수를 구현하세요.
 
-    my_filter f xs = concatMap ? ?
+```haskell
+my_filter f xs = concatMap ? ?
+```
 
 연습문제 23의 풀이를 보면, 어떤 패턴이 생각납니다. Predicate을 만족하면 값이 있고 그렇지 않으면 값이 없게 됩니다. 값이 있거나 없을 수 있는 경우에 우리는 Maybe 를 사용했습니다. 즉, List와 Maybe간에 공통점이 드러납니다. 둘 다 값이 있거나 없을 수 있다는 점. 다시 말해 [] 는 비어 있는 리스트로서 값이 없는 것이고 Nothing은 값이 없음을 뜻하는 Maybe type의 값입니다.
 
@@ -781,58 +855,74 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
 
 먼저 입력파일이 없을 때의 처리를 어떻게 할 것인지 생각해 봅시다. 다음과 같은 꼴이 되면 될 것 같습니다.
 
-    wc options [] = do
-      text <- getContents
-      let count = getCount text
-      printCount options count
+```haskell
+wc options [] = do
+  text <- getContents
+  let count = getCount text
+  printCount options count
+```
 
 먼저 getContents 함수를 통해 stdin으로부터의 입력을 가지고 오고, getCount 함수에서 문자수, 단어수, 줄수 등을 계산합니다. 그리고 마지막으로 주어진 options에 따라 형식을 갖추어 출력을 합니다.
 
 다음으로 입력파일이 하나만 있을 때의 처리를 생각해 봅시다. 다음처럼 간단하게 하면 될 것 같습니다.
 
-    wc options [file] = do
-      text <- readFile file
-      let count = getCount text
-      printCount options count
+```haskell
+wc options [file] = do
+  text <- readFile file
+  let count = getCount text
+  printCount options count
+```
 
 입력 파일이 여러 개 있을 때의 처리는 잠시 미루어 두고 일단 위의 구현을 완성해 봅시다. 구현을 안한 상태로 두려면 다음처럼 undefined라고 쓰면 됩니다.
 
-    wc options files = undefined
+```haskell
+wc options files = undefined
+```
 
 먼저 getContents 파일은 Haskell 기본 함수입니다. getCount 함수를 구현해야 합니다. getCount 함수의 type은 다음이 될 것입니다.
 
-    type WordCount = (Int, Int, Int)
-    getCount:: String -> WordCount
+```haskell
+type WordCount = (Int, Int, Int)
+getCount:: String -> WordCount
+```
 
 WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
 
 연습25) getCount 함수를 완성하세요.
 
-    getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
+```haskell
+getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
+```
 
 이제 printCount 함수를 만들겠습니다. 먼저 type을 생각해 봅니다. Options와 WordCount를 입력으로 받아서 적절하게 Console에 기록하게 될 것입니다. 따라서 다음과 같은 type을 가지게 될 것입니다.
 
-    printCount:: Options -> WordCount -> IO ()
+```haskell
+printCount:: Options -> WordCount -> IO ()
+```
 
 이제 이를 구현해 봅시다.
 
-    printCount options (c,w,l) =
-        putStrLn ("\t" ++ (if showLines options then (show l) ++ "\t" else "")
-                       ++ (if showWords options then (show w) ++ "\t" else "")
-                       ++ (if showChars options then (show c) ++ "\t" else ""))
+```haskell
+printCount options (c,w,l) =
+    putStrLn ("\t" ++ (if showLines options then (show l) ++ "\t" else "")
+                   ++ (if showWords options then (show w) ++ "\t" else "")
+                   ++ (if showChars options then (show c) ++ "\t" else ""))
 
-    showLines = elem 'l'
-    showWords = elem 'w'
-    showChars = elem 'c'
+showLines = elem 'l'
+showWords = elem 'w'
+showChars = elem 'c'
+```
 
 마지막으로 지금까지 작성한 내용을 하나로 합쳐야 합니다.
 
-    import System.Environment (getArgs)
+```haskell
+import System.Environment (getArgs)
 
-    main:: IO ()
-    main = do
-        options:[file] <- getArgs
-        wc options [file]
+main:: IO ()
+main = do
+    options:[file] <- getArgs
+    wc options [file]
+```
 
 이제 컴파일하고 실행하여 봅시다.
 
@@ -840,19 +930,25 @@ WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자�
 
 아직 파일이 여러 개 있을 때를 처리하지 않았습니다.
 
-    wc options files = undefined
+```haskell
+wc options files = undefined
+```
 
 일단 앞서 작성한 단일 파일의 경우 처리시와 비슷한 형태로 갖추게 하면 다음처럼 될 것 같습니다.
 
-    wc options files = do
-      totalCount <- ?
-      printCount options totalCount
+```haskell
+wc options files = do
+  totalCount <- ?
+  printCount options totalCount
+```
 
 totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수가 담겨있을 것입니다. 그렇다면 개발 파일들에 대해 count를 하고 print 하는 코드가 ? 부분에 들어가야 할 것 같습니다. 여러 개의 파일에 대해 처리하므로 여기에도 fold를 쓰면 될 것 같습니다. 그러면 코드 모양이 다음처럼 됩니다.
 
-    wc options files = do
-      totalCount <- foldl countAndPrint (0,0,0) files
-      printCount options totalCount
+```haskell
+wc options files = do
+  totalCount <- foldl countAndPrint (0,0,0) files
+  printCount options totalCount
+```
 
 이제 countAndPrint 함수를 구현해 봅시다. countAndPrint함수는 파일 하나에 대한 계산 결과를 print하고 동시에 결과로서 넘겨주기도 해야 합니다. 따라서 type은 다음처럼 될 것입니다.
 
@@ -860,13 +956,17 @@ totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수�
 
 그런데 print를 하려면 문자수만 출력할지 아니면 전부다 출력할 지 정보를 갖고 있는 options도 필요하니까 countAndPrint 함수의 type이 다음처럼 되야 합니다.
 
-    countAndPrint:: Options -> WordCount -> FilePath -> IO WordCount
+```haskell
+countAndPrint:: Options -> WordCount -> FilePath -> IO WordCount
+```
 
 게다가 countAndPrint 함수의 최종 결과물은 IO WordCount로 그냥 값이 아니라 상자에 담긴 값입니다. 즉, Maybe나 List 처럼 value with context입니다. IO WordCount 는 단순히 WordCount가 아니라 출력 즉, IO 작업이 발생하는 WordCount임을 뜻합니다. 상자에 담긴 값을 처리할 때는 fold함수도 별도로 있습니다. foldlM 을 쓰면 됩니다. 그에 따라 이를 사용하는 코드도 다음처럼 바뀝니다.
 
-    wc options files = do
-      totalCount <- foldlM (countAndPrint options) (0,0,0) files
-      printCount options totalCount
+```haskell
+wc options files = do
+  totalCount <- foldlM (countAndPrint options) (0,0,0) files
+  printCount options totalCount
+```
 
 연습26) countAndPrint 함수를 구현해 보세요.
 
