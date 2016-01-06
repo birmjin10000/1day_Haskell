@@ -4,7 +4,7 @@ Haskell Programming을 딱 하루만 배워봅시다.
 
 사전학습을 포함하여 약 8시간 가량 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념 및 용어에 익숙해지길 기대합니다.
 
-First-class citizen, Higher-order function, Pure function, Lambda expression, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, A value with context
+First-class citizen, Higher-order function, Pure function, Lambda expression, Immutability, Referential Transparency, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, A value with context
 
 본 과정은 대체로 거꾸로 교실(Flipped classroom) 형태로 진행이 되며 일부 핵심 개념들은 강사가 직접 설명합니다.
 
@@ -77,7 +77,7 @@ Haskell에서 type 은 모든 것에 있습니다.
 
 [1,2,3] 은 각 요소가 숫자인 List 입니다.
 
-함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 일반적인 값을 다루듯이 함수를 다룰 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
+Haskell은 순수 함수형 프로그래밍 언어입니다. 함수형 프로그래밍의 가장 큰 특징은 함수가 first-class citizen 이라는 것입니다. 즉, 함수가 함수의 인자로 들어갈 수도 있고 함수 실행의 결과로도 나올 수 있습니다. 일반적인 값을 다루듯이 함수를 다룰 수 있습니다. 이러한 함수를 고차 함수 higher-order function 이라고 합니다. 대표적인 고차함수로는 map, filter, fold 가 있습니다.
 
     > map (*2) [1,2,3]
     [2,4,6]
@@ -118,20 +118,20 @@ foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 
 
     > :{
     Prelude| let my_filter f [] = []
-    Prelude|     my_filter f (x:xs) = if (f x)
-    Prelude|                          then x:(my_filter f xs)
+    Prelude|     my_filter f (x:xs) = if f x
+    Prelude|                          then x:my_filter f xs
     Prelude|                          else my_filter f xs
     Prelude| :}
 
 위 코드에서 새로 나온 것들이 몇 개 있습니다. 우선, ghci 에서 여러 줄에 걸쳐 코드를 작성하려면 :{ 로 시작하고 :} 로 끝내면 됩니다. 이 때, :{ 와 :} 가 있는 줄에는 다른 것은 쓰지 않아야 합니다.
-또한 let 이 나왔는데, ghci에서는 어떠한 변수에 값을 줄때는 let 구문을 써야 합니다. 이러한 것을 binding 이라고 합니다. Haskell과 같은 함수형 프로그래밍에서는 변수 할당(assignment)의 개념이 존재하지 않습니다. 대신 binding이라는 말을 쓰며 한 번 binding된 것은 이후에 값이 바뀌지 않습니다. 다음 코드를 보세요.
+또한 let 이 나왔는데, ghci에서는 어떠한 변수에 값을 줄때는 let 구문을 써야 합니다. 이러한 것을 binding 이라고 합니다. 함수형 프로그래밍에서는 변수 할당(assignment)의 개념이 존재하지 않습니다. (주의할 점은 함수형 프로그래밍 언어 중에도 변수 할당을 지원하는 언어가 있습니다. 예를 들어 Scala 언어에서는 할당 연상이 가능한 var 와 불가능한 val 두 가지가 모두 있습니다. 이는 프로그래밍 언어와 프로그래밍 패러다임과의 차이이며 Haskell은 순수 함수형 언어이기 때문에 변수 할당 개념이 없습니다.) 대신 binding이라는 말을 쓰며 한 번 binding된 것은 이후에 값이 바뀌지 않습니다. 다음 코드를 보세요.
 
     > let a = 1
     > a = 2
 
     <interactive>:3:3: parse error on input ‘=’
 
-변수 a 에 1이라는 값을 binding한 후에 다시 변수 a에 2라는 값을 할당하려고 하니 에러가 났습니다. 우리가 기존에 익숙한 C, Java와 같은 언어에서는 변수 assignment가 매우 자연스러우나 함수형 언어에서는 한 번 값이 변수에 묶인 후에는 또 다시 binding 하지 않는 이상 값은 변하지 않습니다.
+변수 a 에 1이라는 값을 binding한 후에 다시 변수 a에 2라는 값을 할당하려고 하니 오류가 났습니다. 우리가 기존에 익숙한 C, Java와 같은 언어에서는 변수 assignment가 매우 자연스러우나 함수형 프로그래밍에서는 한 번 값이 변수에 묶인 후에는 또 다시 binding 하지 않는 이상 값은 변하지 않습니다. 이러한 것을 불변성(Immutability)라고 하며 함수형 프로그래밍의 중요 개념 중 하나입니다. C, Java 언어에 비추어 생각해보면 모든 변수와 객체에 const, final 이 기본으로 붙어 있다고 보면 비슷합니다.
 
 ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합니다. 그래서 이제부터는 여러 소스 파일을 작성하고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 그리고 소스파일에서 binding 할 때는 let을 쓰지 않습니다.
 
@@ -142,8 +142,8 @@ ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 사실 불편합�
 -}
 my_filter:: (a -> Bool) -> [a] -> [a]
 my_filter f [] = []
-my_filter f (x:xs) = if (f x)
-                     then x:(my_filter f xs)
+my_filter f (x:xs) = if f x
+                     then x:my_filter f xs
                      else my_filter f xs
 ```
 
@@ -195,13 +195,22 @@ my_filter f (x:xs) = if f x
 우리가 filter 함수를 재귀적으로 구현했는데, foldr 함수는 재귀를 보다 추상화한 함수이기 때문에 재귀적으로 구현할 수 있는 코드는 foldr 로도 구현할 수 있습니다. 이제 filter 함수를 foldr 로 구현해보겠습니다.
 
 ```haskell
-my_filter f xs = foldr (\x base -> if (f x) then x:base else base) [] xs
+my_filter f xs = foldr (\x base -> if f x then x:base else base) [] xs
 ```
 
-위 코드에서 (\x base -> ...) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다. (\x base -> ...) 부분 전체는 이름 없는 함수이며 두 개의 인자 x와 base를 받습니다. 화살표 왼쪽은 인자 이름 목록이고 화살표 오른쪽은 함수의 구현부입니다. 즉, 다음처럼 사용할 수 있습니다.
+위 코드에서 (\x base -> ...) 은 Lambda expression이라고 부르는 것으로 익명 함수를 편하게 정의할 수 있게 합니다. Lambad expression은 \ (backslash) 기호로 시작합니다. \ 기호 다음에 함수 인자 목록이 오고 그 다음 화살표 -> 가 옵니다. 화살표 오른쪽에는 함수몸체가 옵니다.
 
-    > (\x y -> x + y) 2 5
-    7
+\ 기호 | 함수 인자 목록 | 화살표| 함수몸체
+:-----:|:--------------:|:-----:|:------:
+__\__  | x base         |__->__ | if f x then x:base else base
+
+(\x base -> ...) 부분 전체는 이름 없는 함수로서 두 개의 인자 x와 base를 받습니다. Lambda expression의 사용예는 다음과 같습니다.
+
+    > (\x y -> x + y) 2 3
+    5
+    > let add = \ a b -> a + b
+    > add 2 3
+    5
 
 foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
 
