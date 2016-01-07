@@ -357,13 +357,11 @@ take 5 (iterate (map (*2)) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,3
 ```
 
 연습4) iterate 함수를 재귀적으로 구현해 보세요.
-
 ```haskell
 iterate f x = x:?
 ```
 
 연습5) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
-
 ```haskell
 fib = 1:1:zipWith (+) ? ?
 ```
@@ -378,14 +376,18 @@ scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
 scanl 함수의 동작은 다음 수식처럼 표현할 수 있습니다.
 <img src="scanl_explained.png">
 
-연습6) iterate 함수를 scanl을 써서 구현해 보세요.
+연습6) scanl 함수를 재귀적으로 직접 만들어 보세요. iterate 함수 만든 것과 매우 비슷합니다.
+```haskell
+my_scanl _ base [] = [base]
+my_scanl f base (x:xs) = base:?
+```
 
+연습7) iterate 함수를 scanl을 써서 구현해 보세요.
 ```haskell
 iterate f x = scanl ? ? ?
 ```
 
-연습7) fibonacci 수열을 scanl을 써서 만들어보세요.
-
+연습8) fibonacci 수열을 scanl을 써서 만들어 보세요.
 ```haskell
 fib = 1:scanl (+) 1 ?
 ```
@@ -416,7 +418,7 @@ prime = filter isPrime [1..]
 take 10 prime -- [2,3,5,7,11,13,17,19,23,29]
 ```
 
-연습8) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요. 참고로 아래 코드에서 /= 연산자는 "같지 않음"을 검사합니다. 수학의 같지 않음을 뜻하는 기호 ≠ 와 닮아있습니다.
+연습9) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요. 참고로 아래 코드에서 /= 연산자는 "같지 않음"을 검사합니다. 수학의 같지 않음을 뜻하는 기호 ≠ 와 닮아있습니다.
 
 ```haskell
 sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
@@ -427,7 +429,7 @@ prime = ?
 
 첫 시간에 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
 
-연습9) merge 함수를 구현하세요. 아래 코드에서 @ 기호를 사용한 부분은 as pattern 이라고 부르는 것으로 pattern matching된 전체 부분을 뜻합니다. 가령 xall@(x:y:ys) = [1,2,3] 인 경우에 x, y, ys 는 각각 1, 2, [3] 에 binding되고 xall 은 pattern matching된 전체 부분인 [1,2,3] 에 binding됩니다.
+연습10) merge 함수를 구현하세요. 아래 코드에서 @ 기호를 사용한 부분은 as pattern 이라고 부르는 것으로 pattern matching된 전체 부분을 뜻합니다. 가령 xall@(x:y:ys) = [1,2,3] 인 경우에 x, y, ys 는 각각 1, 2, [3] 에 binding되고 xall 은 pattern matching된 전체 부분인 [1,2,3] 에 binding됩니다.
 
 ```haskell
 merge:: Ord a => [a] -> [a] -> [a]
@@ -436,7 +438,7 @@ merge xs [] = xs
 merge xall@(x:xs) yall@(y:ys) = ?
 ```
 
-연습10) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
+연습11) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
 
 ```haskell
 mergeSort:: Ord a => [a] -> [a]
@@ -548,7 +550,7 @@ instance Functor [] where
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
 
-연습11) 우리가 만든 이진트리를 Functor로 만들어보세요.
+연습12) 우리가 만든 이진트리를 Functor로 만들어보세요.
 
 ```haskell
 instance Functor BinTree where
@@ -562,7 +564,7 @@ instance Functor BinTree where
 data RoseTree a = Branch a [RoseTree a] deriving Show
 ```
 
-연습12) RoseTree를 Functor로 만들어보세요.
+연습13) RoseTree를 Functor로 만들어보세요.
 
 ```haskell
 instance Functor RoseTree where
@@ -591,7 +593,7 @@ foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
 foldforest f g ts = ?
 ```
 
-연습13) 위의 foldforest 함수를 완성해 보세요.
+연습14) 위의 foldforest 함수를 완성해 보세요.
 
 ## 세 번째 시간
 
@@ -618,8 +620,7 @@ span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
 break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
 ```
 
-연습14) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
-
+연습15) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
 ```haskell
 max 2 5 -- 5
 min 2 5 -- 2
@@ -627,8 +628,7 @@ min 2 5 -- 2
 
 max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
 
-연습15) span 함수를 구현해 보세요.
-
+연습16) span 함수를 구현해 보세요.
 ```haskell
 span :: (a -> Bool) -> [a] -> ([a], [a])
 span p xs = ?
@@ -735,14 +735,13 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
-연습16) 함수 합성 연산자를 직접 구현해 보세요.
-
+연습17) 함수 합성 연산자를 직접 구현해 보세요.
 ```haskell
 my_compose:: (b->c) -> (a->b) -> (a->c)
 f `my_compose` g = ?
 ```
 
-연습17) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
+연습18) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 
 ```haskell
 rmDuplicate::(Ord a) => [a] -> [a]
@@ -792,7 +791,7 @@ instance Foldable BinTree where
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
-연습18) RoseTree를 Foldable의 instance로 만들어 보세요.
+연습19) RoseTree를 Foldable의 instance로 만들어 보세요.
 
 ```haskell
 instance Foldable RoseTree where
@@ -803,11 +802,11 @@ instance Foldable RoseTree where
 
 이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
 
-연습19) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
+연습20) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
 
-연습20) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
+연습21) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
 
-연습21) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
+연습22) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
 
   >1) a < b < c
 
@@ -839,7 +838,7 @@ main = do
 
 이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다. 또는 ghc t 만 해도 됩니다.
 
-연습22) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
+연습23) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 작은 경우는 23입니다.
 <pre>
         <b>3</b>
        <b>7</b> 4
@@ -851,12 +850,12 @@ main = do
 <a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
-연습23) (어려움) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
+연습24) (어려움) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 작은 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
 <pre>
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
-연습24) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
+연습25) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
 
     3+1
     2+2
@@ -875,14 +874,14 @@ concatMap (\x -> replicate x x) [1,2,3] -- [1,2,2,3,3,3]
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
-연습25) concatMap 함수를 직접 구현하세요.
+연습26) concatMap 함수를 직접 구현하세요.
 
 ```haskell
 my_concatMap:: (a -> [b]) -> [a] -> [b]
 my_concatMap f xs = ?
 ```
 
-연습26) concatMap 함수를 써서 filter 함수를 구현하세요.
+연습27) concatMap 함수를 써서 filter 함수를 구현하세요.
 
 ```haskell
 my_filter f xs = concatMap ? ?
@@ -973,7 +972,7 @@ getCount:: String -> WordCount
 
 WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
 
-연습27) getCount 함수를 완성하세요.
+연습28) getCount 함수를 완성하세요.
 
 ```haskell
 getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
@@ -1055,9 +1054,9 @@ wc options files = do
   printCount options totalCount
 ```
 
-연습28) countAndPrint 함수를 구현해 보세요.
+연습29) countAndPrint 함수를 구현해 보세요.
 
-연습29) wc utility를 최종 완성해 보세요.
+연습30) wc utility를 최종 완성해 보세요.
 
 ## 더 읽을 거리
 #### 람다 계산법 Lambda Calculus
