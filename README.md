@@ -455,6 +455,8 @@ merge [1,2,3,4] [3,6,9] -- [1,2,3,3,4,6,9]
 
 ```haskell
 mergeSort:: Ord a => [a] -> [a]
+mergeSort [] = []
+mergeSort [a] = ?
 mergeSort xs = ?
 ```
 
