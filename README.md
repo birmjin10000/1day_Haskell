@@ -9,6 +9,13 @@ First-class citizen, Higher-order function, Pure function, Lambda expression, Im
 본 과정은 대체로 거꾸로 교실(Flipped classroom) 형태로 진행이 되며 일부 핵심 개념들은 강사가 직접 설명합니다.
 
 ## 사전 학습
+- [x] Type system
+- [x] Higher order function
+- [x] Binding
+- [x] Immutability
+- [x] Pattern matching
+- [x] Lambda expression
+
 [Haskell platform](https://www.haskell.org/platform/)을 설치합니다. 설치후 ghci (Glasgow Haskell Compiler Interactive shell)를 실행합니다.
 
     $ ghci
