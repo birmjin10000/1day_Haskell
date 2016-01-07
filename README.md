@@ -4,7 +4,7 @@ Haskell Programming을 딱 하루만 배워봅시다.
 
 사전학습을 포함하여 약 8시간 가량 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념 및 용어에 익숙해지길 기대합니다.
 
-First-class citizen, Higher-order function, Pure function, Lambda expression, Immutability, Currying, Partial application, Function composition, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, Value with context
+First-class citizen, Higher-order function, Pure function, Lambda expression, Immutability, Maybe type, Currying, Partial application, Function composition, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, Value with context
 
 본 과정은 대체로 거꾸로 교실(Flipped classroom) 형태로 진행이 되며 일부 핵심 개념들은 강사가 직접 설명합니다.
 
@@ -607,6 +607,7 @@ foldforest f g ts = ?
 연습14) 위의 foldforest 함수를 완성해 보세요.
 
 ## 세 번째 시간
+- [x] Maybe type
 - [x] Function composition
 - [x] Currying
 - [x] Partial application
