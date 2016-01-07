@@ -447,6 +447,8 @@ merge:: Ord a => [a] -> [a] -> [a]
 merge [] ys = ys
 merge xs [] = xs
 merge xall@(x:xs) yall@(y:ys) = ?
+
+merge [1,2,3,4] [3,6,9] -- [1,2,3,3,4,6,9]
 ```
 
 연습11) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
