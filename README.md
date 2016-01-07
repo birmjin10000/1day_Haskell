@@ -4,7 +4,7 @@ Haskell Programming을 딱 하루만 배워봅시다.
 
 사전학습을 포함하여 약 8시간 가량 Haskell을 배워서 Haskell programming의 기초개념들을 잘 익혀봅시다. 이 과정을 마치면 다음 개념 및 용어에 익숙해지길 기대합니다.
 
-First-class citizen, Higher-order function, Pure function, Lambda expression, Immutability, Referential Transparency, Currying, Partial application, Function composition, Point-free style, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, A value with context
+First-class citizen, Higher-order function, Pure function, Lambda expression, Immutability, Currying, Partial application, Function composition, Typeclass, Type system, Type inference, Lazy evaluation, Binding, Pattern matching, Guard, List comprehension, Functor, Monoid, Value with context
 
 본 과정은 대체로 거꾸로 교실(Flipped classroom) 형태로 진행이 되며 일부 핵심 개념들은 강사가 직접 설명합니다.
 
@@ -255,6 +255,8 @@ my_reverse = foldl ? ?
 시작하기에 앞서 숙제를 함께 복기해 보고 사전학습 내용에 대한 질의응답을 하겠습니다.
 
 ## 첫 1시간
+- [x] Lazy evaluation
+- [x] List comprehension
 
 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
 
@@ -433,6 +435,8 @@ prime = ?
 ```
 
 ## 두 번째 시간
+- [x] Typeclass
+- [x] Functor
 
 첫 시간에 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
 
@@ -603,6 +607,9 @@ foldforest f g ts = ?
 연습14) 위의 foldforest 함수를 완성해 보세요.
 
 ## 세 번째 시간
+- [x] Function composition
+- [x] Currying
+- [x] Partial application
 
 이번 시간에는 다시 List에 관한 함수들을 마저 살펴보겠습니다. List에 대한 함수들은 Data.List 모듈에 있습니다.
 
@@ -695,7 +702,7 @@ lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
 
 Maybe와 같은 type으로는 Java8의 Optional, Rust의 Option, Scala의 Option 등이 있습니다.
 
-이번 시간 마지막 내용으로 함수의 합성(Function composition)에 대해 알아보겠습니다.
+다음으로 함수의 합성(Function composition)에 대해 알아보겠습니다.
 
 Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 Haskell에서의 함수의 합성은 수학에서의 함수의 합성과 똑같습니다. 즉, 수학에서 두 개의 함수 f: x -> y 와 g: y -> z 가 있을 때 이 둘의 합성 함수는 g ○ f: x -> z 가 되듯이 Haskell에서 두 개의 함수 f:: a -> b 와 g:: b -> c의 합성 함수 g . f:: a -> c 가 됩니다. Haskell에서 함수 합성 연산자는 . (dot) 입니다.
 
@@ -756,6 +763,7 @@ rmDuplicate xs = ?
 ```
 
 ##네 번째 시간
+- [x] Monoid
 
 List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
 
@@ -883,6 +891,7 @@ array2 ! (1,1) -- 2
 ```
 
 ## 여섯 번째 시간
+- [x] Value with context
 
 Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. 이 함수는 다음 처럼 동작합니다.
 
