@@ -111,7 +111,7 @@ fold함수는 folding 방향에 따라 foldl과 foldr 두 개의 함수가 있�
     512
     > :t foldr
     foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
-    > foldl (^2) 2 [2,3]
+    > foldl (^) 2 [2,3]
     64
     > :t foldl
     foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
