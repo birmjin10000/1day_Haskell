@@ -820,13 +820,13 @@ instance Foldable RoseTree where
 
 연습20) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
 
-연습21) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요. (projecteuler.net 문제4)
+연습21) 세 자리 숫자의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요.  Palindrome 수는 1221, 343 처럼 앞에서 읽나 뒤에서 읽나 같은 수를 말합니다. (projecteuler.net 문제4)
 
 연습22) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
 
   >1) a < b < c
 
-  >2) a^2 + b^2 = c^2
+  >2) a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>
 
 피타고라스 triplet중 a+b+c=1,000인 triplet은 딱 하나 있습니다. 이 triplet을 구하는 함수를 만들어보세요. (projecteuler.net 문제9)
 
