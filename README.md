@@ -325,9 +325,9 @@ zipWith 함수도 zip함수처럼 zipWith3 부터 zipWith7 까지 인자 갯수�
 연습2) zipWith 를 재귀적으로 구현해 보세요.
 
 ```haskell
-zipWith f [] _ = []
-zipWith f _ [] = []
-zipWith f (x:xs) (y:ys) = ?
+my_zipWith f [] _ = []
+my_zipWith f _ [] = []
+my_zipWith f (x:xs) (y:ys) = ?
 ```
 
 zip함수와 반대로 동작하는 unzip 함수도 있습니다.
@@ -367,7 +367,7 @@ take 5 (iterate (map (*2)) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,3
 
 연습4) iterate 함수를 재귀적으로 구현해 보세요.
 ```haskell
-iterate f x = x:?
+my_iterate f x = x:?
 ```
 
 연습5) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
