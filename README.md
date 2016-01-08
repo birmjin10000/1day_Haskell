@@ -393,7 +393,7 @@ my_scanl f base (x:xs) = base:?
 
 연습7) iterate 함수를 scanl을 써서 구현해 보세요.
 ```haskell
-iterate f x = scanl ? ? ?
+my_iterate f x = scanl ? ? ?
 ```
 
 연습8) fibonacci 수열을 scanl을 써서 만들어 보세요.
@@ -528,9 +528,9 @@ myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
 BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전체 Tree의 type이 결정됩니다.
 
     > :t myTree
-    myTree :: Tree Char
+    myTree :: BinTree Char
     > :t myTree2
-    myTree2 :: Num a => Tree a
+    myTree2 :: Num a => BinTree a
 
 사전 학습에서 나온 => 기호에 대해 여기서 설명하겠습니다. 이는 Typeclass constraint라고 부르는 부분으로 type parameter 'a'가 어느 Typeclass에 속하는지를 밝히는 것입니다. 즉, Num 이라는 Typeclass에 속하는 Int, Float 등의 type이 해당 위치에 올 수 있다는 뜻입니다.
 
