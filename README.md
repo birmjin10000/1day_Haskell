@@ -231,10 +231,11 @@ my_sum [] = 0
 my_sum (x:xs) = ?
 ```
 
-숙제2) tak 함수를 재귀적으로 직접 만들어보세요. 아래 코드에서 밑줄이 뜻하는 바는 해당 위치에 오는 변수에 대해서 신경쓰지 않겠다는 뜻이다. 빈 List에 대해서는 몇 개의 항목을 가져올 지가 무의미하기 때문에 해당 변수를 사용할 일이 없고 그렇기 때문에 신경쓰지 않겠다는 뜻으로 밑줄로 표시하는 것입니다.
+숙제2) tak 함수를 재귀적으로 직접 만들어보세요. 아래 코드에서 밑줄이 뜻하는 바는 해당 위치에 오는 변수에 대해서 신경쓰지 않겠다는 뜻이다. 예를 들어 빈 List에 대해서는 몇 개의 항목을 가져올 지가 무의미하기 때문에 해당 변수를 사용할 일이 없고 그렇기 때문에 신경쓰지 않겠다는 뜻으로 밑줄로 표시하는 것입니다.
 ```haskell
 my_take:: Int -> [a] -> [a]
 my_take _ [] = []
+my_take 0 _ = []
 my_take n (x:xs) = ?
 ```
 
@@ -427,7 +428,30 @@ prime = ?
 - [x] Typeclass
 - [x] Functor
 
-foldr 함수를 재귀적으로 직접 구현해보겠습니다.
+
+지금까지 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
+
+연습9) merge 함수를 구현하세요. 아래 코드에서 @ 기호를 사용한 부분은 as pattern 이라고 부르는 것으로 pattern matching된 전체 부분을 뜻합니다. 가령 xall@(x:y:ys) = [1,2,3] 인 경우에 x, y, ys 는 각각 1, 2, [3] 에 binding되고 xall 은 pattern matching된 전체 부분인 [1,2,3] 에 binding됩니다.
+
+```haskell
+merge:: Ord a => [a] -> [a] -> [a]
+merge [] ys = ys
+merge xs [] = xs
+merge xall@(x:xs) yall@(y:ys) = ?
+
+merge [1,2,3,4] [3,6,9] -- [1,2,3,3,4,6,9]
+```
+
+연습10) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
+
+```haskell
+mergeSort:: Ord a => [a] -> [a]
+mergeSort [] = []
+mergeSort [a] = ?
+mergeSort xs = ?
+```
+
+이번에는 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
 
 ```haskell
 my_foldr:: (a -> b -> b) -> b -> [a] -> b
@@ -444,34 +468,12 @@ my_foldr f base (x:xs) = ?
 f x (my_foldr f base xs)
 ```
 
-연습9) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현해 보세요.
+연습11) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현해 보세요.
 
 ```haskell
 my_foldl:: (b -> a -> b) -> b -> [a] -> b
 my_foldl f base [] = base
 my_foldl f base (x:xs) = ?
-```
-
-지금까지 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
-
-연습10) merge 함수를 구현하세요. 아래 코드에서 @ 기호를 사용한 부분은 as pattern 이라고 부르는 것으로 pattern matching된 전체 부분을 뜻합니다. 가령 xall@(x:y:ys) = [1,2,3] 인 경우에 x, y, ys 는 각각 1, 2, [3] 에 binding되고 xall 은 pattern matching된 전체 부분인 [1,2,3] 에 binding됩니다.
-
-```haskell
-merge:: Ord a => [a] -> [a] -> [a]
-merge [] ys = ys
-merge xs [] = xs
-merge xall@(x:xs) yall@(y:ys) = ?
-
-merge [1,2,3,4] [3,6,9] -- [1,2,3,3,4,6,9]
-```
-
-연습11) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
-
-```haskell
-mergeSort:: Ord a => [a] -> [a]
-mergeSort [] = []
-mergeSort [a] = ?
-mergeSort xs = ?
 ```
 
 "Hello, world!" 와 같은 문자열을 Haskell 에서는 String이라고 부릅니다. 이 String에 대한 작업을 수행하는 함수 중 하나로 words, unwords 가 있습니다.
