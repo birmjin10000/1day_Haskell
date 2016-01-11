@@ -510,7 +510,13 @@ myOfficeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Ea
 data Gender = Male | Female | Unknown deriving (Show, Eq)
 ```
 
-이렇게 하면 Gender 라는 새로운 type이 생깁니다. 해당 type의 값은 Male 또는 Female 또는 Unknown입니다. 이 세 가지 값은 방금 우리가 직접 전역으로 선언해 준 것입니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
+이렇게 하면 Gender 라는 새로운 type이 생깁니다. 해당 type의 값은 Male 또는 Female 또는 Unknown입니다. 이 세 가지 값은 방금 우리가 직접 전역으로 선언해 준 것입니다. Male, Female, Unknown 처럼 Gender type의 값을 이루는 것을 value constructor라고 합니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
+
+    > :t Male
+    Male :: Gender
+    > :t Female
+    Female :: Gender
+
 deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 Male, Female, Unknown 이라는 값을 문자열로 출력할 수 있다는 것을 컴파일러에게 알려줍니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
 
 이제 새로 만든 Gender type을 이용하는 함수를 하나 만들겠습니다.
@@ -542,7 +548,7 @@ myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
 ```
 <img src="BinTree.png">
 
-BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전체 Tree의 type이 결정됩니다. 이러한 것을 parametric polymorphism이라고 부르며 C++의 templates 이나 Java의 Generics 가 이와 같은 개념입니다.
+여기서 BinTree a 라는 새로운 자료형을 정의하였습니다. BinTree a 자료형에서 BinTree를 type constructor라고 부르며 a 는 type parameter입니다. a 의 type에 의해 전체 Tree의 type이 결정됩니다. 즉, BinTree a 라는 자료형은 polymorphic 합니다. 이러한 것을 parametric polymorphism이라고 부르며 C++의 templates 이나 Java의 Generics 가 이와 같은 개념입니다.
 
     > :t myTree
     myTree :: BinTree Char
