@@ -101,9 +101,9 @@ Haskell은 순수 함수형 프로그래밍 언어입니다. 함수형 프로그
 map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b] 꼴 List 를 결과로 내놓는 함수 입니다. map 함수를 다음처럼 재귀적으로 구현할 수 있습니다.
 
     >:{
-    Prelude| my_map::(a->b) -> [a] -> [b]
-    Prelude| my_map f [] = []
-    Prelude| my_map f (x:xs) = f x:my_map f xs
+    Prelude| let my_map::(a->b) -> [a] -> [b]
+    Prelude|     my_map f [] = []
+    Prelude|     my_map f (x:xs) = f x:my_map f xs
     Prelude| :}
 
 위의 코드에서 (x:xs) 와 같은 것을 pattern matiching이라고 합니다. 다음 코드를 보세요.
@@ -130,10 +130,12 @@ my_map 함수의 구현 코드에서 my_map 함수의 정의부가 두 번 등�
 
     > filter odd [1,2,3]
     [1,3]
+    > filter (>5) [1,6,3,8,5]
+    [6,8]
     > :t filter
     filter :: (a -> Bool) -> [a] -> [a]
 
-filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [a] 꼴 List 하나를 결과로 내놓는 함수입니다. (a -> Bool) 꼴 함수는 많이 등장하는 형태이어서 특별히 Predicate 이라고 부릅니다.
+filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [a] 꼴 List 하나를 결과로 내놓는 함수입니다. (a -> Bool) 꼴 함수는 많이 등장하는 형태이어서 특별히 Predicate 이라고 부릅니다. filter 함수가 하는 일은 List의 원소들 중에서 Predicate을 만족하는 것들만 골라내는 것입니다.
 
 ```haskell
 foldl (/) 1000 [2,5] -- 100.0
