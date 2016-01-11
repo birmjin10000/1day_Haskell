@@ -115,7 +115,15 @@ map 함수는 (a -> b) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [b]
     [2,3]
 
 즉, List [1,2,3] 을 (a:as) 꼴 패턴에 대응하여 각각 a 와 as 의 값을 정하는 것입니다.
-my_map 함수의 구현 코드에서 my_map 함수의 정의부가 두 번 등장하는 것도 pattern matching입니다. 즉 빈 List일 경우([] 꼴)와 빈 List가 아닐 경우(x:xs 꼴) 두 경우의 pattern에 대하여 각각 함수 구현을 달리하는 것입니다.
+my_map 함수의 구현 코드에서 my_map 함수의 정의부가 두 번 등장하는 것도 pattern matching입니다. 즉 빈 List일 경우([] 꼴)와 빈 List가 아닐 경우(x:xs 꼴) 두 경우의 pattern에 대하여 각각 함수 구현을 달리하는 것입니다. Pattern matching 예를 하나 더 보겠습니다.
+
+    > :{
+    Prelude| let halves [] = ([],[])
+    Prelude|     halves [x] = ([x],[])
+    Prelude|     halves (x:y:ys) = (x:u, y:v) where (u,v) = halves ys
+    Prelude| :}
+
+위 코드의 halves 함수는 List를 두 개의 List로 나누는 일을 합니다. 위 코드를 보면 halves 함수의 정의가 세 번 나오고 있습니다. 빈 List일 때, 원소가 하나인 List일 때, 그 이외의 경우 이렇게 세 경우에 대한 pattern matching을 하고 있습니다. where 라는 새로운 문법이 나왔는데, 이는 지역변수를 선언할 때 사용합니다.
 
 한편, ghci 에서 여러 줄에 걸쳐 코드를 작성하려면 :{ 로 시작하고 :} 로 끝내면 됩니다. 이 때, :{ 와 :} 가 있는 줄에는 다른 것은 쓰지 않아야 합니다.
 
