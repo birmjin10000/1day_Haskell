@@ -895,17 +895,17 @@ main = do
       2 <b>4</b> 6
      8 5 <b>9</b> 3
 </pre>
-다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제18)
+i) 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제18)
 <pre>
 <a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
-연습24) (_어려움_) 19번에서 만든 함수로 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
+ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
 <pre>
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
-연습25) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
+연습24) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
 
     3+1
     2+2
@@ -936,14 +936,14 @@ concatMap (\x -> replicate x x) [1,2,3] -- [1,2,2,3,3,3]
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
-연습26) concatMap 함수를 직접 구현하세요.
+연습25) concatMap 함수를 직접 구현하세요.
 
 ```haskell
 my_concatMap:: (a -> [b]) -> [a] -> [b]
 my_concatMap f xs = ?
 ```
 
-연습27) concatMap 함수를 써서 filter 함수를 구현하세요.
+연습26) concatMap 함수를 써서 filter 함수를 구현하세요.
 
 ```haskell
 my_filter f xs = concatMap ? ?
@@ -1034,7 +1034,7 @@ getCount:: String -> WordCount
 
 WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
 
-연습28) getCount 함수를 완성하세요.
+연습27) getCount 함수를 완성하세요.
 
 ```haskell
 getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
@@ -1116,9 +1116,9 @@ wc options files = do
   printCount options totalCount
 ```
 
-연습29) countAndPrint 함수를 구현해 보세요.
+연습28) countAndPrint 함수를 구현해 보세요.
 
-연습30) wc utility를 최종 완성해 보세요.
+연습29) wc utility를 최종 완성해 보세요.
 
 ## 더 읽을 거리
 #### 람다 계산법 Lambda Calculus
