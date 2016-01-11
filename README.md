@@ -541,7 +541,7 @@ myTree = Fork 'a' (Fork 'b' Empty Empty) (Fork 'c' Empty (Fork 'd' Empty Empty))
 myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
 ```
 
-BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전체 Tree의 type이 결정됩니다. 이러한 것을 parametric polymorphism이라고 부르면 C++의 templates 이나 Java의 Generics 가 이와 같은 개념입니다.
+BinTree 자료형에서 a 는 type parameter입니다. a 의 type에 의해 전체 Tree의 type이 결정됩니다. 이러한 것을 parametric polymorphism이라고 부르며 C++의 templates 이나 Java의 Generics 가 이와 같은 개념입니다.
 
     > :t myTree
     myTree :: BinTree Char
