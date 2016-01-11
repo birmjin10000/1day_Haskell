@@ -174,7 +174,7 @@ my_filter f (x:xs) = if f x
     [1 of 1] Compiling Main             ( my_filter.hs, interpreted )
     Ok, modules loaded: Main.
 
-앞서 my_map 함수 정의할 때 처럼, ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 불편합니다. 그래서 이제부터는 작성하고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 그리고 소스파일에서 binding 할 때는 let을 쓰지 않습니다.
+앞서 my_map 함수 정의할 때 처럼, ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 불편합니다. 그래서 이제부터는 소스파일을 만들고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 그리고 소스파일에서 binding 할 때는 let을 쓰지 않습니다.
 
 Haskell source 파일을 작성할 때는 off-side rule을 지켜야 합니다. 이는 축구의 off-side rule과 똑같은 맥락이며 들여쓰기를 할 때 계층을 맞추어주어야 합니다. 예를 들어 다음과 같이 작성하면 파일을 불러올 때 오류가 납니다.
 
@@ -236,6 +236,7 @@ my_sum (x:xs) = ?
 my_take:: Int -> [a] -> [a]
 my_take _ [] = []
 my_take n (x:xs) = ?
+```
 
 숙제3) foldr 함수를 써서 sum 함수를 직접 만들어보세요.
 ```haskell
