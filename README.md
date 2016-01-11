@@ -566,7 +566,14 @@ treeMap toUpper myTree -- Fork 'A' (Fork 'B' Empty Empty) (Fork 'C' Empty (Fork 
 
 위의 코드에서 toUpper 함수는 소문자를 대문자로 바꾸어 주는 함수로 Data.Char 모듈에 있습니다. 모듈을 가져오려면 위의 코드처럼 import 구문을 사용합니다.
 
-그런데 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
+연습12) 위의 treeMap 함수를 구현해보세요.
+```haskell
+treeMap::(a->b) -> BinTree a -> BinTree b
+treeMap _ Empty = Empty
+treeMap f (Fork a l r) = ?
+```
+
+그런데 이처럼 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
 
 ```haskell
 class Functor f where
@@ -588,19 +595,19 @@ instance Functor [] where
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
 
-연습12) 우리가 만든 이진트리를 Functor로 만들어보세요.
-
+마찬가지로 우리가 만든 이진트리를 Functor로 만들려면 다음처럼 하면 됩니다.
 ```haskell
 instance Functor BinTree where
-    fmap f Empty = Empty
-    fmap f (Fork a l r) = ?
+    fmap = treeMap
 ```
 
 이번에는 노드를 여러 개 가질 수 있는 Tree를 만들어보겠습니다.
 
 ```haskell
 data RoseTree a = Branch a [RoseTree a] deriving Show
+myTree3 = Branch 'a' [Branch 'b' [], Branch 'c' [Branch 'd' [], Branch 'e' [], Branch 'f' []], Branch 'g' []]
 ```
+<img src="RoseTree.png">
 
 연습13) RoseTree를 Functor로 만들어보세요.
 
