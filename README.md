@@ -554,9 +554,9 @@ data Natural = Zero | Succ Natural deriving (Show, Eq)
 재귀적인 구조의 자료형을 하나 더 만들어보겠습니다. 이진트리를 만들겠습니다.
 
 ```haskell
-data BinTree a = Empty | Fork a (BinTree a) (BinTree a) deriving Show
-myTree = Fork 'a' (Fork 'b' Empty Empty) (Fork 'c' Empty (Fork 'd' Empty Empty))
-myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
+data BinTree a = Empty | Node a (BinTree a) (BinTree a) deriving Show
+myTree = Node 'a' (Node 'b' Empty Empty) (Node 'c' Empty (Node 'd' Empty Empty))
+myTree2 = Node 1 (Node 2 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))
 ```
 <img src="BinTree.png">
 
@@ -573,19 +573,19 @@ myTree2 = Fork 1 (Fork 2 Empty Empty) (Fork 3 Empty (Fork 4 Empty Empty))
 ```haskell
 treeSize:: BinTree a -> Int
 treeSize Empty = 0
-treeSize (Fork a l r) = ?
+treeSize (Node a l r) = ?
 ```
 
 이번에는 tree에 항목을 추가하는 함수를 만들어보겠습니다. 각 원소가 중복되지 않는 Tree라고 가정하겠습니다.
 ```haskell
 treeInsert:: Ord a => a -> BinTree a -> BinTree a
-treeInsert x Empty = Fork x Empty Empty
-treeInsert x t@(Fork y l r) = case x `compare` y of
+treeInsert x Empty = Node x Empty Empty
+treeInsert x t@(Node y l r) = case x `compare` y of
                                 EQ -> t
-                                LT -> Fork y (treeInsert x l) r
-                                GT -> Fork y l (treeInsert x r)
-myTree3 = Fork 10 (Fork 3 Empty Empty) (Fork 12 Empty Empty)
-treeInsert 5 myTree3 -- Fork 10 (Fork 3 Empty (Fork 5 Empty Empty)) (Fork 12 Empty Empty)
+                                LT -> Node y (treeInsert x l) r
+                                GT -> Node y l (treeInsert x r)
+myTree3 = Node 10 (Node 3 Empty Empty) (Node 12 Empty Empty)
+treeInsert 5 myTree3 -- Node 10 (Node 3 Empty (Node 5 Empty Empty)) (Node 12 Empty Empty)
 ```
 새로운 문법이 나왔는데 case...of 구문은 C, Java의 switch 구문에 해당합니다. compare 함수는 두 개의 값이 같으면 EQ, 앞에 나온 것이 뒤에 나온 것보다 작은면 LT, 반대의 경우에는 GT 를 각각 반환합니다.
 
@@ -593,7 +593,7 @@ treeInsert 5 myTree3 -- Fork 10 (Fork 3 Empty (Fork 5 Empty Empty)) (Fork 12 Emp
 
 ```haskell
 import Data.Char
-treeMap toUpper myTree -- Fork 'A' (Fork 'B' Empty Empty) (Fork 'C' Empty (Fork 'D' Empty Empty))
+treeMap toUpper myTree -- Node 'A' (Node 'B' Empty Empty) (Node 'C' Empty (Node 'D' Empty Empty))
 ```
 
 위의 코드에서 toUpper 함수는 소문자를 대문자로 바꾸어 주는 함수로 Data.Char 모듈에 있습니다. 모듈을 가져오려면 위의 코드처럼 import 구문을 사용합니다.
@@ -602,7 +602,7 @@ treeMap toUpper myTree -- Fork 'A' (Fork 'B' Empty Empty) (Fork 'C' Empty (Fork 
 ```haskell
 treeMap::(a->b) -> BinTree a -> BinTree b
 treeMap _ Empty = Empty
-treeMap f (Fork a l r) = ?
+treeMap f (Node a l r) = ?
 ```
 
 그런데 이처럼 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
@@ -635,7 +635,7 @@ instance Functor BinTree where
 
 그런데, 앞서 나온 deriving 문법의 역할은 어떤 자료형이 특정 typeclass에 속함을 뜻한다고 했습니다. 다시 말해 다음의 BinTree a 자료형 정의는 BinTree a 자료형이 Show 라는 typeclass의 instance임을 뜻하고 있습니다. 명시적으로 instance 키워드를 써서 정의해 주지 않고 deriving 만을 써서 BinTree a 자료형을 Show의 instance로 만들고 있습니다.
 ```haskell
-data BinTree a = Empty | Fork a (BinTree a) (BinTree a) deriving Show
+data BinTree a = Empty | Node a (BinTree a) (BinTree a) deriving Show
 ```
 이러한 것들을 derived instance 라고 부르며 이것이 가능한 것은 앞서 말했듯이 Eq, Ord, Enum, Bounded, Show, Read 6개 뿐입니다. 이것들은 instance를 만드는 코드를 compiler가 자동으로 만들어줍니다.
 
@@ -658,7 +658,7 @@ Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료
 
 ```haskell
 foldBinTree f base Empty = base
-foldBinTree f base (Fork a l r) = f a v
+foldBinTree f base (Node a l r) = f a v
     where v = foldBinTree f i l
           i = foldBinTree f base r
 ```
@@ -780,7 +780,7 @@ Maybe와 같은 type으로는 Java8의 Optional, Rust의 Option, Scala의 Option
 ```haskell
 treeFind:: Ord a => a -> BinTree a -> Maybe a
 treeFind _ Empty = Nothing
-treeFind x (Fork y l r) = ?
+treeFind x (Node y l r) = ?
 ```
 
 다음으로 함수의 합성(Function composition)에 대해 알아보겠습니다.
@@ -882,7 +882,7 @@ Monoid는 triple(T, __\*__, *e*) 이라고도 정의하는데, 어떤 type T에 
 ```haskell
 instance Foldable BinTree where
     foldMap f Empty = mempty
-    foldMap f (Fork a l r) = f a `mappend` (foldMap f l) `mappend` (foldMap f r)
+    foldMap f (Node a l r) = f a `mappend` (foldMap f l) `mappend` (foldMap f r)
 ```
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
