@@ -576,6 +576,19 @@ treeSize Empty = 0
 treeSize (Fork a l r) = ?
 ```
 
+이번에는 tree에 항목을 추가하는 함수를 만들어보겠습니다. 각 원소가 중복되지 않는 Tree라고 가정하겠습니다.
+```haskell
+treeInsert:: Ord a => a -> BinTree a -> BinTree a
+treeInsert x Empty = Fork x Empty Empty
+treeInsert x t@(Fork y l r) = case x `compare` y of
+                                EQ -> t
+                                LT -> Fork y (treeInsert x l) r
+                                GT -> Fork y l (treeInsert x r)
+myTree3 = Fork 10 (Fork 3 Empty Empty) (Fork 12 Empty Empty)
+treeInsert 5 myTree3 -- Fork 10 (Fork 3 Empty (Fork 5 Empty Empty)) (Fork 12 Empty Empty)
+```
+새로운 문법이 나왔는데 case...of 구문은 C, Java의 switch 구문에 해당합니다. compare 함수는 두 개의 값이 같으면 EQ, 앞에 나온 것이 뒤에 나온 것보다 작은면 LT, 반대의 경우에는 GT 를 각각 반환합니다.
+
 우리가 만든 이진 트리 자료형도 List에서 쓰던 map 같은 함수를 쓸 수 있으면 좋겠습니다. 가령 다음처럼.
 
 ```haskell
@@ -762,6 +775,14 @@ lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
 
 Maybe와 같은 type으로는 Java8의 Optional, Rust의 Option, Scala의 Option 등이 있습니다.
 
+
+연습18) Maybe type을 이용하여 BinTree에서 특정 항목을 찾는 함수를 만들어보세요.
+```haskell
+treeFind:: Ord a => a -> BinTree a -> Maybe a
+treeFind _ Empty = Nothing
+treeFind x (Fork y l r) = ?
+```
+
 다음으로 함수의 합성(Function composition)에 대해 알아보겠습니다.
 
 Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 Haskell에서의 함수의 합성은 수학에서의 함수의 합성과 똑같습니다. 즉, 수학에서 두 개의 함수 f: x -> y 와 g: y -> z 가 있을 때 이 둘의 합성 함수는 g ○ f: x -> z 가 되듯이 Haskell에서 두 개의 함수 f:: a -> b 와 g:: b -> c의 합성 함수 g . f:: a -> c 가 됩니다. Haskell에서 함수 합성 연산자는 . (dot) 입니다.
@@ -809,13 +830,13 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
-연습18) 함수 합성 연산자를 직접 구현해 보세요.
+연습19) 함수 합성 연산자를 직접 구현해 보세요.
 ```haskell
 my_compose:: (b->c) -> (a->b) -> (a->c)
 f `my_compose` g = ?
 ```
 
-연습19) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
+연습20) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 
 ```haskell
 rmDuplicate::(Ord a) => [a] -> [a]
@@ -866,7 +887,7 @@ instance Foldable BinTree where
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
-연습20) RoseTree를 Foldable의 instance로 만들어 보세요.
+연습21) RoseTree를 Foldable의 instance로 만들어 보세요.
 
 ```haskell
 instance Foldable RoseTree where
@@ -877,11 +898,11 @@ instance Foldable RoseTree where
 
 이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
 
-연습21) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
+연습22) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
 
-연습22) 세 자리 숫자 두개의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요.  Palindrome 수는 1221, 343 처럼 앞에서 읽나 뒤에서 읽나 같은 수를 말합니다. (projecteuler.net 문제4)
+연습23) 세 자리 숫자 두개의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요.  Palindrome 수는 1221, 343 처럼 앞에서 읽나 뒤에서 읽나 같은 수를 말합니다. (projecteuler.net 문제4)
 
-연습23) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
+연습24) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
 
   >1) a < b < c
 
@@ -913,7 +934,7 @@ main = do
 
 이 코드를 t.hs 파일에 저장하고 ghc --make t.hs 로 컴파일하면 실행파일이 만들어집니다. 또는 ghc t 만 해도 됩니다.
 
-연습24) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 큰 경우는 23입니다.
+연습25) 다음과 같은 삼각형꼴 숫자 배열에서 위에서 아래로 가는 경로 중 그 합이 가장 큰 경우는 23입니다.
 <pre>
         <b>3</b>
        <b>7</b> 4
@@ -930,7 +951,7 @@ ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
 
-연습25) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
+연습26) 4를 자연수의 덧셈으로 만들 수 있는 방법은 다음처럼 4개가 있습니다.
 
     3+1
     2+2
@@ -961,14 +982,14 @@ concatMap (\x -> replicate x x) [1,2,3] -- [1,2,2,3,3,3]
 
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
-연습26) concatMap 함수를 직접 구현하세요.
+연습27) concatMap 함수를 직접 구현하세요.
 
 ```haskell
 my_concatMap:: (a -> [b]) -> [a] -> [b]
 my_concatMap f xs = ?
 ```
 
-연습27) concatMap 함수를 써서 filter 함수를 구현하세요.
+연습28) concatMap 함수를 써서 filter 함수를 구현하세요.
 
 ```haskell
 my_filter f xs = concatMap ? ?
@@ -1059,7 +1080,7 @@ getCount:: String -> WordCount
 
 WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
 
-연습28) getCount 함수를 완성하세요.
+연습29) getCount 함수를 완성하세요.
 
 ```haskell
 getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
@@ -1141,9 +1162,9 @@ wc options files = do
   printCount options totalCount
 ```
 
-연습29) countAndPrint 함수를 구현해 보세요.
+연습30) countAndPrint 함수를 구현해 보세요.
 
-연습30) wc utility를 최종 완성해 보세요.
+연습31) wc utility를 최종 완성해 보세요.
 
 ## 더 읽을 거리
 #### 람다 계산법 Lambda Calculus
