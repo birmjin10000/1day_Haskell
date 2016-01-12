@@ -364,6 +364,8 @@ my_iterate f x = x:?
 연습4) Haskell의 lazy evaluation 덕분에 fibonacci 수열을 매우 간단하게 만들 수 있습니다. 다음 코드를 완성하세요.
 ```haskell
 fib = 1:1:zipWith (+) ? ?
+take 10 fib -- [1,1,2,3,5,8,13,21,34,55]
+fib!!10 -- 89
 ```
 
 fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함수는 값을 계속 누적해 나갑니다. scanl 과 scanr 함수가 있습니다.
@@ -376,7 +378,7 @@ scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
 scanl 함수의 동작은 다음 수식처럼 표현할 수 있습니다.
 <img src="scanl_explained.png">
 
-연습5) scanl 함수를 재귀적으로 직접 만들어 보세요. iterate 함수 만든 것과 매우 비슷합니다.
+연습5) scanl 함수를 재귀적으로 직접 만들어 보세요. iterate 함수 만든 것과 매우 비슷합니다. iterate와 scan 둘 다 직전에 계산한 결과를 이용하기에 매우 비슷합니다.
 ```haskell
 my_scanl _ base [] = [base]
 my_scanl f base (x:xs) = base:?
@@ -544,10 +546,10 @@ sayHello gender
 자료형은 재귀적으로도 선언이 가능합니다. 자연수를 뜻하는 자료형을 만들어 보겠습니다.
 
 ```haskell
-data Natural = One | Succ Natural deriving (Show, Eq)
+data Natural = Zero | Succ Natural deriving (Show, Eq)
 ```
 
-이제 Natural 자료형은 값으로 One, Succ One, Succ (Succ One), Succ (Succ (Succ One)), ... 등 무한개의 값을 가질 수 있습니다.
+이제 Natural 자료형은 값으로 Zero, Succ Zero, Succ (Succ Zero), Succ (Succ (Succ Zero)), ... 등 무한개의 값을 가질 수 있습니다.
 
 재귀적인 구조의 자료형을 하나 더 만들어보겠습니다. 이진트리를 만들겠습니다.
 
