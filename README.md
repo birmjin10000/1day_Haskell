@@ -493,7 +493,12 @@ myOfficeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Ea
 data Gender = Male | Female | Unknown deriving (Show, Eq)
 ```
 
-이렇게 하면 Gender 라는 새로운 type이 생깁니다. 해당 type의 값은 Male 또는 Female 또는 Unknown입니다. 이 세 가지 값은 방금 우리가 직접 전역으로 선언해 준 것입니다. Male, Female, Unknown 처럼 Gender type의 값을 이루는 것을 value constructor라고 합니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
+이렇게 하면 Gender 라는 새로운 type이 생깁니다. 해당 type의 값은 Male 또는 Female 또는 Unknown입니다. 이 세 가지 값은 방금 우리가 직접 전역으로 선언해 준 것입니다. 쉽게 생각하자면 Enumeration을 선언한 것으로 생각할 수 있습니다. 비슷한 것으로 기본 자료형인 Bool이 있습니다.
+```haskell
+data Bool = True | False
+```
+
+Male, Female, Unknown 처럼 Gender type의 값을 이루는 것을 value constructor라고 합니다. type을 만들 때는 반드시 대문자로 시작하여야 하고 type의 값도 반드시 대문자로 시작해야 합니다.
 
     > :t Male
     Male :: Gender
@@ -534,6 +539,11 @@ myTree2 = Node 1 (Node 2 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))
     myTree :: BinTree Char
     > :t myTree2
     myTree2 :: Num a => BinTree a
+
+Empty 와 Node는 앞서 말했듯이 value constructor입니다. 이 두개의 type을 보면 이것이 뜻하는 바가 좀 더 명확해집니다.
+
+    > :t Node
+    Node :: a -> BinTree a -> BinTree a -> BinTree a
 
 우리가 이제는 매우 익숙한 List 자료형도 다음처럼 재귀적으로 정의합니다.
 ```haskell
@@ -577,7 +587,7 @@ treeMap _ Empty = Empty
 treeMap f (Node a l r) = ?
 ```
 
-그런데 이처럼 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
+그런데 이처럼 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다. Mappable 과 같은 좀 더 와닿는 용어를 쓰지 않고 Functor라는 낯선 용어를 쓴 이유는 Haskell의 디자이너들이 Haskell 구현에 Category Theory라는 추상대수학의 개념들을 일부 가져왔기 때문입니다.
 ```haskell
 class Functor f where
     fmap :: (a -> b) -> f a -> f b
