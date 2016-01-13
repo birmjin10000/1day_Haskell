@@ -551,6 +551,11 @@ data Natural = Zero | Succ Natural deriving (Show, Eq)
 
 이제 Natural 자료형은 값으로 Zero, Succ Zero, Succ (Succ Zero), Succ (Succ (Succ Zero)), ... 등 무한개의 값을 가질 수 있습니다.
 
+우리가 이제는 매우 익숙해진 List 자료형도 다음처럼 재귀적으로 선언 되어있습니다.
+```haskell
+data [a] = [] | a:[a] deriving (Eq, Ord)
+```
+
 재귀적인 구조의 자료형을 하나 더 만들어보겠습니다. 이진트리를 만들겠습니다.
 
 ```haskell
@@ -612,7 +617,17 @@ class Functor f where
     fmap :: (a -> b) -> f a -> f b
 ```
 
-위의 코드는 Functor typeclass의 정의입니다. Typeclass 를 정의할 때는 위처럼 class 라는 키워드를 통해 합니다. 위의 코드에서 보이듯이 Functor typeclass 이기 위해서는 단 하나의 조건만 있으면 되는데, 바로 fmap 함수가 해당 자료형에 대하여 정의되어 있으면 됩니다. 우리는 이미 Functor 인 자료형을 하나 배웠습니다. 바로 List 입니다. List 에 대해 동작하는 map 함수의 type을 다시 확인해 봅시다.
+위의 코드는 Functor typeclass의 정의입니다. Typeclass 를 정의할 때는 위처럼 **class** 라는 키워드를 통해 합니다. class의 정의는 해당 class이기 위해 갖추어야 할 함수들의 type signature 집합으로 되어 있습니다. 위의 코드에서 보이듯이 Functor typeclass 이기 위해서는 단 하나의 조건만 있으면 되는데, 바로 fmap 함수가 해당 자료형에 대하여 정의되어 있으면 됩니다.
+
+다른 예를 하나만 더 살펴보겠습니다. 앞서 나왔던 Eq typeclass의 정의를 보겠습니다. 아래 코드를 보면어떤 자료형이 Eq typeclass에속하려면 해당 자료형에 대하여 == 또는 /= 연산이 정의되어 있으면 됩니다.
+```haskell
+class Eq a where
+    (==), (/=):: a -> a -> Bool
+    x /= y = not (x == y)
+    x == y = not (x /= y)
+```
+
+Functor 인 자료형의 예를 하나 보겠습니다. 바로 List 입니다. List 에 대해 동작하는 map 함수의 type을 다시 확인해 봅시다.
 
 ```haskell
 map :: (a -> b) -> [a] -> [b]
