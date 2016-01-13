@@ -678,8 +678,6 @@ foldBinTree f base (Node a l r) = f a v
           i = foldBinTree f base r
 ```
 
-새로운 문법인 where 가 나왔습니다. where 는 중간값이 필요할 때 사용하는 구문입니다.
-
 이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
 
 ```haskell
