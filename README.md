@@ -855,9 +855,9 @@ instance Foldable RoseTree where
 
 이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
 
-연습22) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제2)
+연습22) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하세요. (projecteuler.net 문제2)
 
-연습23) 세 자리 숫자 두개의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하는 함수를 만들어보세요.  Palindrome 수는 1221, 343 처럼 앞에서 읽나 뒤에서 읽나 같은 수를 말합니다. (projecteuler.net 문제4)
+연습23) 세 자리 숫자 두개의 곱으로 만들어지는 Palindrome 수 중에서 가장 큰 수를 구하세요. Palindrome 수는 1221, 343 처럼 앞에서 읽나 뒤에서 읽나 같은 수를 말합니다. (projecteuler.net 문제4)
 
 연습24) 피타고라스 triplet은 다음 두 가지 조건을 만족하는 자연수 세 개 입니다.
 
@@ -865,23 +865,20 @@ instance Foldable RoseTree where
 
   >2) a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>
 
-피타고라스 triplet중 a+b+c=1,000인 triplet은 딱 하나 있습니다. 이 triplet을 구하는 함수를 만들어보세요. (projecteuler.net 문제9)
+피타고라스 triplet중 a+b+c=1,000인 triplet은 딱 하나 있습니다. 이 triplet을 구하세요. (projecteuler.net 문제9)
 
 다음 두 문제를 풀기 위해서는 몇 가지 더 알아야 할 내용이 있습니다. lines 함수는 String을 받아서 newline character를 구분자 삼아 List로 바꾸는 일을 합니다.
-
 ```haskell
 lines "abc\nxyz" -- ["abc","xyz"]
 ```
 
 read 함수는 String을 특정 타입으로 바꿀 때 씁니다. 여기서는 Int로 바꾸었습니다.
-
 ```haskell
 read "52"::Int -- 52
 read "5.8"::Float -- 5.8
 ```
 
 파일을 읽고 쓰는 IO 처리는 Haskell에서는 do block안에서 합니다.
-
 ```haskell
 main = do
     contents <- readFile "triangle1.txt"
@@ -898,12 +895,12 @@ main = do
       2 <b>4</b> 6
      8 5 <b>9</b> 3
 </pre>
-i) 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하는 함수를 만들어보세요. (projecteuler.net 문제18)
+i) 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하세요. (projecteuler.net 문제18)
 <pre>
 <a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
-ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구해보세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
+ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
 <pre>
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
@@ -917,7 +914,7 @@ ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰
 
 i) 어떤 수 n을 자연수의 덧셈으로 만들 수 있는 방법의 가짓 수를 구하는 함수를 만들어보세요. 그 함수를 이용하여 10의 경우의 가짓수를 구해보세요.
 
-ii) (_어려움_) 이번에는 100의 경우의 가짓수를 구해보세요. 일반적인 방법으로는 실행시간이 너무 오래 걸리며 Memoization을 사용하는 코드를 작성해야 합니다. List 자료구조는 색인접근 연산이 O(n)로 느려서 이번 문제풀이에는 적합하지 않습니다. 따라서 Data.Array 모듈을 이용합니다. 다음 코드에서 Array를 사용하는 방법을 보여주고 있습니다. (projecteuler.net 문제76)
+ii) (_어려움_) 이번에는 100의 경우의 가짓수를 구하세요. 일반적인 방법으로는 실행시간이 너무 오래 걸리며 Memoization을 사용하는 코드를 작성해야 합니다. List 자료구조는 색인접근 연산이 O(n)로 느려서 이번 문제풀이에는 적합하지 않습니다. 따라서 Data.Array 모듈을 이용합니다. 다음 코드에서 Array를 사용하는 방법을 보여주고 있습니다. (projecteuler.net 문제76)
 ```haskell
 import Data.Array
 
@@ -932,7 +929,6 @@ array2 ! (1,1) -- 2
 - [x] Value with context
 
 Data.List 모듈에서 다루지 않은 함수 중 concatMap이 있습니다. 이 함수는 다음 처럼 동작합니다.
-
 ```haskell
 concatMap (\x -> replicate x x) [1,2,3] -- [1,2,2,3,3,3]
 ```
@@ -940,14 +936,12 @@ concatMap (\x -> replicate x x) [1,2,3] -- [1,2,2,3,3,3]
 이름에서 드러나듯 concat 과 map 의 기능을 합친 것처럼 동작합니다.
 
 연습27) concatMap 함수를 직접 구현하세요.
-
 ```haskell
 my_concatMap:: (a -> [b]) -> [a] -> [b]
 my_concatMap f xs = ?
 ```
 
 연습28) concatMap 함수를 써서 filter 함수를 구현하세요.
-
 ```haskell
 my_filter f xs = concatMap ? ?
 ```
@@ -994,7 +988,6 @@ Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수�
 그리고 wc utility는 여러 개의 파일들을 입력받아 각각 파일별 계산 결과와 모든 것의 합을 출력할 수 있어야 합니다. 만일 입력파일이 주어지지 않으면 stdin 으로부터의 입력에 대해 계산을 합니다.
 
 이제 wc 함수의 type을 생각해 봅시다. wc 함수는 위의 여러 가지 옵션들과 함께 파일 경로 목록을 받아 뭔가 계산을 한 다음에 IO에 뭔가를 기록할 것입니다. 이를 바탕으로 wc 함수의 type을 써보면 다음과 같이 될 것입니다. 여기서 FilePath 는 Haskell의 System.IO에 미리 정의가 되어있기 때문에 import하였습니다. import할 때 전체 모듈을 import하지 않고 원하는 것들만 import하려면 괄호를 써주고 괄호안에 원하는 것만 나열하면 됩니다.
-
 ```haskell
 import System.IO (FilePath)
 
@@ -1003,7 +996,6 @@ wc:: Options -> [FilePath] -> IO ()
 ```
 
 먼저 입력파일이 없을 때의 처리를 어떻게 할 것인지 생각해 봅시다. 다음과 같은 꼴이 되면 될 것 같습니다.
-
 ```haskell
 wc options [] = do
   text <- getContents
@@ -1014,7 +1006,6 @@ wc options [] = do
 먼저 getContents 함수를 통해 stdin으로부터의 입력을 가지고 오고, getCount 함수에서 문자수, 단어수, 줄수 등을 계산합니다. 그리고 마지막으로 주어진 options에 따라 형식을 갖추어 출력을 합니다.
 
 다음으로 입력파일이 하나만 있을 때의 처리를 생각해 봅시다. 다음처럼 간단하게 하면 될 것 같습니다.
-
 ```haskell
 wc options [file] = do
   text <- readFile file
@@ -1023,13 +1014,11 @@ wc options [file] = do
 ```
 
 입력 파일이 여러 개 있을 때의 처리는 잠시 미루어 두고 일단 위의 구현을 완성해 봅시다. 구현을 안한 상태로 두려면 다음처럼 undefined라고 쓰면 됩니다.
-
 ```haskell
 wc options files = undefined
 ```
 
 먼저 getContents 파일은 Haskell 기본 함수입니다. getCount 함수를 구현해야 합니다. getCount 함수의 type은 다음이 될 것입니다.
-
 ```haskell
 type WordCount = (Int, Int, Int)
 getCount:: String -> WordCount
@@ -1038,19 +1027,16 @@ getCount:: String -> WordCount
 WordCount type은 세 개의 Integer로 이루어진 triple인데 각각 문자수, 단어수, 줄수 를 뜻합니다.
 
 연습29) getCount 함수를 완성하세요.
-
 ```haskell
 getCount = foldl (\(c,w,l) x -> ?) (0,0,0) . lines
 ```
 
 이제 printCount 함수를 만들겠습니다. 먼저 type을 생각해 봅니다. Options와 WordCount를 입력으로 받아서 적절하게 Console에 기록하게 될 것입니다. 따라서 다음과 같은 type을 가지게 될 것입니다.
-
 ```haskell
 printCount:: Options -> WordCount -> IO ()
 ```
 
 이제 이를 구현해 봅시다.
-
 ```haskell
 printCount options (c,w,l) =
     putStrLn ("\t" ++ (if showLines options then (show l) ++ "\t" else "")
@@ -1063,7 +1049,6 @@ showChars = elem 'c'
 ```
 
 마지막으로 지금까지 작성한 내용을 하나로 합쳐야 합니다.
-
 ```haskell
 import System.Environment (getArgs)
 
@@ -1078,13 +1063,11 @@ main = do
 ## 일곱 번째 시간
 
 아직 파일이 여러 개 있을 때를 처리하지 않았습니다.
-
 ```haskell
 wc options files = undefined
 ```
 
 일단 앞서 작성한 단일 파일의 경우 처리시와 비슷한 형태로 갖추게 하면 다음처럼 될 것 같습니다.
-
 ```haskell
 wc options files = do
   totalCount <- ?
@@ -1092,7 +1075,6 @@ wc options files = do
 ```
 
 totalCount변수에는 모든 파일들에 대한 문자수, 단어수, 줄수가 담겨있을 것입니다. 그렇다면 개발 파일들에 대해 count를 하고 print 하는 코드가 ? 부분에 들어가야 할 것 같습니다. 여러 개의 파일에 대해 처리하므로 여기에도 fold를 쓰면 될 것 같습니다. 그러면 코드 모양이 다음처럼 됩니다.
-
 ```haskell
 wc options files = do
   totalCount <- foldl countAndPrint (0,0,0) files
@@ -1100,19 +1082,16 @@ wc options files = do
 ```
 
 이제 countAndPrint 함수를 구현해 봅시다. countAndPrint함수는 파일 하나에 대한 계산 결과를 print하고 동시에 결과로서 넘겨주기도 해야 합니다. 따라서 type은 다음처럼 될 것입니다.
-
 ```haskell
 countAndPrint:: WordCount -> FilePath -> IO WordCount
 ```
 
 그런데 print를 하려면 문자수만 출력할지 아니면 전부다 출력할 지 정보를 갖고 있는 options도 필요하니까 countAndPrint 함수의 type이 다음처럼 되야 합니다.
-
 ```haskell
 countAndPrint:: Options -> WordCount -> FilePath -> IO WordCount
 ```
 
 게다가 countAndPrint 함수의 최종 결과물은 IO WordCount로 그냥 값이 아니라 상자에 담긴 값입니다. 즉, Maybe나 List 처럼 value with context입니다. IO WordCount 는 단순히 WordCount가 아니라 출력 즉, IO 작업이 발생하는 WordCount임을 뜻합니다. 상자에 담긴 값을 처리할 때는 fold함수도 별도로 있습니다. foldlM 을 쓰면 됩니다. 그에 따라 이를 사용하는 코드도 다음처럼 바뀝니다.
-
 ```haskell
 wc options files = do
   totalCount <- foldlM (countAndPrint options) (0,0,0) files
