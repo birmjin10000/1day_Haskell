@@ -43,6 +43,7 @@ List에 사용할 수 있는 기본 함수들을 살펴봅니다.
 sum [1,2,3] -- 6
 product [1,2,3] -- 6
 length [1,2,3] -- 3
+[1,2,3] !! 1 -- 2
 head [1,2,3] -- 1
 tail [1,2,3] -- [2,3]
 init [1,2,3] -- [1,2]
@@ -386,12 +387,12 @@ my_scanl f base (x:xs) = base:?
 
 연습6) iterate 함수를 scanl을 써서 구현해 보세요.
 ```haskell
-my_iterate f x = scanl ? ? ?
+my_iterate2 f x = scanl ? ? ?
 ```
 
 연습7) fibonacci 수열을 scanl을 써서 만들어 보세요.
 ```haskell
-fib = 1:scanl (+) 1 ?
+fib2 = 1:scanl (+) 1 ?
 ```
 
 List를 만드는 또 다른 방법으로는 List comprehension이 있습니다. Python programming을 해 보신 분들은 List comprehension에 매우 익숙하실 겁니다.
@@ -433,18 +434,16 @@ take 10 prime -- [2,3,5,7,11,13,17,19,23,29]
 
 ```haskell
 sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
-prime = ?
+prime2 = ?
 ```
 
 ## 두 번째 시간
 - [x] Typeclass
 - [x] Functor
 
-
 지금까지 배운 것을 바탕으로 Mergesort를 구현하는 연습을 해 보겠습니다.
 
 연습9) merge 함수를 구현하세요. 아래 코드에서 @ 기호를 사용한 부분은 as pattern 이라고 부르는 것으로 pattern matching된 전체 부분을 뜻합니다. 가령 xall@(x:y:ys) = [1,2,3] 인 경우에 x, y, ys 는 각각 1, 2, [3] 에 binding되고 xall 은 pattern matching된 전체 부분인 [1,2,3] 에 binding됩니다.
-
 ```haskell
 merge:: Ord a => [a] -> [a] -> [a]
 merge [] ys = ys
@@ -455,7 +454,6 @@ merge [1,2,3,4] [3,6,9] -- [1,2,3,3,4,6,9]
 ```
 
 연습10) 위의 merge 함수를 이용하여 다음 mergeSort 함수를 구현하세요.
-
 ```haskell
 mergeSort:: Ord a => [a] -> [a]
 mergeSort [] = []
@@ -464,7 +462,6 @@ mergeSort xs = ?
 ```
 
 이번에는 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
-
 ```haskell
 my_foldr:: (a -> b -> b) -> b -> [a] -> b
 my_foldr f base [] = base
@@ -475,13 +472,11 @@ my_foldr f base (x:xs) = ?
 <img src="foldr_implementation.png" width=406 height=156>
 
 즉, 함수 f의 두번째 인자는 해당 부분만큼을 또 다시 foldr한 것이 됩니다. 따라서 다음처럼 코드를 작성할 수 있습니다.
-
 ```haskell
 f x (my_foldr f base xs)
 ```
 
 연습11) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현해 보세요.
-
 ```haskell
 my_foldl:: (b -> a -> b) -> b -> [a] -> b
 my_foldl f base [] = base
@@ -503,13 +498,11 @@ my_foldl f base (x:xs) = ?
     "Hello, world!" :: [Char]
 
 그 이유는 Haskell에서 String은 별도의 type이 아니라 [Char]의 또 다른 이름입니다. 즉, String은 다음처럼 선언되어 있습니다.
-
 ```haskell
 type String = [Char]
 ```
 
 이러한 것을 type synonym이라고 부릅니다. Programmer가 일반적인 data type에 특별한 의미를 주기 위해 사용합니다.
-
 ```haskell
 type Address = String
 myOfficeAddr::Address
@@ -517,7 +510,6 @@ myOfficeAddr = "19, Yangjaedaero11-gil, Seocho-gu, Seoul, South Korea, Planet Ea
 ```
 
 이번에는 실제로 새로운 type을 정의해 보겠습니다. data 라는 keyword를 사용하면 사용자 정의 data type을 만들 수 있습니다.
-
 ```haskell
 data Gender = Male | Female | Unknown deriving (Show, Eq)
 ```
@@ -532,7 +524,6 @@ data Gender = Male | Female | Unknown deriving (Show, Eq)
 deriving이라는 새로운 문법이 나왔는데, 이는 typeclass란 것과 관련있습니다. deriving Show 라는 것은 Gender라는 type이 Show라는 typeclass에 속해있다는 것을 말하는 것으로 Male, Female, Unknown 이라는 값을 문자열로 출력할 수 있다는 것을 컴파일러에게 알려줍니다. Eq의 경우 Gender type을 비교를 할 수 있는 type으로 만들기 위해 필요합니다. deriving 뒤에 올 수 있는 typeclass의 종류는 6개로 Eq, Ord, Enum, Bounded, Show, Read 입니다. 여기서는 typeclass는 Java의 interface와 비슷하다고 생각하고 넘어갑니다. 뒤에서 더 다루겠습니다.
 
 이제 새로 만든 Gender type을 이용하는 함수를 하나 만들겠습니다.
-
 ```haskell
 sayHello:: Gender -> String
 sayHello gender
@@ -544,7 +535,6 @@ sayHello gender
 새로운 문법이 나왔는데, 수직선(|)을 사용하여 조건 분기하는 이러한 문법을 guard 라고 부릅니다. guard 문법의 otherwise 부분은 if..then..else 구문의 else에 해당합니다.
 
 자료형은 재귀적으로도 정의할 수 있습니다. 자연수를 뜻하는 자료형을 만들어 보겠습니다.
-
 ```haskell
 data Natural = Zero | Succ Natural deriving (Show, Eq)
 ```
@@ -552,7 +542,6 @@ data Natural = Zero | Succ Natural deriving (Show, Eq)
 이제 Natural 자료형은 값으로 Zero, Succ Zero, Succ (Succ Zero), Succ (Succ (Succ Zero)), ... 등 무한개의 값을 가질 수 있습니다.
 
 재귀적인 구조의 자료형을 하나 더 만들어보겠습니다. 이진트리를 만들겠습니다.
-
 ```haskell
 data BinTree a = Empty | Node a (BinTree a) (BinTree a) deriving Show
 myTree = Node 'a' (Node 'b' Empty Empty) (Node 'c' Empty (Node 'd' Empty Empty))
@@ -595,7 +584,6 @@ treeInsert 5 myTree3 -- Node 10 (Node 3 Empty (Node 5 Empty Empty)) (Node 12 Emp
 새로운 문법이 나왔는데 case...of 구문은 C, Java의 switch 구문에 해당합니다. compare 함수는 두 개의 값이 같으면 EQ, 앞에 나온 것이 뒤에 나온 것보다 작은면 LT, 반대의 경우에는 GT 를 각각 반환합니다.
 
 우리가 만든 이진 트리 자료형도 List에서 쓰던 map 같은 함수를 쓸 수 있으면 좋겠습니다. 가령 다음처럼.
-
 ```haskell
 import Data.Char
 treeMap toUpper myTree -- Node 'A' (Node 'B' Empty Empty) (Node 'C' Empty (Node 'D' Empty Empty))
@@ -611,7 +599,6 @@ treeMap f (Node a l r) = ?
 ```
 
 그런데 이처럼 어떤 자료형에 map 같은 함수를 쓰는 것은 매우 쉽게 생각할 수 있고 또 자주 필요한 일입니다. 그래서 이처럼 어떤 자료형의 각 원소들의 값을 한꺼번에 바꿀 수 있는 자료형을 별도의 typeclass로 정의하고 있습니다. Fuctor라고 불리는 것이 바로 그것입니다. 이름이 낯설어서 어색하지만 뜻하는 바는 딱 하나입니다. 자료형이 가진 값을 한꺼번에 바꿀 수 있는 자료형이면 Functor라고 부를 수 있습니다.
-
 ```haskell
 class Functor f where
     fmap :: (a -> b) -> f a -> f b
@@ -683,7 +670,6 @@ minimum [3,1,2] -- 1
 elem 1 [1,2,3] -- True
 notElem 4 [1,2,3] -- True
 nub [1,2,2,3,3,2] -- [1,2,3]
-[1,2,3] !! 1 -- 2
 inits [1,2,3] -- [[],[1],[1,2],[1,2,3]]
 tails [1,2,3] -- [[1,2,3],[2,3],[3],[]]
 splitAt 2 [1,2,3] -- ([1,2],[3])
