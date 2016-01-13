@@ -23,13 +23,11 @@ First-class citizen, Higher-order function, Pure function, Lambda expression, Im
     >
 
 Haskell의 기본 자료형은 List입니다. List는 대괄호로 표시합니다. Haskell에서 한 줄 주석은 수평선 두 개로 표시합니다. 이 문서에는 편의상 한 줄 주석을 expression의 실행결과를 표시할 때 사용하도록 하겠습니다.
-
 ```haskell
 [1,2,3] -- [1,2,3]
 ```
 
 List를 만들 때는 여러 가지 편리한 방법이 있습니다.
-
 ```haskell
 [1..5] -- [1,2,3,4,5]
 [1,4..20] -- [1,4,7,10,13,16,19]
@@ -38,7 +36,6 @@ List를 만들 때는 여러 가지 편리한 방법이 있습니다.
 ```
 
 List에 사용할 수 있는 기본 함수들을 살펴봅니다.
-
 ```haskell
 sum [1,2,3] -- 6
 product [1,2,3] -- 6
@@ -145,7 +142,6 @@ my_map 함수의 구현 코드에서 my_map 함수의 정의부가 두 번 등�
     filter :: (a -> Bool) -> [a] -> [a]
 
 filter 함수는 (a -> Bool) 꼴 함수 하나와 [a] 꼴 List 하나를 받아서 [a] 꼴 List 하나를 결과로 내놓는 함수입니다. (a -> Bool) 꼴 함수는 많이 등장하는 형태이어서 특별히 Predicate 이라고 부릅니다. filter 함수가 하는 일은 List의 원소들 중에서 Predicate을 만족하는 것들만 골라내는 것입니다.
-
 ```haskell
 foldl (/) 1000 [2,5] -- 100.0
 foldr (/) 1000 [2,5] -- 400.0
@@ -168,7 +164,6 @@ fold함수는 folding 방향에 따라 foldl과 foldr 두 개의 함수가 있�
 <img src="foldr_explained.png">
 
 foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 특히 foldr 함수는 다른 고차 함수들을 만들 수 있는 함수이므로 매우 중요합니다. 예를 들어 filter 함수를 재귀적으로 다음처럼 만들 수 있습니다.
-
 ```haskell
 {-
   my_filter.hs
@@ -188,7 +183,6 @@ my_filter f (x:xs) = if f x
 앞서 my_map 함수 정의할 때 처럼, ghci에서 여러 줄에 걸쳐 함수를 정의하는 것은 불편합니다. 그래서 이제부터는 소스파일을 만들고 이를 ghci에서 불러와서 사용하겠습니다. Haskell 소스파일은 확장자가 .hs 로 끝납니다. 그리고 이렇게 작성한 파일을 ghci에서 불러올 때는 :load 명령 또는 단축명령 :l 을 사용합니다. 그리고 소스파일에서 binding 할 때는 let을 쓰지 않습니다.
 
 Haskell source 파일을 작성할 때는 off-side rule을 지켜야 합니다. 이는 축구의 off-side rule과 똑같은 맥락이며 들여쓰기를 할 때 계층을 맞추어주어야 합니다. 예를 들어 다음과 같이 작성하면 파일을 불러올 때 오류가 납니다.
-
 ```haskell
 compareLength::String -> String -> Ordering
  compareLength x y = compare (length x) (length y)
@@ -197,7 +191,6 @@ compareLength::String -> String -> Ordering
 그 이유는 같은 compareLength 함수의 type signature와 함수 정의부는 정의의 계층이 같기에 서로 들여쓰기 계층이 맞아야 하는데, 위에서는 compareLength함수 정의부가 그것의 type signature와 들여쓰기 깊이가 다르기 때문입니다. 참고로 들여쓰기를 지키는 대신 { 와 } 를 써서 명시적으로 묶어주어도 됩니다. Off-side rule을 가지는 프로그래밍 언어는 이외에도 Python, F# 등이 있습니다.
 
 foldr 함수와 foldl 함수는 각각 foldr1, foldl1 이라는 자매 함수가 있는데, 이 함수들은 기본값(base)을 받지 않습니다. 즉, List에서 첫번째로 fold하는 원소를 기본값으로 삼습니다.
-
 ```haskell
 foldr1 (+) [1,2,3,4] -- 10
 foldl1 (++) ["I","Love","You"] -- "ILoveYou"
@@ -208,11 +201,7 @@ foldl1 (++) ["I","Love","You"] -- "ILoveYou"
     > foldl1 (+) []
     *** Exception: Prelude.foldl1: empty list
 
-
-다음으로 if..then..else 구문이 나왔습니다. 이는 자명하므로 설명하지 않겠습니다.
-
 우리가 filter 함수를 재귀적으로 구현했는데, foldr 함수는 재귀를 보다 추상화한 함수이기 때문에 재귀적으로 구현할 수 있는 코드는 foldr 로도 구현할 수 있습니다. 이제 filter 함수를 foldr 로 구현해보겠습니다.
-
 ```haskell
 my_filter f xs = foldr (\x base -> if f x then x:base else base) [] xs
 ```
@@ -285,26 +274,22 @@ List에 대해 더 알아봅시다. zip 함수가 있습니다. zip 함수는 �
 zip 함수의 실행 결과에서 새로운 자료형이 등장합니다. 바로 Tuple 입니다. Haskell에서 List는 homogeneous 자료형입니다. [1,'a',"xyz"] 같은 것은 불가능합니다. 반면에 Tuple은 heterogenous 자료형입니다.
 
 Tuple은 위의 예처럼 원소 두 개짜리 뿐만 아니라 (1,'a',True) 같은 세 개, 네 개 짜리도 가능합니다. 원소가 두 개짜리인 Tuple을 특별히 Pair라고 부르는데 다음과 같은 함수를 사용할 수 있습니다.
-
 ```haskell
 fst (1,'a') -- 1
 snd (1,'a') -- 'a'
 ```
 
 특별히 Pair를 만들 때는 (,) 연산자를 쓸 수도 있습니다.
-
 ```haskell
 (,) 2 True -- (2, True)
 ```
 
 원소가 세개 짜리인 Tuple, 즉 Triple들을 List 세 개로부터 만들려면 어떻게 해야 할까요? Haskell에서는 zip3 라는 함수도 있습니다. 참고로 zip7 까지 함수가 있습니다.
-
 ```haskell
 zip3 [1,2] ['a','b'] [True, False] -- [(1,'a',True),(2,'b',False)]
 ```
 
 zipWith 란 함수도 있습니다. 이 함수는 Tuple로 만드는 대신 주어진 함수를 가지고 두 개 List의 각 원소에 대한 연산을 수행합니다.
-
 ```haskell
 zipWith (+) [1,2,3] [10,20,30,40] -- [11,22,33]
 ```
@@ -315,7 +300,6 @@ zipWith (+) [1,2,3] [10,20,30,40] -- [11,22,33]
 zipWith 함수도 zip함수처럼 zipWith3 부터 zipWith7 까지 인자 갯수에 따라 자매 함수들이 있습니다.
 
 연습1) zipWith 를 재귀적으로 구현해 보세요.
-
 ```haskell
 my_zipWith f [] _ = []
 my_zipWith f _ [] = []
@@ -323,26 +307,22 @@ my_zipWith f (x:xs) (y:ys) = ?
 ```
 
 zip함수와 반대로 동작하는 unzip 함수도 있습니다.
-
 ```haskell
 unzip [(1,True),(2,False),(3,True)] -- ([1,2,3], [True, False, True])
 ```
 
 연습2) unzip 함수를 foldr을 써서 구현해보세요.
-
 ```haskell
 my_unzip xs = foldr ? ([],[]) xs
 ```
 
 List를 반복적으로 편리하게 만들어 주는 함수들이 있습니다.
-
 ```haskell
 replicate 3 1 -- [1,1,1]
 take 3 (repeat [1,2]) -- [[1,2],[1,2],[1,2]]
 take 3 (cycle [1,2]) -- [1,2,1]
 ```
 그런데 repeat와 cycle 함수를 보면 take 함수를 써서 일부 결과물만 가져오고 있습니다. 그 이유는 repeat 와 cycle 함수는 무한수열을 만들기 때문입니다. Haskell에서는 무한수열을 아주 쉽게 사용할 수 있는데 그 이유는 Haskell에서는 lazy evaluation 이 기본이기 때문입니다. Lazy evaluation에서는 필요할 때까지 expression을 평가하지 않습니다. List를 선언할 때 List의 끝을 정해주지 않으면 무한수열 형태로 선언할 수 있습니다.
-
 ```haskell
 take 3 [1..] -- [1,2,3]
 take 5 [1,3..] -- [1,3,5,7,9]
@@ -351,10 +331,9 @@ take 5 [1,3..] -- [1,3,5,7,9]
 Lazy evalution에서는 값이 필요할 때까지 expression은 expression그대로 남아 있습니다. 예를 들어 [1..] 라는 expression은 어떠한 값도 아닌 그냥 expression입니다. 그러다가 take 2 함수처럼 값을 요구하는 것이 오면 그제서야 맨 앞 2개 요소를 값으로 평가합니다. 즉 1:2:[3..] 가 되어버립니다. [3..] 부분은 여전히 expression으로 남아있게 됩니다.
 
 무한수열을 만드는 또 다른 함수는 iterate 입니다.
-
 ```haskell
 take 5 (iterate (\x -> x^2) 2) -- [2,4,16,256,65536]
-take 5 (iterate (map (*2)) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,32,48]]
+take 5 (iterate (\xs -> map (*2) xs) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,32,48]]
 ```
 
 연습3) iterate 함수를 재귀적으로 구현해 보세요.
@@ -370,7 +349,6 @@ fib!!10 -- 89
 ```
 
 fold 함수가 여러 개의 값을 하나로 줄여버리는데 반해 scan 함수는 값을 계속 누적해 나갑니다. scanl 과 scanr 함수가 있습니다.
-
 ```haskell
 scanl (+) 0 [1..10] -- [0,1,3,6,10,15,21,28,36,45,55]
 scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
@@ -396,7 +374,6 @@ fib2 = 1:scanl (+) 1 ?
 ```
 
 List를 만드는 또 다른 방법으로는 List comprehension이 있습니다. Python programming을 해 보신 분들은 List comprehension에 매우 익숙하실 겁니다.
-
 ```haskell
 [x | x <- [1..10], odd x] -- [1,3,5,7,9]
 [x*y | x <- [1..3], y <- [10,11]] -- [10,11,20,22,30,33]
@@ -409,7 +386,6 @@ List comprehension은 우리가 수학책에서 보던 다음과 같은 set-buil
     {x|x ∈ ℝ ∧ x > 0}
 
 List comprehension을 이용하여 isPrime 함수를 만들겠습니다.
-
 ```haskell
 isPrime n = 2 == length [d | d <- [1..n], n `mod` d == 0]
 zip [1..] $ map isPrime [1..10] -- [(1,False),(2,True),(3,True),(4,False),(5,True),(6,False),(7,True),(8,False),(9,False),(10,False)]
@@ -420,18 +396,21 @@ zip [1..] $ map isPrime [1..10] -- [(1,False),(2,True),(3,True),(4,False),(5,Tru
 div 5 2 -- 2
 5 `div` 2 -- 2
 ```
+반대로 기본 표기가 중위 표기로 되어 있는 +, -, \*, /, ^ 와 같은 연산자들은 전위표기로 사용하려면 앞서 나왔듯이 괄호로 감싸줍니다.
+```haskell
+1 + 2 -- 3
+(+) 1 2 -- 3
+```
 
 $ 연산자는 우선 순위가 가장 낮은 연산자 입니다. $ 연산자는 괄호를 쓰는 불편함을 덜기 위해 있습니다. 즉, 위의 코드에서 `zip [1..] (map isPrime [1..10])` 라고 써야 할 코드가 $ 연산자를 이용해서 괄호 없이 `zip [1..] $ map isPrime [1..10]` 으로 작성될 수 있었습니다.
 
 이제 isPrime 함수를 써서 다음처럼 소수의 목록을 구할 수 있습니다.
-
 ```haskell
 prime = filter isPrime [1..]
 take 10 prime -- [2,3,5,7,11,13,17,19,23,29]
 ```
 
 연습8) 방금 만든 prime 함수는 사실 비효율적입니다. iterate 함수와 다음의 sieve 함수를 이용하여 에라토스테네스의 체를 이용한 보다 빠른 소수생성 함수를 만드세요. 참고로 아래 코드에서 /= 연산자는 "같지 않음"을 검사합니다. 수학의 같지 않음을 뜻하는 기호 ≠ 와 닮아있습니다.
-
 ```haskell
 sieve (p:xs) = [x|x<-xs, x `mod` p /= 0]
 prime2 = ?
@@ -796,7 +775,7 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 연습18) 함수 합성 연산자를 직접 구현해 보세요.
 ```haskell
-my_compose:: (b->c) -> (a->b) -> (a->c)
+my_compose:: (b -> c) -> (a -> b) -> a -> c
 f `my_compose` g = ?
 ```
 
