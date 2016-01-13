@@ -838,12 +838,32 @@ Monoid는 triple(T, __\*__, *e*) 이라고도 정의하는데, 어떤 type T에 
 
 이제 Foldable을 배웠으니까 과거처럼 Tree를 fold하는 함수를 직접 만들필요 없이 Tree를 Foldable의 instance로 만들면 Tree를 fold할 수 있게 됩니다. 먼저 이진 트리를 Foldable의 instance로 만들겠습니다.
 ```haskell
+import Data.Monoid
+
 instance Foldable BinTree where
     foldMap f Empty = mempty
     foldMap f (Node a l r) = f a `mappend` (foldMap f l) `mappend` (foldMap f r)
 ```
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
+한편, mappend 란 함수가 이름이 길다보니 편의를 위해 <> 기호로 이를 대신할 수 있습니다. 그러니까 위 코드의 마지막 줄은 아래처럼 써도 똑같습니다.
+```haskell
+foldMap f (Node a l r) = f a <> (foldMap f l) <> (foldMap f r)
+```
+
+이제 BinTree를 fold할 수 있는데, 이제는 일반적인 fold 함수가 아니라 Data.Foldable 모듈에서 제공하는 fold함수를 써야 합니다. 다음 처럼.
+```haskell
+a = Node 1 (Node 2 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))
+Data.Foldable.foldr (+) 0 a -- 10
+```
+
+그런데 이렇게 함수이름 앞에 모듈 이름을 길게 붙여야 하는 불편함이 있기 때문에 보통 다음과 같이 모듈 import할 때 짧은 이름을 줍니다.
+```haskell
+import qualified Data.Foldable as F
+
+a = Node 1 (Node 2 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))
+F.foldr (+) 0 a -- 10
+```
 
 연습21) RoseTree를 Foldable의 instance로 만드세요.
 ```haskell
