@@ -833,7 +833,6 @@ foldBinTree f base (Node a l r) = f a v
 ```
 
 이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
-
 ```haskell
 type Forest a = [RoseTree a]
 foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
@@ -842,8 +841,7 @@ foldtree f g (Branch a ts) = f a v
 foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
 foldforest f g ts = ?
 ```
-
-연습15) 위의 foldforest 함수를 완성해 보세요.
+연습20) 위의 foldforest 함수를 완성해 보세요.
 
 List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
 ```haskell
