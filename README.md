@@ -608,13 +608,15 @@ Functor 인 자료형의 예를 하나 보겠습니다. 바로 List 입니다. L
 map :: (a -> b) -> [a] -> [b]
 ```
 
-fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 그대로 map 함수의 type이 됨을 볼 수 있습니다. 어떤 자료형이 특정 typeclass이기 위해서는 어떤 자료형을 해당 typeclass의 instance로 선언하면 됩니다. List는 어떤 식으로 Functor의 instance로 선언되어 있는지 확인합시다.
+fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 그대로 map 함수의 type이 됨을 볼 수 있습니다. 어떤 자료형이 특정 typeclass이기 위해서는 어떤 자료형을 해당 typeclass의 instance로 선언하면 됩니다. List는 어떤 식으로 Functor의 instance로 선언되어 있는지 확인합시다. 어떤 type을 특정 typeclass의 instance로 만드는 것은 **instance** 키워드를 이용하여 합니다.
 ```haskell
 instance Functor [] where
     fmap = map
 ```
 
 이를 통해 List에 대해서는 fmap 함수가 map 함수와 똑같이 동작함을 알 수 있습니다.
+
+참고로 기존에 OOP에서 class와 instance 용어의 쓰임새와 Haskell에서의 class와 instance 용어의 쓰임새는 전혀 무관합니다. class 에서는 필요한 함수들의 집합을 정의하고 실제로 이를 구현하는 것은 instance에서 한다는 점을 기억하십시요.
 
 마찬가지로 우리가 만든 이진트리를 Functor로 만들려면 다음처럼 하면 됩니다.
 ```haskell
