@@ -543,18 +543,13 @@ sayHello gender
 
 새로운 문법이 나왔는데, 수직선(|)을 사용하여 조건 분기하는 이러한 문법을 guard 라고 부릅니다. guard 문법의 otherwise 부분은 if..then..else 구문의 else에 해당합니다.
 
-자료형은 재귀적으로도 선언이 가능합니다. 자연수를 뜻하는 자료형을 만들어 보겠습니다.
+자료형은 재귀적으로도 정의할 수 있습니다. 자연수를 뜻하는 자료형을 만들어 보겠습니다.
 
 ```haskell
 data Natural = Zero | Succ Natural deriving (Show, Eq)
 ```
 
 이제 Natural 자료형은 값으로 Zero, Succ Zero, Succ (Succ Zero), Succ (Succ (Succ Zero)), ... 등 무한개의 값을 가질 수 있습니다.
-
-우리가 이제는 매우 익숙해진 List 자료형도 다음처럼 재귀적으로 선언 되어있습니다.
-```haskell
-data [a] = [] | a:[a] deriving (Eq, Ord)
-```
 
 재귀적인 구조의 자료형을 하나 더 만들어보겠습니다. 이진트리를 만들겠습니다.
 
@@ -571,6 +566,11 @@ myTree2 = Node 1 (Node 2 Empty Empty) (Node 3 Empty (Node 4 Empty Empty))
     myTree :: BinTree Char
     > :t myTree2
     myTree2 :: Num a => BinTree a
+
+우리가 이제는 매우 익숙한 List 자료형도 다음처럼 재귀적으로 정의합니다.
+```haskell
+data [a] = [] | a:[a] deriving (Eq, Ord)
+```
 
 사전 학습에서 나온 => 기호에 대해 여기서 설명하겠습니다. 이는 Typeclass constraint라고 부르는 부분으로 type parameter 'a'가 어느 Typeclass에 속하는지를 밝히는 것입니다. 즉, Num 이라는 Typeclass에 속하는 Int, Float 등의 type이 해당 위치에 올 수 있다는 뜻입니다.
 
@@ -619,7 +619,7 @@ class Functor f where
 
 위의 코드는 Functor typeclass의 정의입니다. Typeclass 를 정의할 때는 위처럼 **class** 라는 키워드를 통해 합니다. class의 정의는 해당 class이기 위해 갖추어야 할 함수들의 type signature 집합으로 되어 있습니다. 위의 코드에서 보이듯이 Functor typeclass 이기 위해서는 단 하나의 조건만 있으면 되는데, 바로 fmap 함수가 해당 자료형에 대하여 정의되어 있으면 됩니다.
 
-다른 예를 하나만 더 살펴보겠습니다. 앞서 나왔던 Eq typeclass의 정의를 보겠습니다. 아래 코드를 보면어떤 자료형이 Eq typeclass에속하려면 해당 자료형에 대하여 == 또는 /= 연산이 정의되어 있으면 됩니다.
+다른 예를 하나만 더 살펴보겠습니다. 앞서 나왔던 Eq typeclass의 정의를 보겠습니다. 아래 코드를 보면 어떤 자료형이 Eq typeclass에속하려면 해당 자료형에 대하여 == 또는 /= 연산이 정의되어 있으면 됩니다.
 ```haskell
 class Eq a where
     (==), (/=):: a -> a -> Bool
