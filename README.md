@@ -628,13 +628,11 @@ class Eq a where
 ```
 
 Functor 인 자료형의 예를 하나 보겠습니다. 바로 List 입니다. List 에 대해 동작하는 map 함수의 type을 다시 확인해 봅시다.
-
 ```haskell
 map :: (a -> b) -> [a] -> [b]
 ```
 
 fmap 함수의 type에서 f 에 해당하는 부분을 List 표기로 바꾸면 그대로 map 함수의 type이 됨을 볼 수 있습니다. 어떤 자료형이 특정 typeclass이기 위해서는 어떤 자료형을 해당 typeclass의 instance로 선언하면 됩니다. List는 어떤 식으로 Functor의 instance로 선언되어 있는지 확인합시다.
-
 ```haskell
 instance Functor [] where
     fmap = map
@@ -655,7 +653,6 @@ data BinTree a = Empty | Node a (BinTree a) (BinTree a) deriving Show
 이러한 것들을 derived instance 라고 부르며 이것이 가능한 것은 앞서 말했듯이 Eq, Ord, Enum, Bounded, Show, Read 6개 뿐입니다. 이것들은 instance를 만드는 코드를 compiler가 자동으로 만들어줍니다.
 
 이번에는 노드를 여러 개 가질 수 있는 Tree를 만들어보겠습니다.
-
 ```haskell
 data RoseTree a = Branch a [RoseTree a] deriving Show
 myTree3 = Branch 'a' [Branch 'b' [], Branch 'c' [Branch 'd' [], Branch 'e' [], Branch 'f' []], Branch 'g' []]
@@ -663,33 +660,10 @@ myTree3 = Branch 'a' [Branch 'b' [], Branch 'c' [Branch 'd' [], Branch 'e' [], B
 <img src="RoseTree.png">
 
 연습14) RoseTree를 Functor로 만들어보세요.
-
 ```haskell
 instance Functor RoseTree where
     fmap f (Branch a ts) = ?
 ```
-
-Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료형입니다. 이진 트리에 대하여 fold함수를 정의해 보겠습니다.
-
-```haskell
-foldBinTree f base Empty = base
-foldBinTree f base (Node a l r) = f a v
-    where v = foldBinTree f i l
-          i = foldBinTree f base r
-```
-
-이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
-
-```haskell
-type Forest a = [RoseTree a]
-foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
-foldtree f g (Branch a ts) = f a v
-    where v = foldforest f g ts
-foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
-foldforest f g ts = ?
-```
-
-연습15) 위의 foldforest 함수를 완성해 보세요.
 
 ## 세 번째 시간
 - [x] Maybe type
@@ -698,7 +672,6 @@ foldforest f g ts = ?
 - [x] Partial application
 
 이번 시간에는 다시 List에 관한 함수들을 마저 살펴보겠습니다. List에 대한 함수들은 Data.List 모듈에 있습니다.
-
 ```haskell
 import Data.List
 
@@ -720,22 +693,20 @@ span (>3) [5,1,4,3,2] -- ([5],[1,4,3,2])
 break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
 ```
 
-연습16) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
+연습15) max 함수와 min함수는 각각 이름 그대로 다음처럼 동작합니다.
 ```haskell
 max 2 5 -- 5
 min 2 5 -- 2
 ```
-
 max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
 
-연습17) span 함수를 구현해 보세요. 직접 재귀로 구현하셔도 되고, 위의 Data.List 모듈에 있는 함수들을 이용해서 구현해도 됩니다.
+연습16) span 함수를 구현해 보세요. 직접 재귀로 구현하셔도 되고, 위의 Data.List 모듈에 있는 함수들을 이용해서 구현해도 됩니다.
 ```haskell
 span :: (a -> Bool) -> [a] -> ([a], [a])
 span p xs = ?
 ```
 
 차집합, 합집합, 교집합의 기능을 수행하는 함수도 있습니다.
-
 ```haskell
 [1,2,3,4,5] \\ [2,4] -- [1,3,5]
 union [1,2,3] [2,4] -- [1,2,3,4]
@@ -743,7 +714,6 @@ intersect [1,2,3] [2,4] -- [2]
 ```
 
 sortOn 함수는 어떤 식으로 sort 를 할 지 정해줄 수 있습니다.
-
 ```haskell
 sortOn length [[1,2],[3],[4],[5,6,7],[8,9]] -- [[3],[4],[1,2],[8,9],[5,6,7]]
 ```
@@ -772,7 +742,6 @@ find 계열 함수들을 살펴봅시다.
     elemIndex :: Eq a => a -> [a] -> Maybe Int
 
 이 함수들의 type에는 공통적으로 Maybe가 나옵니다. Maybe는 값이 있거나 없는 경우에 사용합니다. 보통 값이 없는 경우에 null check을 많이 합니다. 하지만 null check을 하는 것은 무척 오류가 생기기 쉽습니다. 오죽하면 1965년에 null 을 처음으로 도입한 Tony Hoare가 자신이 null을 만든 것은 Billion Dollar Mistake라는 고백을 하기도 했습니다. Maybe와 같은 type은 이러한 것으로부터 자유롭습니다.
-
 ```haskell
 data Maybe a = Nothing | Just a
 ```
@@ -788,8 +757,7 @@ lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
 
 Maybe와 같은 type으로는 Java8의 Optional, Rust의 Option, Scala의 Option 등이 있습니다.
 
-
-연습18) Maybe type을 이용하여 BinTree에서 특정 항목을 찾는 함수를 만들어보세요.
+연습17) Maybe type을 이용하여 BinTree에서 특정 항목을 찾는 함수를 만들어보세요.
 ```haskell
 treeFind:: Ord a => a -> BinTree a -> Maybe a
 treeFind _ Empty = Nothing
@@ -811,7 +779,6 @@ Haskell에서 함수가 수학에서의 함수가 뜻하는 바와 똑같듯이 
     > chr . maximum :: Foldable t => t Int -> Char
 
 합성함수에 값을 적용했을 때 어떻게 나오는지 살펴봅시다.
-
 ```haskell
 map (negate . abs) [5, -3, -6, 7, -3, 2, -19, 24] -- [-5, -3, -6, -7, -3, -2, -19, -24]
 map (negate.sum.tail) [[1..5],[3..6],[1..7]] -- [-14, -15, -27]
@@ -830,27 +797,24 @@ map (negate.sum.tail) [[1..5],[3..6],[1..7]] -- [-14, -15, -27]
 위에서 보듯 partial application 이란 인자 n개를 받는 함수가 있을 때 이 함수에 n보다 적은 갯수의 인자만을 먼저 일부 적용하는 것을 말합니다. 위에서 보듯 (+) 함수는 인자를 두 개 받는 함수인데 이에 인자 하나를 먼저 partial apply 한 결과인 add5 함수는 인자를 하나만 받는 함수가 되었습니다. Haskell에서는 함수의 partial application이 이처럼 언어차원에서 바로 지원이 되는데, 그 이유는 Haskell의 모든 함수는 curried function이기 때문입니다. Currying이라는 새로운 용어가 또 나왔습니다.
 
 Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 만드는 일을 말합니다. Haskell의 모든 함수는 curried function이라고 했습니다. 즉, (+) 함수는 사실 인자 두 개를 받아서 결과 하나를 내놓는 함수가 아니라 인자 하나를 받아서 "인자하나를 받아 결과를 내놓는 함수"를 결과로 내놓는 함수인 셈입니다. (+) 함수의 type을 이에 맞게 다시 써 보면 다음과 같습니다.
-
 ```haskell
 (+):: a -> (a -> a)
 ```
 
 이제 모든 함수가 curried function이기 때문에 function composition을 하는데 장애물은 없습니다. 다음처럼 partial application을 쓰면 됩니다.
-
 ```haskell
 (sum . replicate 5 . max 6.7) 8.9 -- 44.5
 ```
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
-연습19) 함수 합성 연산자를 직접 구현해 보세요.
+연습18) 함수 합성 연산자를 직접 구현해 보세요.
 ```haskell
 my_compose:: (b->c) -> (a->b) -> (a->c)
 f `my_compose` g = ?
 ```
 
-연습20) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
-
+연습19) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 ```haskell
 rmDuplicate::(Ord a) => [a] -> [a]
 rmDuplicate xs = ?
@@ -859,8 +823,29 @@ rmDuplicate xs = ?
 ##네 번째 시간
 - [x] Monoid
 
-List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
+Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료형입니다. 이진 트리에 대하여 fold함수를 정의해 보겠습니다.
 
+```haskell
+foldBinTree f base Empty = base
+foldBinTree f base (Node a l r) = f a v
+    where v = foldBinTree f i l
+          i = foldBinTree f base r
+```
+
+이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
+
+```haskell
+type Forest a = [RoseTree a]
+foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
+foldtree f g (Branch a ts) = f a v
+    where v = foldforest f g ts
+foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
+foldforest f g ts = ?
+```
+
+연습15) 위의 foldforest 함수를 완성해 보세요.
+
+List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
 ```haskell
 class Foldable t where
     foldMap :: Monoid m => (a -> m) -> t a -> m
@@ -868,7 +853,6 @@ class Foldable t where
 ```
 
 어떤 자료형이 Foldable이기 위해서는 foldMap 함수나 foldr 함수 둘 중 하나만 구현하면 됩니다. 그런데 foldMap 함수를 보니 Monoid 라는 typeclass constraints가 붙어 있습니다. 그래서 Monoid에 대해 알아보겠습니다. Monoid typeclass는 Data.Monoid 모듈에 정의되어 있습니다.
-
 ```haskell
 class Monoid m where
     mempty :: m
@@ -879,7 +863,6 @@ class Monoid m where
 
 Monoid는 한 마디로 말해서 두 개가 하나가 될 수 있는 자료형을 뜻합니다. mappend 함수의 type이 이를 잘 설명해 주는 데 m -> m -> m 은 어떤 값 두 개를 받아서 하나를 내놓는 함수를 뜻합니다.
 Monoid이기 위해서는 두 가지 요건이 있으면 되는데 하나는 항등원(mempty)이 있으면 되고, 다른 하나는 결합법칙이 성립하는 이항연산자(mappend)가 있으면 됩니다. mconcat 함수는 이 두개가 있으면 자동으로 얻을 수 있는 함수 입니다. 예를 들어 List는 Monoid입니다. List는 항등원 [] 가 있고,  결합법칙이 성립하는 이항연산자 ++ 이 있습니다.
-
 ```haskell
 instance Monoid [a] where
     mempty = []
@@ -891,7 +874,6 @@ Monoid는 triple(T, __\*__, *e*) 이라고도 정의하는데, 어떤 type T에 
 두 개를 하나로 만드는 연산을 반복해서 수행하다 보면 결국 여러 개의 값이 단 하나의 값으로 줄어들게 됩니다. 이 점이 바로 Monoid가 Foldable typeclass의 foldMap 함수에 등장하는 이유입니다.
 
 이제 Foldable을 배웠으니까 과거처럼 Tree를 fold하는 함수를 직접 만들필요 없이 Tree를 Foldable의 instance로 만들면 Tree를 fold할 수 있게 됩니다. 먼저 이진 트리를 Foldable의 instance로 만들겠습니다.
-
 ```haskell
 instance Foldable BinTree where
     foldMap f Empty = mempty
@@ -901,7 +883,6 @@ instance Foldable BinTree where
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
 연습21) RoseTree를 Foldable의 instance로 만들어 보세요.
-
 ```haskell
 instance Foldable RoseTree where
     foldMap f (Branch a ts) = ?
