@@ -160,7 +160,7 @@ fold함수는 folding 방향에 따라 foldl과 foldr 두 개의 함수가 있�
 
 먼저 foldr 함수는 (a -> b -> b) 꼴 함수 하나와 b 꼴 값 하나, 그리고 t a 꼴 List 하나(사실 Foldable은 List 보다 좀 더 포괄적인 개념이지만 일단 여기서는 List에 대해서만 생각하기로 합니다)를 입력으로 받아서 b 꼴 값을 하나 내놓는 함수 입니다. foldr 함수는 이름 그대로 List처럼 여러 요소를 갖고 있는 자료형을 하나의 값으로 접는(fold) 일을 합니다. 여기서 끝에 붙은 r 은 right의 뜻으로 foldr은 접기가 오른쪽에서 왼쪽으로(*right* to left) 진행됩니다. 반대로 foldl은 왼쪽에서 오른쪽으로(*left* to right) 접어들어갑니다. 동풍이 동쪽에서 불어오는 바람이듯이 foldr 은 오른쪽에서부터 접어들어가고 foldl은 왼쪽에서부터 접어들어갑니다.
 
-다음 그림이 foldr 의 동작을 설명해 주고 있습니다.
+다음 그림은 foldr 의 동작을 설명합니다.
 <img src="foldr_explained.png">
 
 foldr, foldl 함수는 for-loop 나 재귀를 더욱 추상화한 것입니다. 특히 foldr 함수는 다른 고차 함수들을 만들 수 있는 함수이므로 매우 중요합니다. 예를 들어 filter 함수를 재귀적으로 다음처럼 만들 수 있습니다.
@@ -201,7 +201,7 @@ foldl1 (++) ["I","Love","You"] -- "ILoveYou"
     > foldl1 (+) []
     *** Exception: Prelude.foldl1: empty list
 
-우리가 filter 함수를 재귀적으로 구현했는데, foldr 함수는 재귀를 보다 추상화한 함수이기 때문에 재귀적으로 구현할 수 있는 코드는 foldr 로도 구현할 수 있습니다. 이제 filter 함수를 foldr 로 구현해보겠습니다.
+우리가 filter 함수를 재귀적으로 구현했는데, foldr 함수는 재귀를 보다 추상화한 함수이기 때문에 재귀적으로 구현할 수 있는 코드는 foldr 로도 구현할 수 있습니다. 이제 filter 함수를 foldr 로 구현하겠습니다.
 ```haskell
 my_filter f xs = foldr (\x base -> if f x then x:base else base) [] xs
 ```
@@ -222,7 +222,7 @@ __\__  | x base         |__->__ | if f x then x:base else base
 
 foldr을 쓰니 재귀를 명시적으로 쓰지 않고도 filter 함수를 구현할 수 있었습니다. 그 이유는 foldr 이 재귀를 추상화한 함수이기 때문입니다.
 
-사전 학습은 여기까지입니다. 숙제1~5를 세미나 참석 전까지 제출해주시기 바랍니다. 숙제제출은 세미나 참석 요건입니다.
+사전 학습은 여기까지입니다. 숙제1~5를 세미나 참석 전까지 제출하시기 바랍니다. 숙제제출은 세미나 참석 요건입니다.
 
 숙제1) sum 함수를 재귀적으로 직접 만들어보세요.
 ```haskell
@@ -258,7 +258,7 @@ my_reverse = foldl ? ?
 ```
 
 ## 숙제 복기 및 사전학습 질의응답 시간
-시작하기에 앞서 숙제를 함께 복기해 보고 사전학습 내용에 대한 질의응답을 하겠습니다.
+시작하기에 앞서 숙제를 함께 복기하고 사전학습 내용에 대한 질의응답을 하겠습니다.
 
 ## 첫 1시간
 - [x] Lazy evaluation
@@ -299,7 +299,7 @@ zipWith (+) [1,2,3] [10,20,30,40] -- [11,22,33]
 
 zipWith 함수도 zip함수처럼 zipWith3 부터 zipWith7 까지 인자 갯수에 따라 자매 함수들이 있습니다.
 
-연습1) zipWith 를 재귀적으로 구현해 보세요.
+연습1) zipWith 를 재귀적으로 구현하세요.
 ```haskell
 my_zipWith f [] _ = []
 my_zipWith f _ [] = []
@@ -311,7 +311,7 @@ zip함수와 반대로 동작하는 unzip 함수도 있습니다.
 unzip [(1,True),(2,False),(3,True)] -- ([1,2,3], [True, False, True])
 ```
 
-연습2) unzip 함수를 foldr을 써서 구현해보세요.
+연습2) unzip 함수를 foldr을 써서 구현하세요.
 ```haskell
 my_unzip xs = foldr ? ([],[]) xs
 ```
@@ -336,7 +336,7 @@ take 5 (iterate (\x -> x^2) 2) -- [2,4,16,256,65536]
 take 5 (iterate (\xs -> map (*2) xs) [1,2,3]) -- [[1,2,3],[2,4,6],[4,8,12],[8,16,24],[16,32,48]]
 ```
 
-연습3) iterate 함수를 재귀적으로 구현해 보세요.
+연습3) iterate 함수를 재귀적으로 구현하세요.
 ```haskell
 my_iterate f x = x:?
 ```
@@ -357,18 +357,18 @@ scanr (+) 0 [1..10] -- [55,54,52,49,45,40,34,27,19,10,0]
 scanl 함수의 동작은 다음 수식처럼 표현할 수 있습니다.
 <img src="scanl_explained.png">
 
-연습5) scanl 함수를 재귀적으로 직접 만들어 보세요. iterate 함수 만든 것과 매우 비슷합니다. iterate와 scan 둘 다 직전에 계산한 결과를 이용하기에 매우 비슷합니다.
+연습5) scanl 함수를 재귀적으로 직접 만드세요. iterate 함수 만든 것과 매우 비슷합니다. iterate와 scan 둘 다 직전에 계산한 결과를 이용하기에 매우 비슷합니다.
 ```haskell
 my_scanl _ base [] = [base]
 my_scanl f base (x:xs) = base:?
 ```
 
-연습6) iterate 함수를 scanl을 써서 구현해 보세요.
+연습6) iterate 함수를 scanl을 써서 구현하세요.
 ```haskell
 my_iterate2 f x = scanl ? ? ?
 ```
 
-연습7) fibonacci 수열을 scanl을 써서 만들어 보세요.
+연습7) fibonacci 수열을 scanl을 써서 만드세요.
 ```haskell
 fib2 = 1:scanl (+) 1 ?
 ```
@@ -440,7 +440,7 @@ mergeSort [a] = ?
 mergeSort xs = ?
 ```
 
-이번에는 foldr 함수를 재귀적으로 직접 구현해보겠습니다.
+이번에는 foldr 함수를 재귀적으로 직접 구현하겠습니다.
 ```haskell
 my_foldr:: (a -> b -> b) -> b -> [a] -> b
 my_foldr f base [] = base
@@ -455,7 +455,7 @@ my_foldr f base (x:xs) = ?
 f x (my_foldr f base xs)
 ```
 
-연습11) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현해 보세요.
+연습11) foldl 함수를 위의 my_foldr 함수에서 했던 것처럼 재귀적으로 직접 구현하세요.
 ```haskell
 my_foldl:: (b -> a -> b) -> b -> [a] -> b
 my_foldl f base [] = base
@@ -542,14 +542,14 @@ data [a] = [] | a:[a] deriving (Eq, Ord)
 
 사전 학습에서 나온 => 기호에 대해 여기서 설명하겠습니다. 이는 Typeclass constraint라고 부르는 부분으로 type parameter 'a'가 어느 Typeclass에 속하는지를 밝히는 것입니다. 즉, Num 이라는 Typeclass에 속하는 Int, Float 등의 type이 해당 위치에 올 수 있다는 뜻입니다.
 
-연습12) BinTree의 총 노드 갯수를 구하는 함수를 만들어보세요.
+연습12) BinTree의 총 노드 갯수를 구하는 함수를 만드세요.
 ```haskell
 treeSize:: BinTree a -> Int
 treeSize Empty = 0
 treeSize (Node a l r) = ?
 ```
 
-이번에는 tree에 항목을 추가하는 함수를 만들어보겠습니다. 각 원소가 중복되지 않는 Tree라고 가정하겠습니다.
+이번에는 tree에 항목을 추가하는 함수를 만들겠습니다. 각 원소가 중복되지 않는 Tree라고 가정하겠습니다.
 ```haskell
 treeInsert:: Ord a => a -> BinTree a -> BinTree a
 treeInsert x Empty = Node x Empty Empty
@@ -570,7 +570,7 @@ treeMap toUpper myTree -- Node 'A' (Node 'B' Empty Empty) (Node 'C' Empty (Node 
 
 위의 코드에서 toUpper 함수는 소문자를 대문자로 바꾸어 주는 함수로 Data.Char 모듈에 있습니다. 모듈을 가져오려면 위의 코드처럼 import 구문을 사용합니다.
 
-연습13) 위의 treeMap 함수를 구현해보세요.
+연습13) 위의 treeMap 함수를 구현하세요.
 ```haskell
 treeMap::(a->b) -> BinTree a -> BinTree b
 treeMap _ Empty = Empty
@@ -618,14 +618,14 @@ data BinTree a = Empty | Node a (BinTree a) (BinTree a) deriving Show
 ```
 이러한 것들을 derived instance 라고 부르며 이것이 가능한 것은 앞서 말했듯이 Eq, Ord, Enum, Bounded, Show, Read 6개 뿐입니다. 이것들은 instance를 만드는 코드를 compiler가 자동으로 만들어줍니다.
 
-이번에는 노드를 여러 개 가질 수 있는 Tree를 만들어보겠습니다.
+이번에는 노드를 여러 개 가질 수 있는 Tree를 만들겠습니다.
 ```haskell
 data RoseTree a = Branch a [RoseTree a] deriving Show
 myTree3 = Branch 'a' [Branch 'b' [], Branch 'c' [Branch 'd' [], Branch 'e' [], Branch 'f' []], Branch 'g' []]
 ```
 <img src="RoseTree.png">
 
-연습14) RoseTree를 Functor로 만들어보세요.
+연습14) RoseTree를 Functor로 만드세요.
 ```haskell
 instance Functor RoseTree where
     fmap f (Branch a ts) = ?
@@ -663,9 +663,9 @@ break (>3) [1,4,3,2,5] -- ([1],[4,3,2,5])
 max 2 5 -- 5
 min 2 5 -- 2
 ```
-max 함수를 이용하여 maximum 함수를 구현해 보세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현해 보세요.
+max 함수를 이용하여 maximum 함수를 구현하세요. 마찬가지로 min 함수를 이용하여 minimum 함수도 구현하세요.
 
-연습16) span 함수를 구현해 보세요. 직접 재귀로 구현하셔도 되고, 위의 Data.List 모듈에 있는 함수들을 이용해서 구현해도 됩니다.
+연습16) span 함수를 구현하세요. 직접 재귀로 구현하셔도 되고, 위의 Data.List 모듈에 있는 함수들을 이용해서 구현해도 됩니다.
 ```haskell
 span :: (a -> Bool) -> [a] -> ([a], [a])
 span p xs = ?
@@ -722,7 +722,7 @@ lookup 함수도 이 Maybe type의 도움을 받는 함수입니다.
 
 Maybe와 같은 type으로는 Java8의 Optional, Rust의 Option, Scala의 Option 등이 있습니다.
 
-연습17) Maybe type을 이용하여 BinTree에서 특정 항목을 찾는 함수를 만들어보세요.
+연습17) Maybe type을 이용하여 BinTree에서 특정 항목을 찾는 함수를 만드세요.
 ```haskell
 treeFind:: Ord a => a -> BinTree a -> Maybe a
 treeFind _ Empty = Nothing
@@ -773,13 +773,13 @@ Currying이란 인자 n개를 받는 함수를 인자 1개를 받는 함수로 �
 
 참고로 Currying이란 말은 미국의 수학자이자 논리학자 Haskell Curry의 이름에서 따 왔습니다. 우리가 배우고 있는 Haskell 프로그래밍 언어도 이 사람의 이름을 가져다 쓴 것입니다.
 
-연습18) 함수 합성 연산자를 직접 구현해 보세요.
+연습18) 함수 합성 연산자를 직접 구현하세요.
 ```haskell
 my_compose:: (b -> c) -> (a -> b) -> a -> c
 f `my_compose` g = ?
 ```
 
-연습19) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만들어보세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
+연습19) Data.List 모듈에 있는 nub 함수는 중복을 없애는 함수입니다. 그런데 이 함수는 시간복잡도가 O(N^2) 로 느린 함수입니다. 원소간 순서를 알 수 있는 List의 경우 이 보다 더 빠른 O(NlogN) 시간복잡도로 중복을 없앨 수 있습니다. map, head, group, sort 함수와 합수 합성을 적절히 이용하여 다음 함수를 만드세요. (참고로 영어 단어 nub은 essence를 뜻합니다)
 ```haskell
 rmDuplicate::(Ord a) => [a] -> [a]
 rmDuplicate xs = ?
@@ -788,7 +788,7 @@ rmDuplicate xs = ?
 ##네 번째 시간
 - [x] Monoid
 
-Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료형입니다. 이진 트리에 대하여 fold함수를 정의해 보겠습니다.
+Tree 자료형은 map 뿐만 아니라 fold 하는 것도 자연스러운 자료형입니다. 이진 트리에 대하여 fold함수를 정의하겠습니다.
 
 ```haskell
 foldBinTree f base Empty = base
@@ -797,7 +797,7 @@ foldBinTree f base (Node a l r) = f a v
           i = foldBinTree f base r
 ```
 
-이번에는 RoseTree에 대한 fold함수를 정의해 보겠습니다.
+이번에는 RoseTree에 대한 fold함수를 정의하겠습니다.
 ```haskell
 type Forest a = [RoseTree a]
 foldtree:: (a -> b -> c) -> ([c] -> b) -> RoseTree a -> c
@@ -806,7 +806,7 @@ foldtree f g (Branch a ts) = f a v
 foldforest:: (a -> b -> c) -> ([c] -> b) -> Forest a -> b
 foldforest f g ts = ?
 ```
-연습20) 위의 foldforest 함수를 완성해 보세요.
+연습20) 위의 foldforest 함수를 완성하세요.
 
 List와 Tree 자료형은 모두 Folding이 자연스러운 자료형입니다. 이렇듯 Folding이 되는 자료형이 자주 생기기 때문에 Haskell에서는 Foldable이란 typeclass가 있습니다. Foldable typeclass의 정의를 보겠습니다.
 ```haskell
@@ -845,7 +845,7 @@ instance Foldable BinTree where
 
 위의 구현을 보면 함수 f의 type은 a -> m 입니다. 즉, 함수 f의 실행결과는 Monoid가 나오므로 이를 mappend 함수에 적용시킬 수 있는 것입니다.
 
-연습21) RoseTree를 Foldable의 instance로 만들어 보세요.
+연습21) RoseTree를 Foldable의 instance로 만드세요.
 ```haskell
 instance Foldable RoseTree where
     foldMap f (Branch a ts) = ?
@@ -853,7 +853,7 @@ instance Foldable RoseTree where
 
 ## 다섯 번째 시간
 
-이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 해 보겠습니다.
+이번 시간에는 지금까지 배운 것들을 이용한 문제 풀이 연습을 하겠습니다.
 
 연습22) 4백만 보다 작은 Fibonacci 숫자들 중 짝수들의 합을 구하세요. (projecteuler.net 문제2)
 
@@ -900,7 +900,7 @@ i) 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하세�
 <a href="triangle1.txt">triangle1.txt</a>
 </pre>
 
-ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성해 보세요. (projecteuler.net 문제67)
+ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합을 구하세요. 실행시간이 너무 오래 걸린다면 효율적인 알고리즘을 고민해서 다시 작성하세요. (projecteuler.net 문제67)
 <pre>
 <a href="triangle2.txt">triangle2.txt</a>
 </pre>
@@ -912,7 +912,7 @@ ii) (_어려움_) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰
     2+1+1
     1+1+1+1
 
-i) 어떤 수 n을 자연수의 덧셈으로 만들 수 있는 방법의 가짓 수를 구하는 함수를 만들어보세요. 그 함수를 이용하여 10의 경우의 가짓수를 구해보세요.
+i) 어떤 수 n을 자연수의 덧셈으로 만들 수 있는 방법의 가짓 수를 구하는 함수를 만드세요. 그 함수를 이용하여 10의 경우의 가짓수를 구하세요.
 
 ii) (_어려움_) 이번에는 100의 경우의 가짓수를 구하세요. 일반적인 방법으로는 실행시간이 너무 오래 걸리며 Memoization을 사용하는 코드를 작성해야 합니다. List 자료구조는 색인접근 연산이 O(n)로 느려서 이번 문제풀이에는 적합하지 않습니다. 따라서 Data.Array 모듈을 이용합니다. 다음 코드에서 Array를 사용하는 방법을 보여주고 있습니다. (projecteuler.net 문제76)
 ```haskell
@@ -1098,9 +1098,9 @@ wc options files = do
   printCount options totalCount
 ```
 
-연습30) countAndPrint 함수를 구현해 보세요.
+연습30) countAndPrint 함수를 구현하세요.
 
-연습31) wc utility를 최종 완성해 보세요.
+연습31) wc utility를 최종 완성하세요.
 
 ## 더 읽을 거리
 #### 람다 계산법 Lambda Calculus
