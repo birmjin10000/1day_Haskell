@@ -940,7 +940,7 @@ ii) 이번에는 다음 삼각형꼴 숫자배열에서 가장 큰 경로의 합
 <pre>
    ...                                     ...                                     ...
   ...                 max 7 1 = 7         ...                (+) 6 7 = 13         ...
- 6 9 6 7 5...    =>   max 1 9 = 8   =>   6 9 6 7 5...   =>   (+) 9 8 = 17   =>   13 17 14 11 8...
+ 6 9 6 7 5...    =>   max 1 8 = 8   =>   6 9 6 7 5...   =>   (+) 9 8 = 17   =>   13 17 14 11 8...
 7 1 8 4 3 2...        ...                7 8 8 4 3...        ...
 </pre>
 
@@ -987,7 +987,7 @@ my_filter f xs = concatMap ? ?
 
 연습문제 24의 풀이를 보면, 어떤 패턴이 생각납니다. '참/거짓 판별함수'의 결과가 참이면 값이 있고 그렇지 않으면 값이 없습니다. 값이 있거나 없을 수 있는 경우에 우리는 Maybe 를 사용했습니다. 즉, List와 Maybe간에 공통점이 드러납니다. 둘 다 값이 있거나 없을 수 있다는 점. 다시 말해 [] 는 비어 있는 리스트로서 값이 없는 것이고 Nothing은 값이 없음을 뜻하는 Maybe type의 값입니다.
 
-concatMap 함수의 type을 보면 첫 번째 인자인 함수의 type이 a -> [b] 입니다. 즉, 어떤 값을 하나 받아서 적절하게 처리한 후에 List에 담아서 내놓는 것입니다. 적절히 처리한 결과 값이 사라져버리면 그 때는 역시 List를 내놓는 데 그것은 비어있는 List 입니다. 이제 여기서 List를 어떤 값을 담는 상자라고 생각해보면 Maybe 역시 어떤 값을 담고 있는 상자라고 볼 수 있게 됩니다. 둘 다 상자안에 값이 들어 있을 수도 없을 수도 있는 것이지요. 이처럼 Maybe와 List같은 것들은 단순히 값만 가지고 있는 것이 아니라 어떤 의미를 지닌 상자에 값이 들어있는 것이라고 볼 수 있기에 이를 _**value with context**_로 표현합니다.
+concatMap 함수의 type을 보면 첫 번째 인자인 함수의 type이 a -> [b] 입니다. 즉, 어떤 값을 하나 받아서 적절하게 처리한 후에 List에 담아서 내놓는 것입니다. 적절히 처리한 결과 값이 사라져버리면 그 때는 역시 List를 내놓는 데 그것은 비어있는 List 입니다. 이제 여기서 List를 어떤 값을 담는 상자라고 생각해보면 Maybe 역시 어떤 값을 담고 있는 상자라고 볼 수 있게 됩니다. 둘 다 상자안에 값이 들어 있을 수도 없을 수도 있는 것이지요. 이처럼 Maybe와 List같은 것들은 단순히 값만 가지고 있는 것이 아니라 어떤 의미를 지닌 상자에 값이 들어있는 것이라고 볼 수 있기에 이를 **value with context**로 표현합니다.
 
 Maybe type에 대해 소개할 때 말했듯이 Maybe type은 값이 있을 수도 있고 없을 수도 있는 상황에 매우 유용합니다. 우리가 프로그래밍 할 때는 이러한 상황이 무척 많습니다. Null checking하는 코드를 그동안 얼마나 봐왔는지 생각해 보십시요. 그래서 많은 경우에 값이 단지 값 혼자만 이리 저리 전달되는 것이 아니라 context와 함께 전달이 됩니다. 즉 프로그래밍에서 concatMap과 같은 함수를 쓰는 일이 무척 자주 있다는 뜻입니다. 그래서 Haskell에서는 value with context에 대해 동작하는 함수를 두고 있습니다. __>>=__ 함수가 그것이며 이를 bind라고 부릅니다.
 
@@ -1146,25 +1146,19 @@ wc options files = do
 람다 계산법은 왜 이름이 람다 계산일까? Alonzo Church가 람다계산법을 발견하고 이를 출판하려고 했을 때는 람다계산법을 뜻하는 기호로 수식의 첫글자위에 삿갓모양의 기호를 그려넣었습니다. 그런데 이를 출판하려고 하니 당시의 조판시스템에서는 글자를 다른 글자위에 함께 찍는 게 불가능했습니다. 그래서 대안으로 생각한 것이 모양이 비슷한 라틴어 대문자 Lambda Λ 를 수식의 맨 앞에 넣었습니다. 그 이후로 람다계산법이라는 이름이 생겼고 지금은 라틴어 소문자 lambda λ 를 주로 사용합니다. Haskell에서 lambda expression 을
 나타낼때 역슬래쉬를 쓰는 것도 λ 문자와 가장 비슷해 보이는 문자여서 그렇습니다.
 
-####범주론 Category Theory
+#### 범주론 Category Theory
 Haskell에는 Monoid, Functor와 같은 익숙하지 않은 용어가 등장하는데, 이는 Haskell의 설계에 추상대수학의 한 분야인 Category Theory의 개념들을 일부 넣었기 때문입니다. 하지만 Haskell로 프로그래밍을 잘 하기 위해 Category Theory를 알아야 하는가? 라고 묻는다면 대답은 "절대 그렇지 않다" 입니다. Category Theory는 무척 방대한 학문이고 Haskell이 이로부터 가져온 개념들은 아주 일부입니다. Functor와 Monoid같은 용어가 Category Theory에서 왔다는 정도만 알면 충분합니다.
 그러므로 여기서 소개하는 Category Theory는 가볍게 읽어보고 넘어가시기 바랍니다.
 
 중고등학교 수학책에서 가장 먼저 나오는 단원은 집합입니다. 그만큼 집합이 수학에서 중요하다는 소리인데, 범주론  역시 집합과 관련있습니다.
 
-Set: 우리가 알고 있는 그 집합
-
-Magma: Set + binary operation
-
-Semigroup: Magma + associative binary operation(결합법칙을 만족하는 이항연산자)
-
-Monoid: Semigroup + Identity(항등원)
-
-Group: Monoid + Inverse(역원)
-
-Abelian group: Group의 이항연산자가 communicative law(교환법칙) 까지 만족할 때
-
-Ring: Abelian group + 두 번째 associative binary operation
+* Set: 우리가 알고 있는 그 집합
+* Magma: Set + binary operation
+* Semigroup: Magma + associative binary operation(결합법칙을 만족하는 이항연산자)
+* Monoid: Semigroup + Identity(항등원)
+* Group: Monoid + Inverse(역원)
+* Abelian group: Group의 이항연산자가 communicative law(교환법칙) 까지 만족할 때
+* Ring: Abelian group + 두 번째 associative binary operation
 
 이러한 것들을 Algebraic structure(대수적 구조) 라고 부릅니다. 여기 소개된 것 말고도 Field, Vector space 등 훨씬 더 많습니다.
 
